@@ -567,13 +567,14 @@ function PopupPreview({ config }) {
   };
 
   const colors = variantColors[config.variant] || variantColors.purple;
-  const isSideBySide = config.layout === 'side-by-side';
+  const isSideBySide = config.layout === 'side-by-side' || config.layout === 'compact';
+  const isCompact = config.layout === 'compact';
   const hasImage = config.imagePosition !== 'none' && config.imageUrl;
   const imageScale = (config.imageScale || 100) / 100; // Convert percentage to decimal
 
   return (
     <div style={{
-      maxWidth: isSideBySide ? '600px' : '450px',
+      maxWidth: isCompact ? '550px' : (isSideBySide ? '600px' : '450px'),
       background: 'white',
       borderRadius: '12px',
       boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
@@ -589,18 +590,20 @@ function PopupPreview({ config }) {
 
       <div style={{
         display: isSideBySide ? 'flex' : 'block',
+        alignItems: isCompact ? 'center' : 'stretch',
         position: 'relative'
       }}>
-        {/* Left side image for side-by-side */}
+        {/* Left side image for side-by-side and compact */}
         {hasImage && config.imagePosition === 'left-side' && isSideBySide && (
           <div style={{ 
-            width: '200px', 
-            height: imageScale > 100 ? '356px' : 'auto', // 9:16 aspect ratio when zoomed (200 * 16/9 = 356)
+            width: isCompact ? '150px' : '200px', 
+            height: isCompact ? '267px' : (imageScale > 100 ? '356px' : 'auto'), // 9:16 aspect ratio
             overflow: 'hidden', 
             display: 'flex', 
             alignItems: 'center', 
             justifyContent: 'center',
-            background: imageScale > 100 ? '#f0f0f0' : 'transparent'
+            background: imageScale > 100 ? '#f0f0f0' : 'transparent',
+            flexShrink: 0
           }}>
             <img src={config.imageUrl} alt="" style={{ 
               width: imageScale > 100 ? `${imageScale}%` : `${imageScale * 100}%`, 
@@ -626,9 +629,9 @@ function PopupPreview({ config }) {
           )}
 
           <h2 style={{
-            fontSize: '24px',
+            fontSize: isCompact ? '20px' : '24px',
             fontWeight: 'bold',
-            marginBottom: '10px',
+            marginBottom: isCompact ? '8px' : '10px',
             color: '#1a202c'
           }}>
             {config.headline || 'Your Headline Here'}
@@ -636,15 +639,15 @@ function PopupPreview({ config }) {
 
           {config.subheadline && (
             <p style={{
-              fontSize: '16px',
+              fontSize: isCompact ? '14px' : '16px',
               color: '#4a5568',
-              marginBottom: '15px'
+              marginBottom: isCompact ? '10px' : '15px'
             }}>
               {config.subheadline}
             </p>
           )}
 
-          {config.bodyCopy && (
+          {config.bodyCopy && !isCompact && (
             <p style={{
               fontSize: '14px',
               color: '#718096',
@@ -656,44 +659,94 @@ function PopupPreview({ config }) {
           )}
 
           {/* Form */}
-          <div style={{ marginTop: '20px' }}>
-            {config.includeFirstName && (
-              <input
-                type="text"
-                placeholder="First Name"
-                disabled
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  marginBottom: '10px',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '6px',
-                  fontSize: '14px'
-                }}
-              />
-            )}
-            <input
-              type="email"
-              placeholder="Email Address"
-              disabled
-              style={{
-                width: '100%',
-                padding: '12px',
-                marginBottom: '15px',
-                border: '1px solid #e2e8f0',
-                borderRadius: '6px',
-                fontSize: '14px'
-              }}
-            />
-            <button
-              disabled
-              style={{
-                width: '100%',
-                padding: '14px',
-                background: colors.bg,
-                color: 'white',
-                border: 'none',
-                borderRadius: '6px',
+          <div style={{ marginTop: isCompact ? '10px' : '20px' }}>
+            {isCompact && config.includeFirstName ? (
+              // Compact layout: inline fields
+              <>
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+                  <input
+                    type="text"
+                    placeholder="First Name"
+                    disabled
+                    style={{
+                      flex: 1,
+                      padding: '10px',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '6px',
+                      fontSize: '13px'
+                    }}
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    disabled
+                    style={{
+                      flex: 1.5,
+                      padding: '10px',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '6px',
+                      fontSize: '13px'
+                    }}
+                  />
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <button
+                    disabled
+                    style={{
+                      padding: '10px 24px',
+                      background: colors.bg,
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {config.buttonText || 'Submit'}
+                  </button>
+                </div>
+              </>
+            ) : (
+              // Standard layout: stacked fields
+              <>
+                {config.includeFirstName && (
+                  <input
+                    type="text"
+                    placeholder="First Name"
+                    disabled
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      marginBottom: '10px',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '6px',
+                      fontSize: '14px'
+                    }}
+                  />
+                )}
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  disabled
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    marginBottom: '15px',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '6px',
+                    fontSize: '14px'
+                  }}
+                />
+                <button
+                  disabled
+                  style={{
+                    width: '100%',
+                    padding: '14px',
+                    background: colors.bg,
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '6px',
                 fontSize: '16px',
                 fontWeight: 'bold',
                 cursor: 'not-allowed',
@@ -1064,6 +1117,7 @@ export default function AdminDashboard() {
             >
               <option value="centered">Centered Layout</option>
               <option value="side-by-side">Side-by-Side Layout</option>
+              <option value="compact">Compact Layout (inline fields)</option>
             </select>
             <input
               placeholder="Headline"
