@@ -1,0 +1,3 @@
+Deployment trigger file
+Created: Mon 2026-05-18 10:48 UTC
+Security fixes v2.3.0 with Upstash rate limiting

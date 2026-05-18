@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "build": {
+    "env": {
+      "DEPLOY_TIMESTAMP": "2026-05-18T10:51:00Z"
+    }
+  }
+}
