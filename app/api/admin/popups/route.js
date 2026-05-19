@@ -4,7 +4,7 @@ import popupsConfig from '../../../../public/popups.json'
 
 export async function GET(req) {
   // Verify JWT authentication
-  const authResult = verifyAuth(req)
+  const authResult = await verifyAuth(req)
   if (!authResult.authenticated) {
     return NextResponse.json(
       { success: false, error: 'Unauthorized' },
