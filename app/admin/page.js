@@ -1130,7 +1130,7 @@ export default function AdminDashboard() {
       </div>
 
       {showCreateForm && (
-        <div style={{
+        <div key={editingPopup?.id || 'new'} style={{
           background: '#f8f9fa',
           padding: '20px',
           borderRadius: '8px',
