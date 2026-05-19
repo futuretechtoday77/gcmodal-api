@@ -3,8 +3,9 @@ import { verifyAuth } from '@/lib/auth'
 
 export async function GET(req) {
   // Verify JWT authentication
-  const authResult = await verifyAuth(req)
-  if (!authResult.authenticated) {
+  try {
+    await verifyAuth(req)
+  } catch (error) {
     return NextResponse.json(
       { success: false, error: 'Unauthorized' },
       { status: 401 }
