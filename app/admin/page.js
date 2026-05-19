@@ -865,7 +865,7 @@ function PopupPreview({ config }) {
           </div>
         </div>
       </div>
-      </>} {/* Close non-overlay wrapper */}
+      </>}
     </div>
   );
 }
