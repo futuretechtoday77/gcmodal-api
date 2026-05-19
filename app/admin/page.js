@@ -769,9 +769,9 @@ export default function AdminDashboard() {
       const data = await response.json()
 
       if (data.success) {
-        localStorage.setItem('mv_popup_token', 'authenticated')
+        localStorage.setItem('mv_popup_token', data.token)
         setAuthenticated(true)
-        loadData('authenticated')
+        loadData(data.token)
       } else {
         alert('Invalid password')
       }
