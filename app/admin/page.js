@@ -568,8 +568,97 @@ function PopupPreview({ config }) {
 
   const colors = variantColors[config.variant] || variantColors.purple;
   const isSideBySide = config.layout === 'side-by-side';
+  const isOverlay = config.layout === 'overlay';
   const hasImage = config.imagePosition !== 'none' && config.imageUrl;
   const imageScale = (config.imageScale || 100) / 100; // Convert percentage to decimal
+
+  // OVERLAY LAYOUT PREVIEW
+  if (isOverlay && hasImage) {
+    return (
+      <div style={{
+        maxWidth: '500px',
+        borderRadius: '12px',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+        overflow: 'hidden',
+        fontFamily: 'system-ui, -apple-system, sans-serif'
+      }}>
+        <div style={{ 
+          position: 'relative', 
+          minHeight: '350px', 
+          background: `url(${config.imageUrl}) center center / cover no-repeat`
+        }}>
+          {/* Semi-transparent form overlay at bottom */}
+          <div style={{ 
+            position: 'absolute', 
+            bottom: 0, 
+            left: 0, 
+            right: 0, 
+            background: 'rgba(255,255,255,0.95)', 
+            padding: '20px', 
+            borderRadius: '0 0 12px 12px' 
+          }}>
+            {/* Close button */}
+            <button style={{
+              position: 'absolute',
+              top: '15px',
+              right: '15px',
+              background: 'rgba(255,255,255,0.9)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '32px',
+              height: '32px',
+              fontSize: '20px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#6b7280'
+            }}>×</button>
+            
+            {/* Headline */}
+            <h2 style={{ fontSize: '20px', fontWeight: 'bold', margin: '0 0 8px 0', color: '#1a202c' }}>
+              {config.headline || 'Your Headline Here'}
+            </h2>
+            
+            {/* Subheadline */}
+            {config.subheadline && (
+              <p style={{ fontSize: '14px', color: '#4a5568', margin: '0 0 12px 0' }}>
+                {config.subheadline}
+              </p>
+            )}
+            
+            {/* Form preview */}
+            <div>
+              {config.includeFirstName ? (
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+                  <input type="text" placeholder="First Name" disabled style={{
+                    flex: 1, padding: '10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px'
+                  }} />
+                  <input type="email" placeholder="Email" disabled style={{
+                    flex: 1.5, padding: '10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px'
+                  }} />
+                </div>
+              ) : (
+                <input type="email" placeholder="Email Address" disabled style={{
+                  width: '100%', padding: '10px', marginBottom: '10px', 
+                  border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px'
+                }} />
+              )}
+              
+              <div style={{ textAlign: 'right' }}>
+                <button disabled style={{
+                  padding: '10px 24px', background: colors.bg, color: 'white', border: 'none',
+                  borderRadius: '6px', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer'
+                }}>
+                  {config.buttonText || 'Submit'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{
