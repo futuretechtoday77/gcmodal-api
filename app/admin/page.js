@@ -1088,23 +1088,45 @@ export default function AdminDashboard() {
     )
   }
 
+  // Logout function
+  const logout = () => {
+    localStorage.removeItem('mv_popup_token');
+    setAuthenticated(false);
+    window.location.reload();
+  };
+
   return (
     <div style={{ padding: '40px', fontFamily: 'Arial, sans-serif' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
         <h1>Popup Dashboard</h1>
-        <button
-          onClick={() => showCreateForm ? handleCancelEdit() : setShowCreateForm(true)}
-          style={{
-            padding: '12px 24px',
-            background: showCreateForm ? '#6c757d' : '#28a745',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
-          {showCreateForm ? 'Cancel' : '+ Create Popup'}
-        </button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button
+            onClick={() => showCreateForm ? handleCancelEdit() : setShowCreateForm(true)}
+            style={{
+              padding: '12px 24px',
+              background: showCreateForm ? '#6c757d' : '#28a745',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            {showCreateForm ? 'Cancel' : '+ Create Popup'}
+          </button>
+          <button
+            onClick={logout}
+            style={{
+              padding: '12px 24px',
+              background: '#dc3545',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
       {showCreateForm && (
