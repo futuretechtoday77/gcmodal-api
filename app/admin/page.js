@@ -876,7 +876,11 @@ export default function AdminDashboard() {
       
       // Load popups from API
       console.log('Fetching popups...')
-      const popupsRes = await fetch('/api/popups')
+      const popupsRes = await fetch('/api/admin/popups', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       const popupsData = await popupsRes.json()
       console.log('Popups loaded:', popupsData)
       
