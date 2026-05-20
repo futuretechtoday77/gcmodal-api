@@ -836,10 +836,23 @@ export default function AdminDashboard() {
       return
     }
 
-    if (token === 'authenticated') {
-      setAuthenticated(true)
-      loadData(token)
-    } else {
+    // Verify the token is valid by making a test request
+    try {
+      const response = await fetch('/api/admin/popups', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      
+      if (response.ok) {
+        setAuthenticated(true)
+        loadData(token)
+      } else {
+        // Token invalid or expired
+        localStorage.removeItem('mv_popup_token')
+        setLoading(false)
+      }
+    } catch (error) {
       localStorage.removeItem('mv_popup_token')
       setLoading(false)
     }
@@ -962,7 +975,8 @@ export default function AdminDashboard() {
       if (data.success) {
         // Close form and refresh data
         handleCancelEdit();
-        loadData('authenticated');
+        const token = localStorage.getItem('mv_popup_token');
+        loadData(token);
         
         // Show success + implementation code in modal
         setTimeout(() => {
