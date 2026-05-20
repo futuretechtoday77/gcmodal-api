@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import SplitTestsSection from './components/SplitTestsSection'
 
 // Code Implementation Modal Component
 function CodeImplementationModal({ popup, onClose }) {
@@ -1493,6 +1494,9 @@ export default function AdminDashboard() {
 
       {/* Code Implementation Modal */}
       {showCodeModal && <CodeImplementationModal popup={showCodeModal} onClose={() => setShowCodeModal(null)} />}
+
+      {/* Split Tests Section */}
+      <SplitTestsSection popups={popups} />
     </div>
   )
 }
