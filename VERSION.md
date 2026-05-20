@@ -189,3 +189,33 @@ git push origin v2.5.0
 **Last Updated:** 2026-05-20  
 **Version:** v2.4.0  
 **Next Planned:** v2.5.0 (Split Testing / A-B Testing)
+
+## Development Versions
+
+### v2.5.0 - IN DEVELOPMENT (Split Testing)
+**Started:** 2026-05-20
+**Target Completion:** 2026-05-24
+**Current Phase:** 1 of 4 (Backend API) ✅
+**Rollback To:** v2.4.0 (tag: v2.4.0, commit: 97779ad)
+
+**Feature:** A/B Split Testing
+- Create tests between two popups
+- 50/50 random traffic split
+- Conversion tracking with email deduplication
+- Champion vs Challenger workflow
+- Three trigger types: button, exit, delay
+
+**Implementation Status:**
+- ✅ Phase 1: Backend API endpoints (COMPLETE)
+- ⏳ Phase 2: Admin Dashboard UI (Day 2)
+- ⏳ Phase 3: Frontend Library updates (Day 3)
+- ⏳ Phase 4: Testing & Deployment (Day 4)
+
+**Files Added/Modified:**
+- `/app/api/admin/split-tests/route.js` - Create, list tests
+- `/app/api/admin/split-tests/[testId]/route.js` - Manage individual tests
+- `/app/api/admin/split-tests/from-winner/route.js` - Champion vs Challenger
+- `/app/api/split-tests/[testId]/convert/route.js` - Record conversions
+- `/app/api/popups/[popupId]/route.js` - Handle split test IDs
+
+**Breaking Changes:** None - fully backward compatible
