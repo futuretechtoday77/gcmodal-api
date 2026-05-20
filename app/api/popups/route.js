@@ -238,15 +238,15 @@ export async function GET() {
 
     // ==================== REDLIGHTRESEARCH CAMPAIGN ====================
     'redlight-athlete': {
-      name: 'RedLightResearch - Athletic Recovery',
+      name: 'RedLightResearch - The Secret To Aging Backwards',
       tagId: '6942461446aba476ddd3ae8c',
       design: {
         variant: 'green',
         layout: 'side-by-side',
-        headline: 'The Recovery Secret Elite Athletes Use',
-        subheadline: 'Red light therapy: Backed by science, used by champions, available to you',
-        bodyCopy: 'Discover how specific wavelengths of light can support muscle recovery, skin health, and cellular energy production.',
-        buttonText: 'Send Me The Red Light Guide',
+        headline: 'FREE REPORT: The Secret To Aging Backwards',
+        subheadline: 'Discover how near-infrared and red light therapy may support:',
+        bodyCopy: '• Skin rejuvenation\n• Cellular energy\n• Recovery\n• Brain health\n• Healthy aging',
+        buttonText: 'Get Instant Access',
         image: {
           url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete.jpg',
           position: 'left-side',
@@ -257,15 +257,167 @@ export async function GET() {
     },
 
     'redlight-spa': {
-      name: 'RedLightResearch - Spa Wellness',
+      name: 'RedLightResearch - Light Deficiency',
       tagId: '6942461446aba476ddd3ae8c',
       design: {
         variant: 'green',
         layout: 'side-by-side',
-        headline: 'Bring The Spa Experience Home',
-        subheadline: 'Red light therapy for relaxation, rejuvenation, and radiant skin',
-        bodyCopy: 'Learn how to create your own wellness sanctuary with the same technology used in luxury spas worldwide.',
-        buttonText: 'Get The Home Spa Guide',
+        headline: 'What If Aging Is Partly A Light Deficiency Problem?',
+        subheadline: 'The science of photobiomodulation suggests certain wavelengths help support cellular energy, circulation, collagen, and mitochondrial function.',
+        bodyCopy: 'Enter your email below and I\'ll send you my 23-page research-backed guide on red and near-infrared light therapy.',
+        buttonText: 'Read The Research Report',
+        image: {
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa.jpg',
+          position: 'left-side',
+          scale: 100
+        }
+      },
+      fields: ['email']
+    },
+
+    'redlight-ancestors': {
+      name: 'RedLightResearch - Ancestors Light',
+      tagId: '6942461446aba476ddd3ae8c',
+      design: {
+        variant: 'green',
+        layout: 'side-by-side',
+        headline: 'Your Ancestors Got Something Every Day You Barely Get At All',
+        subheadline: 'Red and near-infrared light.',
+        bodyCopy: 'Modern indoor living blocks many of the most biologically important wavelengths for cellular repair and recovery. Learn how photobiomodulation works in my free guide.',
+        buttonText: 'Get The Free Guide',
+        image: {
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa.jpg',
+          position: 'left-side',
+          scale: 100
+        }
+      },
+      fields: ['email']
+    },
+
+    'redlight-starving': {
+      name: 'RedLightResearch - Starving For Light',
+      tagId: '6942461446aba476ddd3ae8c',
+      design: {
+        variant: 'green',
+        layout: 'side-by-side',
+        headline: 'The Modern World Is Starving Your Cells',
+        subheadline: 'Most people are overexposed to artificial blue light… while being deprived of the healing red and near-infrared wavelengths human biology evolved with.',
+        bodyCopy: 'Discover how specific wavelengths of light may support mitochondrial energy, skin repair, recovery, and healthy aging.',
+        buttonText: 'Download The Free Report',
+        image: {
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete.jpg',
+          position: 'left-side',
+          scale: 100
+        }
+      },
+      fields: ['email']
+    },
+
+    'redlight-industry-secret': {
+      name: 'RedLightResearch - Industry Secret',
+      tagId: '6942461446aba476ddd3ae8c',
+      design: {
+        variant: 'green',
+        layout: 'side-by-side',
+        headline: 'The Anti-Aging Industry Barely Talks About This',
+        subheadline: 'Your mitochondria respond to light.',
+        bodyCopy: 'Learn why researchers are studying red and near-infrared wavelengths for skin health, recovery, inflammation, and cognitive support.',
+        buttonText: 'Download Free PDF',
+        image: {
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa.jpg',
+          position: 'left-side',
+          scale: 100
+        }
+      },
+      fields: ['email']
+    },
+
+    'redlight-before-buy': {
+      name: 'RedLightResearch - Before You Buy',
+      tagId: '6942461446aba476ddd3ae8c',
+      design: {
+        variant: 'green',
+        layout: 'side-by-side',
+        headline: 'Before You Buy A Red Light Panel…',
+        subheadline: 'Read this first.',
+        bodyCopy: 'Most people don\'t understand wavelengths, penetration depth, irradiance, or why device quality matters. Get my free buyer\'s guide.',
+        buttonText: 'Download Free Buyer\'s Guide',
+        image: {
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete.jpg',
+          position: 'left-side',
+          scale: 100
+        }
+      },
+      fields: ['email']
+    },
+
+    'redlight-drowning': {
+      name: 'RedLightResearch - Drowning In Frequencies',
+      tagId: '6942461446aba476ddd3ae8c',
+      design: {
+        variant: 'green',
+        layout: 'side-by-side',
+        headline: 'You\'re Drowning In Artificial Frequencies…',
+        subheadline: '…but starving for regenerative light.',
+        bodyCopy: 'Learn why specific wavelengths may be critical for recovery, energy, sleep, and healthy aging.',
+        buttonText: 'Download The Report',
+        image: {
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa.jpg',
+          position: 'left-side',
+          scale: 100
+        }
+      },
+      fields: ['email']
+    },
+
+    'redlight-wavelengths': {
+      name: 'RedLightResearch - 9 Wavelengths',
+      tagId: '6942461446aba476ddd3ae8c',
+      design: {
+        variant: 'green',
+        layout: 'side-by-side',
+        headline: 'The 9 Most Important Light Wavelengths Explained',
+        subheadline: 'A practical science-forward guide to photobiomodulation and wide-spectrum red light therapy.',
+        bodyCopy: 'Includes 480nm, 590nm, 630nm, 660nm, 670nm, 810nm, 830nm, 850nm, and 1060nm.',
+        buttonText: 'Send Me The PDF',
+        image: {
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete.jpg',
+          position: 'left-side',
+          scale: 100
+        }
+      },
+      fields: ['email']
+    },
+
+    'redlight-missing-half': {
+      name: 'RedLightResearch - Missing Half',
+      tagId: '6942461446aba476ddd3ae8c',
+      design: {
+        variant: 'green',
+        layout: 'side-by-side',
+        headline: 'Most Red Light Panels Are Missing Half The Story',
+        subheadline: 'Different wavelengths affect different tissues.',
+        bodyCopy: 'Learn why wide-spectrum photobiomodulation may outperform basic 660nm/850nm-only systems.',
+        buttonText: 'Get The Free Report',
+        image: {
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete.jpg',
+          position: 'left-side',
+          scale: 100
+        }
+      },
+      fields: ['email']
+    },
+
+    'redlight-designed-outdoors': {
+      name: 'RedLightResearch - Designed For Outdoors',
+      tagId: '6942461446aba476ddd3ae8c',
+      design: {
+        variant: 'green',
+        layout: 'side-by-side',
+        headline: 'We Were Designed For Sunlight — Not Screens',
+        subheadline: 'Artificial indoor living may be disrupting your biology in ways most people never consider.',
+        bodyCopy: 'Discover the regenerative science of red and near-infrared light therapy.',
+        buttonText: 'Get Instant Access',
         image: {
           url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa.jpg',
           position: 'left-side',
