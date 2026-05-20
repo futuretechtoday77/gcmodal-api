@@ -78,8 +78,8 @@
           return;
         }
 
-        // Fetch popup config
-        const response = await fetch(`${this.config.apiUrl}/api/popups/${popupId}`);
+        // Fetch popup config (use query param to support split tests)
+        const response = await fetch(`${this.config.apiUrl}/api/popups?id=${encodeURIComponent(popupId)}`);
         const data = await response.json();
 
         if (!data.success) {
