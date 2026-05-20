@@ -158,7 +158,7 @@ export async function GET(req) {
         bodyCopy: 'Inside this free report: The shocking connection between apricot seeds and a vitamin that was once considered essential to human health.',
         buttonText: 'Send Me The Free Report',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-forbiddenfood-apricots.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-forbiddenfood-apricots-E3EBcacdDYLhQ4uosbGgxj9FfRUbQK.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -177,7 +177,7 @@ export async function GET(req) {
         bodyCopy: 'Now declassified: Read the original research reports that challenged everything we were told about nutrition and health.',
         buttonText: 'Access The Declassified Reports',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-forbiddenfood-research-v1.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-forbiddenfood-research-v1-aQPLZkMFZbz6v84kH1awkTKaXGG2UG.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -196,7 +196,7 @@ export async function GET(req) {
         bodyCopy: 'Enter your email to receive the complete nitrilosides research archive — studies that were hidden from public view for over 50 years.',
         buttonText: 'Send Me The Research Archive',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-forbiddenfood-research-v2.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-forbiddenfood-research-v2-sb1SNKQzrmazn0qmvgNrruePKXNKD4.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -215,7 +215,7 @@ export async function GET(req) {
         bodyCopy: 'These institutional research reports were never meant for public eyes. Now you can read what they found.',
         buttonText: 'Get The Institute Reports',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-forbiddenfood-research-v3.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-forbiddenfood-research-v3-aUryyixguVDJoanjoS95dxU1wG2YiK.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -234,7 +234,7 @@ export async function GET(req) {
         bodyCopy: 'Microscope icons, confidential stamps, and decades of suppressed science — all in one free report.',
         buttonText: 'Send Me The Declassified File',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-forbiddenfood-research-v4.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-forbiddenfood-research-v4-A4kaGUaikmgQkYkUbP5rOPBq23fz2f.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -253,7 +253,7 @@ export async function GET(req) {
         bodyCopy: 'The most dramatic of the suppressed documents. Eagle seals, top secret stamps, and the truth that was buried in 1962.',
         buttonText: 'Access The Top Secret File',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-forbiddenfood-research-v5.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-forbiddenfood-research-v5-HqLkto19oKCVgqFzDKvU9yAV7WuKvm.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -273,7 +273,7 @@ export async function GET(req) {
         bodyCopy: 'Historical photographs from the original frequency research laboratories. Discover what they knew that we forgot.',
         buttonText: 'Send Me The Historical Report',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-rifelead-scientist-bw.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-rifelead-scientist-bw-NyRzMRFVkQCIXmC4fQHvRLo5jvgfCk.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -292,7 +292,7 @@ export async function GET(req) {
         bodyCopy: 'His workshop, his instruments, his discoveries — all revealed in this exclusive historical documentation.',
         buttonText: 'Get The Complete Story',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-rifelead-scientist-sepia.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-rifelead-scientist-sepia-xp2jRuxSBxMfExXAlnjUXFhOZngjYK.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -311,7 +311,7 @@ export async function GET(req) {
         bodyCopy: 'Discover the story of the universal microscope and why its technology was never replicated.',
         buttonText: 'Send Me The Microscope Report',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-rifelead-microscope.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-rifelead-microscope-8VLoNzr2SKTfDf1yxSvgHS77dxAPzX.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -330,7 +330,7 @@ export async function GET(req) {
         bodyCopy: 'Original equations, waveform diagrams, and the frequency protocols that emerged from decades of research.',
         buttonText: 'Access The Frequency Data',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-rifelead-waveforms.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-rifelead-waveforms-zERaEow0nQ39298PxHPY8RoeDrKh1X.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -350,7 +350,7 @@ export async function GET(req) {
         bodyCopy: '• Skin rejuvenation\n• Cellular energy\n• Recovery\n• Brain health\n• Healthy aging',
         buttonText: 'Get Instant Access',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete-l0nzaaJ22wiJ88KBFE7HY3YBtW2RLk.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -369,7 +369,7 @@ export async function GET(req) {
         bodyCopy: 'Enter your email below and I\'ll send you my 23-page research-backed guide on red and near-infrared light therapy.',
         buttonText: 'Read The Research Report',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa-qgQPRDwIthYG7xdiCGNdoqMJJxMFlE.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -388,7 +388,7 @@ export async function GET(req) {
         bodyCopy: 'Modern indoor living blocks many of the most biologically important wavelengths for cellular repair and recovery. Learn how photobiomodulation works in my free guide.',
         buttonText: 'Get The Free Guide',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa-qgQPRDwIthYG7xdiCGNdoqMJJxMFlE.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -407,7 +407,7 @@ export async function GET(req) {
         bodyCopy: 'Discover how specific wavelengths of light may support mitochondrial energy, skin repair, recovery, and healthy aging.',
         buttonText: 'Download The Free Report',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete-l0nzaaJ22wiJ88KBFE7HY3YBtW2RLk.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -426,7 +426,7 @@ export async function GET(req) {
         bodyCopy: 'Learn why researchers are studying red and near-infrared wavelengths for skin health, recovery, inflammation, and cognitive support.',
         buttonText: 'Download Free PDF',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa-qgQPRDwIthYG7xdiCGNdoqMJJxMFlE.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -445,7 +445,7 @@ export async function GET(req) {
         bodyCopy: 'Most people don\'t understand wavelengths, penetration depth, irradiance, or why device quality matters. Get my free buyer\'s guide.',
         buttonText: 'Download Free Buyer\'s Guide',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete-l0nzaaJ22wiJ88KBFE7HY3YBtW2RLk.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -464,7 +464,7 @@ export async function GET(req) {
         bodyCopy: 'Learn why specific wavelengths may be critical for recovery, energy, sleep, and healthy aging.',
         buttonText: 'Download The Report',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa-qgQPRDwIthYG7xdiCGNdoqMJJxMFlE.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -483,7 +483,7 @@ export async function GET(req) {
         bodyCopy: 'Includes 480nm, 590nm, 630nm, 660nm, 670nm, 810nm, 830nm, 850nm, and 1060nm.',
         buttonText: 'Send Me The PDF',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete-l0nzaaJ22wiJ88KBFE7HY3YBtW2RLk.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -502,7 +502,7 @@ export async function GET(req) {
         bodyCopy: 'Learn why wide-spectrum photobiomodulation may outperform basic 660nm/850nm-only systems.',
         buttonText: 'Get The Free Report',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-athlete-l0nzaaJ22wiJ88KBFE7HY3YBtW2RLk.jpg',
           position: 'left-side',
           scale: 100
         }
@@ -521,7 +521,7 @@ export async function GET(req) {
         bodyCopy: 'Discover the regenerative science of red and near-infrared light therapy.',
         buttonText: 'Get Instant Access',
         image: {
-          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa.jpg',
+          url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/popup-redlight-spa-qgQPRDwIthYG7xdiCGNdoqMJJxMFlE.jpg',
           position: 'left-side',
           scale: 100
         }
