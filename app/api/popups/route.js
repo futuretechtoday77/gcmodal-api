@@ -5,7 +5,11 @@
 
 import { getSecurityHeaders, mergeHeaders } from '@/lib/security-headers';
 
-export async function GET() {
+export async function GET(req) {
+  // Check for single popup request via query param
+  const { searchParams } = new URL(req.url);
+  const popupId = searchParams.get('id');
+  
   // Static popup configurations (fallback)
   const staticPopups = {
     'nitrilosides-optin': {
@@ -470,6 +474,86 @@ export async function GET() {
 
   // Merge dynamic popups with static (dynamic takes precedence)
   const allPopups = { ...staticPopups, ...dynamicPopups };
+  
+  // Handle single popup request
+  if (popupId) {
+    // Check if it's a split test
+    if (popupId.startsWith('split-')) {
+      // Fetch from Control Board
+      try {
+        const CONTROLBOARD_TOKEN = process.env.CONTROLBOARD_API_TOKEN;
+        const WORKSPACE_ID = process.env.WORKSPACE_ID || '674e44e4a85f45d1b44c1a40';
+        
+        if (CONTROLBOARD_TOKEN) {
+          const response = await fetch('https://control.clawlauncher.io/api/settings', {
+            headers: {
+              'Authorization': `Bearer ${CONTROLBOARD_TOKEN}`,
+              'X-Workspace-Id': WORKSPACE_ID
+            }
+          });
+          
+          if (response.ok) {
+            const data = await response.json();
+            const settings = data.settings || {};
+            const key = `split_test_${popupId}`;
+            
+            if (settings[key]) {
+              const test = typeof settings[key] === 'string' ? JSON.parse(settings[key]) : settings[key];
+              
+              // If completed, return winner
+              if (test.status === 'completed' && test.winnerPopupId) {
+                const winnerPopup = allPopups[test.winnerPopupId];
+                if (winnerPopup) {
+                  const { tagId, ...publicPopup } = winnerPopup;
+                  return Response.json({
+                    success: true,
+                    popup: publicPopup,
+                    _splitTest: { testId: test.testId, isCompleted: true, winner: test.winnerPopupId }
+                  }, { headers: getSecurityHeaders() });
+                }
+              }
+              
+              // Random 50/50 assignment
+              const variant = Math.random() < 0.5 ? 'A' : 'B';
+              const variantData = variant === 'A' ? test.variantA : test.variantB;
+              const popupConfig = allPopups[variantData.popupId];
+              
+              if (popupConfig) {
+                const { tagId, ...publicPopup } = popupConfig;
+                return Response.json({
+                  success: true,
+                  popup: publicPopup,
+                  _splitTest: { testId: test.testId, variant, isCompleted: false }
+                }, { headers: getSecurityHeaders() });
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching split test:', error);
+      }
+      
+      return Response.json(
+        { success: false, error: 'Split test not found' },
+        { status: 404, headers: getSecurityHeaders() }
+      );
+    }
+    
+    // Regular popup lookup
+    const popup = allPopups[popupId];
+    if (popup) {
+      const { tagId, ...publicPopup } = popup;
+      return Response.json(
+        { success: true, popup: publicPopup },
+        { headers: getSecurityHeaders() }
+      );
+    }
+    
+    return Response.json(
+      { success: false, error: 'Popup not found' },
+      { status: 404, headers: getSecurityHeaders() }
+    );
+  }
   
   // SECURITY FIX: Filter sensitive data from public response
   // Remove tagId and other backend-only fields from public API
