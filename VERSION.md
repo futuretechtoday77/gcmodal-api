@@ -219,3 +219,14 @@ git push origin v2.5.0
 - `/app/api/popups/[popupId]/route.js` - Handle split test IDs
 
 **Breaking Changes:** None - fully backward compatible
+
+**Files Added/Modified (continued):**
+- `/app/admin/components/SplitTestsSection.js` - NEW: Admin UI component
+- `/app/admin/page.js` - Added SplitTestsSection import and usage
+- `/gc-modal-library/public/gc-modal.js` - NEW: Frontend library v2.5.0
+
+**Implementation Status:**
+- ✅ Phase 1: Backend API endpoints (COMPLETE)
+- ✅ Phase 2: Admin Dashboard UI (COMPLETE)  
+- ✅ Phase 3: Frontend Library updates (COMPLETE)
+- ⏳ Phase 4: Testing & Deployment (IN PROGRESS)
