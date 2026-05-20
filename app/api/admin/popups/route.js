@@ -153,7 +153,7 @@ export async function GET(req) {
       design: {
         variant: 'green',
         layout: 'side-by-side',
-        headline: 'The Seed They Don\'t Want You To Know About',
+        headline: "The Seed They Don't Want You To Know About",
         subheadline: 'Discover why this ancient food was quietly removed from modern nutrition advice',
         bodyCopy: 'Inside this free report: The shocking connection between apricot seeds and a vitamin that was once considered essential to human health.',
         buttonText: 'Send Me The Free Report',
