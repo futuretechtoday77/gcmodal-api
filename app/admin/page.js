@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import SplitTestsSection from './components/SplitTestsSection'
+import FolderManager from './components/FolderManager'
 
 // Code Implementation Modal Component
 function CodeImplementationModal({ popup, onClose }) {
@@ -1372,6 +1373,14 @@ export default function AdminDashboard() {
         </div>
         </div>
       )}
+
+      {/* Popup Folders */}
+      <FolderManager 
+        type="popup" 
+        items={popups}
+      />
+
+      <h3 style={{ marginTop: '30px', marginBottom: '15px' }}>All Popups</h3>
 
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>

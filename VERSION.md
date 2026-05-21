@@ -162,7 +162,9 @@ git push origin v2.5.0
 
 | Version | Tag | Commit | Date | Status |
 |---------|-----|--------|------|--------|
-| v2.5.1 | `v2.5.1` | `3975fc2` | 2026-05-21 | ✅ Current |
+| v2.5.3 | `v2.5.3` | `TBD` | 2026-05-21 | ✅ Current |
+| v2.5.2 | `v2.5.2` | `3325261` | 2026-05-21 | ⚠️ Superseded |
+| v2.5.1 | `v2.5.1` | `3975fc2` | 2026-05-21 | ⚠️ Superseded |
 | v2.5.0 | `v2.5.0` | `288e720` | 2026-05-21 | ⚠️ Superseded |
 | v2.4.0 | `v2.4.0` | `97779ad` | 2026-05-20 | ⚠️ Pre-split-testing |
 | v2.3.3 | `v2.3.3` | `454bb53` | 2026-05-19 | ⚠️ Backup |
@@ -194,26 +196,31 @@ git push origin v2.5.0
 
 ## Current Version
 
-### v2.5.1 - PRODUCTION (Split Testing with Button Customizer)
+### v2.5.3 - PRODUCTION (Folder Organization)
 **Release Date:** 2026-05-21
-**Commit:** `3975fc2`
+**Commit:** `TBD`
 **Status:** ✅ Production Ready
 
-**Feature:** A/B Split Testing with full button customization
+**Feature:** Folder organization for popups and split tests
 
-**What's New in v2.5.1:**
-- **Button Customizer** - Full styling options for button-triggered tests:
-  - Button text customization
-  - Background and text color pickers
-  - Font family selection (System, Arial, Helvetica, Georgia, etc.)
-  - Font size control
-  - Corner radius (rounded corners)
-  - Padding adjustment
-  - Shadow options (None, Small, Medium, Large, X-Large)
-  - Alignment (Left, Center, Right)
-  - Live preview of styled button
-- Button styles preserved in Champion vs Challenger tests
-- Styled button HTML included in implementation code
+**What's New in v2.5.3:**
+- **Folder Management** - Organize popups and split tests into folders:
+  - Create folders for popups and split tests separately
+  - Drag and drop items into folders
+  - Expand/collapse folder views
+  - Rename folders
+  - Delete folders (items remain, just unorganized)
+  - "Unorganized" section for items not in any folder
+  - Visual indicators for item counts
+- Popup folders in main admin dashboard
+- Split test folders in split tests section
+- Persistent storage in Control Board
+
+**Previous Features (from v2.5.2):**
+- **Button Customizer** - Full styling options for button-triggered tests (now in code modal)
+  - Button text, colors, font, size, padding, shadow, alignment
+  - Live preview
+  - Contextual styling per placement
 
 **Complete Split Testing Features:**
 - Create A/B tests between any two popups

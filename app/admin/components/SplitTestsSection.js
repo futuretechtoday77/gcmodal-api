@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import FolderManager from './FolderManager'
 
 // Code Implementation Modal Component for Split Tests
 function CodeImplementationModal({ test, onClose }) {
@@ -718,6 +719,14 @@ export default function SplitTestsSection({ popups }) {
           </div>
         </div>
       )}
+
+      {/* Split Test Folders */}
+      <FolderManager 
+        type="splittest" 
+        items={splitTests}
+      />
+
+      <h3 style={{ marginTop: '30px', marginBottom: '15px' }}>All Split Tests</h3>
 
       {loading ? (
         <p>Loading split tests...</p>
