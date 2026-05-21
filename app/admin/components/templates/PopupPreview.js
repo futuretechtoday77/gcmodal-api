@@ -730,47 +730,36 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Concave curves meeting at point toward form */}
+          {/* Right half of curves, flipped 180° - curves point toward form */}
           <div style={{
             position: 'absolute',
-            right: '-40px',
+            right: '0',
             top: '50%',
             transform: 'translateY(-50%)',
-            width: '80px',
-            height: '120px',
+            width: '40px',
+            height: '100px',
             overflow: 'hidden'
           }}>
-            {/* Top concave curve */}
+            {/* Top half - concave curve facing left, point to right */}
             <div style={{
               position: 'absolute',
               top: '0',
-              left: '0',
+              right: '0',
               width: '80px',
-              height: '60px',
+              height: '50px',
               background: '#e8f4fc',
-              borderRadius: '0 0 50% 50% / 0 0 100% 100%'
+              borderRadius: '50% 0 0 50% / 100% 0 0 100%'
             }} />
-            {/* Bottom concave curve */}
+            {/* Bottom half - concave curve facing left, point to right */}
             <div style={{
               position: 'absolute',
               bottom: '0',
-              left: '0',
+              right: '0',
               width: '80px',
-              height: '60px',
+              height: '50px',
               background: '#e8f4fc',
-              borderRadius: '50% 50% 0 0 / 100% 100% 0 0'
-            }} />
-            {/* Center point */}
-            <div style={{
-              position: 'absolute',
-              left: '0',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              width: '0',
-              height: '0',
-              borderTop: '8px solid transparent',
-              borderBottom: '8px solid transparent',
-              borderLeft: '12px solid #e8f4fc'
+              borderRadius: '50% 0 0 50% / 100% 0 0 100%',
+              transform: 'scaleY(-1)'
             }} />
           </div>
         </div>
