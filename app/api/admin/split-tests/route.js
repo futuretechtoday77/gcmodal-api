@@ -166,7 +166,7 @@ export async function POST(req) {
     await verifyAuth(req)
 
     const body = await req.json()
-    const { name, variantA, variantB, triggerType, triggerDelay, buttonId } = body
+    const { name, variantA, variantB, triggerType, triggerDelay, buttonId, buttonStyle } = body
 
     // Validation
     if (!name || !variantA || !variantB || !triggerType) {
@@ -220,6 +220,7 @@ export async function POST(req) {
       triggerType,
       triggerDelay: triggerDelay || null,
       buttonId: finalButtonId,
+      buttonStyle: triggerType === 'button' ? (buttonStyle || null) : null,
       status: 'running',
       winnerPopupId: null,
       completedAt: null,
@@ -266,10 +267,48 @@ function generateImplementationCode(test) {
   let triggerCode = ''
 
   if (test.triggerType === 'button') {
+    // Use custom button styles if available, otherwise use defaults
+    const bs = test.buttonStyle || {
+      text: 'Get Free Report',
+      bgColor: '#6B46C1',
+      textColor: '#ffffff',
+      fontSize: '16px',
+      fontFamily: 'system-ui, sans-serif',
+      borderRadius: '6px',
+      padding: '12px 24px',
+      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+      fontWeight: 'bold',
+      align: 'center'
+    }
+    
+    const alignStyles = {
+      left: 'text-align: left;',
+      center: 'text-align: center;',
+      right: 'text-align: right;'
+    }
+    
     triggerCode = `
 <!-- Trigger: Button Click -->
 <!-- Copy this button HTML to your site: -->
-<button id="${test.buttonId}">Get Free Report</button>`
+<div style="${alignStyles[bs.align] || 'text-align: center;'}">
+  <button 
+    id="${test.buttonId}"
+    style="
+      background: ${bs.bgColor};
+      color: ${bs.textColor};
+      font-size: ${bs.fontSize};
+      font-family: ${bs.fontFamily};
+      font-weight: ${bs.fontWeight};
+      padding: ${bs.padding};
+      border: none;
+      border-radius: ${bs.borderRadius};
+      box-shadow: ${bs.boxShadow};
+      cursor: pointer;
+    "
+  >
+    ${bs.text}
+  </button>
+</div>`
   } else if (test.triggerType === 'exit') {
     triggerCode = `
 <!-- Trigger: Exit Intent (auto-detects mouse leaving viewport) -->

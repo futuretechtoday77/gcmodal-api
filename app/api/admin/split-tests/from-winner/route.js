@@ -84,15 +84,56 @@ function generateImplementationCode(test) {
   let triggerCode = ''
 
   if (test.triggerType === 'button') {
+    // Use custom button styles if available, otherwise use defaults
+    const bs = test.buttonStyle || {
+      text: 'Get Free Report',
+      bgColor: '#6B46C1',
+      textColor: '#ffffff',
+      fontSize: '16px',
+      fontFamily: 'system-ui, sans-serif',
+      borderRadius: '6px',
+      padding: '12px 24px',
+      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+      fontWeight: 'bold',
+      align: 'center'
+    }
+    
+    const alignStyles = {
+      left: 'text-align: left;',
+      center: 'text-align: center;',
+      right: 'text-align: right;'
+    }
+    
     triggerCode = `
 <!-- Trigger: Button Click -->
-<button data-popup-id="${test.testId}">Get Free Report</button>`
+<!-- Copy this button HTML to your site: -->
+<div style="${alignStyles[bs.align] || 'text-align: center;'}">
+  <button 
+    id="${test.buttonId || test.testId}"
+    style="
+      background: ${bs.bgColor};
+      color: ${bs.textColor};
+      font-size: ${bs.fontSize};
+      font-family: ${bs.fontFamily};
+      font-weight: ${bs.fontWeight};
+      padding: ${bs.padding};
+      border: none;
+      border-radius: ${bs.borderRadius};
+      box-shadow: ${bs.boxShadow};
+      cursor: pointer;
+    "
+  >
+    ${bs.text}
+  </button>
+</div>`
   } else if (test.triggerType === 'exit') {
     triggerCode = `
-<!-- Trigger: Exit Intent -->`
+<!-- Trigger: Exit Intent (auto-detects mouse leaving viewport) -->
+<!-- No additional code needed - automatically triggers on exit intent -->`
   } else if (test.triggerType === 'delay') {
     triggerCode = `
-<!-- Trigger: Time Delay (${test.triggerDelay}s) -->`
+<!-- Trigger: Time Delay (${test.triggerDelay}s = ${Math.floor(test.triggerDelay / 60)}m ${test.triggerDelay % 60}s) -->
+<!-- Automatically triggers after ${test.triggerDelay} seconds on page -->`
   }
 
   return `${baseCode}\n${triggerCode}`
@@ -162,6 +203,7 @@ export async function POST(req) {
       triggerType: parentTest.triggerType,
       triggerDelay: parentTest.triggerDelay,
       buttonId: parentTest.buttonId,
+      buttonStyle: parentTest.buttonStyle,  // Copy button styling
       status: 'running',
       winnerPopupId: null,
       completedAt: null,

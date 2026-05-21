@@ -18,6 +18,20 @@ export default function SplitTestsSection({ popups }) {
     buttonId: ''
   })
 
+  // Button style customization (for button trigger type)
+  const [buttonStyle, setButtonStyle] = useState({
+    text: 'Get Free Report',
+    bgColor: '#6B46C1',
+    textColor: '#ffffff',
+    fontSize: '16px',
+    fontFamily: 'system-ui, sans-serif',
+    borderRadius: '6px',
+    padding: '12px 24px',
+    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+    fontWeight: 'bold',
+    align: 'center'
+  })
+
   useEffect(() => {
     loadSplitTests()
   }, [])
@@ -49,13 +63,23 @@ export default function SplitTestsSection({ popups }) {
 
     try {
       const token = localStorage.getItem('mv_popup_token')
+      
+      // Build request body with button styles if button trigger
+      const requestBody = {
+        ...newTest
+      }
+      
+      if (newTest.triggerType === 'button') {
+        requestBody.buttonStyle = buttonStyle
+      }
+      
       const response = await fetch('/api/admin/split-tests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(newTest)
+        body: JSON.stringify(requestBody)
       })
 
       const data = await response.json()
@@ -68,6 +92,19 @@ export default function SplitTestsSection({ popups }) {
           triggerType: 'delay',
           triggerDelay: 180,
           buttonId: ''
+        })
+        // Reset button style to default
+        setButtonStyle({
+          text: 'Get Free Report',
+          bgColor: '#6B46C1',
+          textColor: '#ffffff',
+          fontSize: '16px',
+          fontFamily: 'system-ui, sans-serif',
+          borderRadius: '6px',
+          padding: '12px 24px',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+          fontWeight: 'bold',
+          align: 'center'
         })
         loadSplitTests()
         setShowCodeModal({
@@ -327,6 +364,158 @@ export default function SplitTestsSection({ popups }) {
               </div>
             )}
 
+            {/* Button Customizer - only show for button trigger */}
+            {newTest.triggerType === 'button' && (
+              <div style={{ 
+                background: 'white', 
+                padding: '20px', 
+                borderRadius: '8px', 
+                border: '2px solid #6B46C1',
+                marginTop: '10px'
+              }}>
+                <h4 style={{ marginTop: 0, marginBottom: '15px', color: '#6B46C1' }}>🎨 Button Customizer</h4>
+                
+                <div style={{ display: 'grid', gap: '12px' }}>
+                  {/* Button Text */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Button Text</label>
+                    <input
+                      type="text"
+                      value={buttonStyle.text}
+                      onChange={(e) => setButtonStyle({...buttonStyle, text: e.target.value})}
+                      style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                    />
+                  </div>
+
+                  {/* Colors */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Background</label>
+                      <input
+                        type="color"
+                        value={buttonStyle.bgColor}
+                        onChange={(e) => setButtonStyle({...buttonStyle, bgColor: e.target.value})}
+                        style={{ width: '100%', height: '36px', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Text Color</label>
+                      <input
+                        type="color"
+                        value={buttonStyle.textColor}
+                        onChange={(e) => setButtonStyle({...buttonStyle, textColor: e.target.value})}
+                        style={{ width: '100%', height: '36px', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Font Family */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Font Family</label>
+                    <select
+                      value={buttonStyle.fontFamily}
+                      onChange={(e) => setButtonStyle({...buttonStyle, fontFamily: e.target.value})}
+                      style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                    >
+                      <option value="system-ui, sans-serif">System (Default)</option>
+                      <option value="Arial, sans-serif">Arial</option>
+                      <option value="Helvetica, sans-serif">Helvetica</option>
+                      <option value="Georgia, serif">Georgia</option>
+                      <option value="'Times New Roman', serif">Times New Roman</option>
+                      <option value="'Courier New', monospace">Courier New</option>
+                    </select>
+                  </div>
+
+                  {/* Font Size & Border Radius */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Font Size</label>
+                      <input
+                        type="text"
+                        value={buttonStyle.fontSize}
+                        onChange={(e) => setButtonStyle({...buttonStyle, fontSize: e.target.value})}
+                        placeholder="16px"
+                        style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Corner Radius</label>
+                      <input
+                        type="text"
+                        value={buttonStyle.borderRadius}
+                        onChange={(e) => setButtonStyle({...buttonStyle, borderRadius: e.target.value})}
+                        placeholder="6px"
+                        style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Padding */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Padding</label>
+                    <input
+                      type="text"
+                      value={buttonStyle.padding}
+                      onChange={(e) => setButtonStyle({...buttonStyle, padding: e.target.value})}
+                      placeholder="12px 24px"
+                      style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                    />
+                  </div>
+
+                  {/* Box Shadow */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Shadow</label>
+                    <select
+                      value={buttonStyle.boxShadow}
+                      onChange={(e) => setButtonStyle({...buttonStyle, boxShadow: e.target.value})}
+                      style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                    >
+                      <option value="none">None</option>
+                      <option value="0 2px 4px rgba(0,0,0,0.1)">Small</option>
+                      <option value="0 4px 6px rgba(0,0,0,0.1)">Medium</option>
+                      <option value="0 10px 15px rgba(0,0,0,0.1)">Large</option>
+                      <option value="0 20px 25px rgba(0,0,0,0.15)">X-Large</option>
+                    </select>
+                  </div>
+
+                  {/* Alignment */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Alignment</label>
+                    <select
+                      value={buttonStyle.align}
+                      onChange={(e) => setButtonStyle({...buttonStyle, align: e.target.value})}
+                      style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                    >
+                      <option value="left">Left</option>
+                      <option value="center">Center</option>
+                      <option value="right">Right</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Preview */}
+                <div style={{ marginTop: '20px', padding: '15px', background: '#f3f4f6', borderRadius: '6px', textAlign: buttonStyle.align }}>
+                  <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '8px', textAlign: 'left' }}>Preview:</label>
+                  <button
+                    style={{
+                      background: buttonStyle.bgColor,
+                      color: buttonStyle.textColor,
+                      fontSize: buttonStyle.fontSize,
+                      fontFamily: buttonStyle.fontFamily,
+                      fontWeight: buttonStyle.fontWeight,
+                      padding: buttonStyle.padding,
+                      border: 'none',
+                      borderRadius: buttonStyle.borderRadius,
+                      boxShadow: buttonStyle.boxShadow,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {buttonStyle.text}
+                  </button>
+                </div>
+              </div>
+            )}
+
             <button
               onClick={handleCreateTest}
               style={{
@@ -336,7 +525,8 @@ export default function SplitTestsSection({ popups }) {
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer',
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                marginTop: '10px'
               }}
             >
               Create Split Test
