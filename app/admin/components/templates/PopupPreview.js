@@ -248,14 +248,28 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
       }}>
         {/* Left: Image */}
         <div style={{
-          width: '45%',
-          background: popup.imageUrl ? `url(${popup.imageUrl}) center center / cover no-repeat` : variant.secondary,
-          minHeight: '400px',
+          width: '50%',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          background: popup.imageUrl ? 'transparent' : variant.secondary,
+          minHeight: '400px',
+          overflow: 'hidden'
         }}>
-          {!popup.imageUrl && <span style={{ color: 'white', fontSize: '14px' }}>Image Placeholder</span>}
+          {popup.imageUrl ? (
+            <img 
+              src={popup.imageUrl} 
+              alt="" 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'contain',
+                objectPosition: 'center'
+              }} 
+            />
+          ) : (
+            <span style={{ color: 'white', fontSize: '14px' }}>Image Placeholder</span>
+          )}
         </div>
         
         {/* Right: Form */}
@@ -375,18 +389,41 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         {/* Product Image */}
         {showImage && (
           <div style={{
-            width: isMobile ? '80px' : '120px',
-            height: isMobile ? '100px' : '160px',
-            background: '#e5e7eb',
+            maxWidth: isMobile ? '150px' : '200px',
+            maxHeight: isMobile ? '200px' : '280px',
             margin: '0 auto 10px',
             borderRadius: '8px',
+            overflow: 'hidden',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '12px',
-            color: '#666'
+            justifyContent: 'center'
           }}>
-            {hasImage ? <img src={popup.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} /> : 'Book/Mockup'}
+            {hasImage ? (
+              <img 
+                src={popup.imageUrl} 
+                alt="" 
+                style={{ 
+                  maxWidth: '100%', 
+                  maxHeight: isMobile ? '200px' : '280px',
+                  width: 'auto',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  borderRadius: '8px'
+                }} 
+              />
+            ) : (
+              <div style={{
+                width: isMobile ? '100px' : '150px',
+                height: isMobile ? '130px' : '200px',
+                background: '#e5e7eb',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '12px',
+                color: '#666',
+                borderRadius: '8px'
+              }}>Book/Mockup</div>
+            )}
           </div>
         )}
         
