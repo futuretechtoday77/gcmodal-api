@@ -152,7 +152,19 @@ function PopupEditForm() {
 
     async function loadPopup() {
       try {
+        // Check if we're in browser environment
+        if (typeof window === 'undefined') {
+          setLoading(false)
+          return
+        }
+        
         const token = localStorage.getItem('mv_popup_token')
+        if (!token) {
+          setError('Not authenticated. Please login again.')
+          setLoading(false)
+          return
+        }
+        
         const response = await fetch('/api/admin/popups', {
           headers: { 'Authorization': `Bearer ${token}` }
         })
@@ -172,7 +184,7 @@ function PopupEditForm() {
             setError('Popup not found')
           }
         } else {
-          setError('Failed to load popup')
+          setError('Failed to load popup: ' + (data.error || 'Unknown error'))
         }
       } catch (err) {
         setError('Error loading popup: ' + err.message)
@@ -193,7 +205,18 @@ function PopupEditForm() {
     setSaving(true)
 
     try {
+      if (typeof window === 'undefined') {
+        alert('Cannot save: not in browser environment')
+        return
+      }
+      
       const token = localStorage.getItem('mv_popup_token')
+      if (!token) {
+        alert('Not authenticated. Please login again.')
+        router.push('/admin')
+        return
+      }
+      
       const response = await fetch('/api/popups/save', {
         method: 'POST',
         headers: {
@@ -278,6 +301,19 @@ function PopupEditForm() {
           ← Back to Admin
         </button>
       </div>
+
+      {error && (
+        <div style={{ 
+          background: '#f8d7da', 
+          color: '#721c24', 
+          padding: '15px', 
+          borderRadius: '6px',
+          marginBottom: '20px',
+          border: '1px solid #f5c6cb'
+        }}>
+          <strong>Error:</strong> {error}
+        </div>
+      )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
         {/* Left: Form */}
