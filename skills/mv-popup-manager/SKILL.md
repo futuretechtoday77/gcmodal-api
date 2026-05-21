@@ -1,10 +1,10 @@
 # MV Popup Manager Skill
 
-**Purpose:** Create, modify, and manage lead capture popups for HealthHarmonic.com using the MV Popup Manager system.
+**Purpose:** Create, modify, and manage lead capture popups for HealthHarmonic.com using the MV Popup Manager system, including A/B split testing.
 
-**Version:** 2.3.3  
+**Version:** 2.5.0  
 **Status:** Production  
-**Last Updated:** 2026-05-19
+**Last Updated:** 2026-05-21
 
 ---
 
@@ -17,6 +17,9 @@ Use this skill when the user asks to:
 - Test popup designs
 - Deploy popup changes
 - Troubleshoot popup issues
+- **Create A/B split tests**
+- **Analyze split test results**
+- **Complete split tests and select winners**
 
 **Do NOT use for:**
 - General website changes unrelated to popups
@@ -30,15 +33,16 @@ Use this skill when the user asks to:
 ### Architecture
 
 **Frontend Library:**
-- URL: https://gcmodal.vercel.app/gc-modal.js
+- URL: https://gcmodal.vercel.app/gc-modal.js (v2.5.0 with split testing)
 - Renders popups on HealthHarmonic.com
 - Handles form submissions
+- Automatically tracks split test conversions
 - Repository: `gc-modal-library/`
 
 **Backend API:**
 - URL: https://gcmodal-api77.vercel.app
 - Admin: https://gcmodal-api77.vercel.app/admin
-- Handles submissions, uploads, authentication
+- Handles submissions, uploads, authentication, split tests
 - Repository: Main workspace (`~/.openclaw/workspace`)
 
 ### Current Popup Configuration
@@ -48,6 +52,161 @@ Use this skill when the user asks to:
 2. `/app/api/admin/popups/route.js` - Admin API (with Tag IDs)
 
 **Important:** Changes must be made to BOTH files to keep them in sync.
+
+---
+
+## Split Testing (A/B Testing) - NEW in v2.5.0
+
+### Overview
+
+Split testing allows you to test two popup variations against each other with real-time conversion tracking.
+
+**Key Features:**
+- **Traffic Split:** Fixed 50/50 (random on every page load)
+- **Conversions:** Tracked on successful form submissions only
+- **Deduplication:** One conversion per email per test
+- **Winner Selection:** Manual (you decide, not auto)
+- **Champion vs Challenger:** Create new tests from winners
+- **Three Trigger Types:** Button click, Exit intent, Time delay
+
+### How Split Tests Work
+
+1. **Visitor arrives** → System randomly shows Variant A or B (50/50)
+2. **Visitor submits form** → Conversion recorded for that variant
+3. **Same email submits again** → Ignored (already counted)
+4. **You review stats** → Click "Complete Test" when ready
+5. **Select winner** → All future traffic shows winner only
+6. **Test new variant** → Create "Champion vs Challenger" test
+
+### Creating a Split Test
+
+**Step 1:** Go to Admin Dashboard
+- Visit: https://gcmodal-api77.vercel.app/admin
+- Login with admin password
+
+**Step 2:** Scroll to "Split Tests (A/B Testing)" Section
+- Click "+ Create Split Test"
+
+**Step 3:** Fill in Required Fields
+- **Test Name:** Unique name (e.g., "RedLight Main Test")
+- **Variant A:** Select first popup from dropdown
+- **Variant B:** Select second popup from dropdown
+- **Trigger Type:** Choose one:
+  - **Button Click:** Popup shows when button is clicked
+  - **Exit Intent:** Popup shows when mouse leaves viewport
+  - **Time Delay:** Popup shows after X seconds
+
+**Step 4:** Configure Trigger (if needed)
+- **Delay only:** Set delay in seconds (e.g., 180 = 3 minutes)
+- **Button/Exit:** No additional config needed
+
+**Step 5:** Create Test
+- Click "Create Split Test"
+- Copy the implementation code
+
+### Implementation Code Examples
+
+**Button Trigger:**
+```html
+<!-- GC Modal: Universal Script (already on your site) -->
+<script src="https://gcmodal.vercel.app/gc-modal.js"></script>
+<script>
+  GCModal.initUniversal({
+    apiUrl: 'https://gcmodal-api77.vercel.app'
+  });
+</script>
+
+<!-- Trigger: Button Click -->
+<!-- Copy this button HTML to your site: -->
+<button id="split-test-name-2026-05-21">Get Free Report</button>
+```
+
+**Exit Intent Trigger:**
+```html
+<!-- GC Modal: Universal Script (already on your site) -->
+<script src="https://gcmodal.vercel.app/gc-modal.js"></script>
+<script>
+  GCModal.initUniversal({
+    apiUrl: 'https://gcmodal-api77.vercel.app'
+  });
+</script>
+
+<!-- Trigger: Exit Intent (auto-detects mouse leaving viewport) -->
+<!-- No additional code needed - automatically triggers on exit intent -->
+```
+
+**Time Delay Trigger:**
+```html
+<!-- GC Modal: Universal Script (already on your site) -->
+<script src="https://gcmodal.vercel.app/gc-modal.js"></script>
+<script>
+  GCModal.initUniversal({
+    apiUrl: 'https://gcmodal-api77.vercel.app'
+  });
+</script>
+
+<!-- Trigger: Time Delay (180s = 3m 0s) -->
+<!-- Automatically triggers after 180 seconds on page -->
+```
+
+### Managing Split Tests
+
+**Test Statuses:**
+- **Running:** Test is active, showing random variants
+- **Completed:** Winner selected, showing winner only
+- **Archived:** Hidden from main view but preserved
+
+**Actions Available:**
+- **View Code:** See implementation code again
+- **Complete:** End test and select winner
+- **Reopen:** Resume a completed test (back to running)
+- **Archive:** Hide test from dashboard
+- **Unarchive:** Restore archived test
+- **Test New Variant:** Create Champion vs Challenger test
+
+### Completing a Test
+
+1. Click "Complete" on a running test
+2. Review conversion counts for both variants
+3. Select the winner (higher conversions)
+4. Click "Complete Test"
+
+**After completion:**
+- Status changes to "Completed"
+- All traffic shows winner popup
+- Loser popup no longer shown
+- Conversion tracking stops
+
+### Champion vs Challenger
+
+When you have a winner, you can test it against a new variant:
+
+1. Click "Test New Variant" on a completed test
+2. Select a challenger popup (different from both original variants)
+3. New test is created with:
+   - Champion (previous winner) as Variant A
+   - New challenger as Variant B
+   - Same trigger settings
+   - Conversion counters reset to 0
+
+### Split Test Best Practices
+
+**What to Test:**
+- Different headlines
+- Different images
+- Different button text
+- Different layouts (centered vs side-by-side)
+- Different color variants
+
+**Sample Size:**
+- No minimum required (system shows stats immediately)
+- Recommend at least 100 conversions per variant for significance
+- Let test run for at least 1 week to account for day-of-week effects
+
+**Common Mistakes:**
+- Changing test mid-way (invalidates results)
+- Ending test too early (need statistical significance)
+- Testing too many things at once (can't isolate what worked)
 
 ---
 
@@ -473,19 +632,33 @@ Higher scale values zoom into the image, which can help if the image has importa
 3. Check React key prop: `key={editingPopup?.id || 'new'}`
 4. Rollback to commit `454bb53` if needed
 
+### Split Test Not Tracking Conversions
+
+**Check:**
+1. Is the test status "Running"?
+2. Are you using the correct test ID in your button/code?
+3. Are you submitting with different emails? (same email won't count twice)
+4. Check browser console for errors
+5. Verify `gc-modal.js` is v2.5.0 or higher
+
 ---
 
 ## Advanced Patterns
 
-### A/B Testing (Manual)
+### A/B Testing with Split Tests
 
-Create two similar popups with different:
-- Headlines
-- Images
-- Button text
-- Layouts
+**Create two similar popups:**
+1. Create Popup A (e.g., headline variation 1)
+2. Create Popup B (e.g., headline variation 2)
+3. Create split test with both popups
+4. Run for at least 1 week
+5. Complete test and select winner
 
-Track conversions in Global Control by Tag ID or popup name.
+**What to test:**
+- Headlines (emotional vs. factual)
+- Images (product shot vs. lifestyle)
+- Button text ("Get Access" vs. "Download Now")
+- Layouts (centered vs. side-by-side)
 
 ### Seasonal Variations
 
@@ -520,33 +693,45 @@ Consider if conversion rates don't meet goals with current single-step design.
 **Backend Repository:** `~/.openclaw/workspace`
 ```
 ├── app/
-│   ├── admin/page.js              # Admin dashboard
+│   ├── admin/
+│   │   ├── page.js              # Admin dashboard
+│   │   └── components/
+│   │       └── SplitTestsSection.js  # Split testing UI
 │   ├── api/
-│   │   ├── popups/route.js        # PUBLIC API (edit this)
+│   │   ├── popups/route.js      # PUBLIC API (edit this)
 │   │   ├── admin/popups/route.js  # ADMIN API (edit this)
-│   │   ├── submit/route.js        # Form submissions
-│   │   └── upload/route.js        # Image uploads
+│   │   ├── admin/split-tests/   # Split test admin endpoints
+│   │   │   ├── route.js         # Create, list tests
+│   │   │   └── [testId]/        # Manage individual tests
+│   │   ├── split-tests/         # Public conversion endpoint
+│   │   │   └── [testId]/convert/route.js
+│   │   ├── submit/route.js      # Form submissions
+│   │   └── upload/route.js      # Image uploads
 │   └── layout.js
 ├── lib/
-│   ├── auth.js                    # JWT verification
-│   ├── rate-limit.js              # Redis rate limiter
-│   └── security-*.js              # Security helpers
+│   ├── auth.js                  # JWT verification
+│   ├── rate-limit.js            # Redis rate limiter
+│   └── security-*.js            # Security helpers
+├── releases/
+│   └── TECH_SPEC_SPLIT_TESTING_v2.5.0.md  # Technical spec
 └── public/
-    └── login.html                  # Admin login
+    └── login.html               # Admin login
 ```
 
 **Frontend Repository:** `~/.openclaw/workspace/gc-modal-library`
 ```
 ├── public/
-│   └── gc-modal.js                # Client library (deployed separately)
+│   └── gc-modal.js              # Client library v2.5.0 with split testing
 └── package.json
 ```
 
 **Documentation:**
 ```
-├── DEPLOYMENT_v2.3.3_FINAL.md     # Current deployment guide
-├── SECURITY_AUDIT.md              # Security features
-└── memory/2026-05-19-final.md     # Recent changes
+├── DEPLOYMENT_v2.3.3_FINAL.md   # Deployment guide
+├── SECURITY_AUDIT.md            # Security features
+├── VERSION.md                   # Version history
+├── TEST_RESULTS_2026-05-20.md   # Split testing test results
+└── memory/                      # Session memories
 ```
 
 ---
@@ -624,8 +809,9 @@ git reset --hard <commit-hash>
 git push -f origin master
 
 # Known good commits:
-# 454bb53 - v2.3.3 (current, Tag IDs working)
-# 75a0aac - v2.3.2 (Tag IDs don't display but work)
+# 288e720 - v2.5.0 (current, with split testing)
+# 97779ad - v2.4.0 (stable, before split testing)
+# 454bb53 - v2.3.3 (Tag IDs working)
 ```
 
 ### Emergency Fixes
@@ -764,6 +950,12 @@ image: {
 - Timestamp recorded
 - Source tracking via URL parameters
 
+**Split Test Tracking:**
+- Conversions recorded per variant
+- Deduplication by email
+- Real-time stats in admin dashboard
+- No minimum sample size required
+
 ### Available Metrics
 
 **From Global Control:**
@@ -771,6 +963,11 @@ image: {
 - Conversion rate (if tracking views)
 - Geographic distribution
 - Time-series data
+
+**From Admin Dashboard:**
+- Split test conversion counts
+- Variant performance comparison
+- Test status and history
 
 **From Vercel Logs:**
 - API response times
@@ -825,6 +1022,7 @@ image: {
 - Current: `DEPLOYMENT_v2.3.3_FINAL.md`
 - Security: `SECURITY_AUDIT.md`
 - History: `memory/2026-05-19-final.md`
+- Split Testing: `releases/TECH_SPEC_SPLIT_TESTING_v2.5.0.md`
 
 **Contact:**
 - User: Joshua Parker
@@ -843,11 +1041,26 @@ image: {
 5. Wait 60 seconds for deploy
 6. Test in admin and on website
 
+**Create Split Test:**
+1. Go to https://gcmodal-api77.vercel.app/admin
+2. Scroll to "Split Tests (A/B Testing)"
+3. Click "+ Create Split Test"
+4. Select two popups, choose trigger type
+5. Click "Create Split Test"
+6. Copy implementation code
+7. Add button/code to your website
+
 **Edit Existing:**
 1. Find popup in both route files
 2. Update fields (keep files in sync!)
 3. Commit and push
 4. Verify in admin
+
+**Complete Split Test:**
+1. Click "Complete" on running test
+2. Review conversion counts
+3. Select winner
+4. Click "Complete Test"
 
 **Upload Image:**
 1. Login to admin dashboard
@@ -864,14 +1077,14 @@ image: {
 
 **Emergency Rollback:**
 ```bash
-git reset --hard 454bb53
+git reset --hard 288e720  # v2.5.0 with split testing
 git push -f origin master
 ```
 
 ---
 
-**Version:** 2.3.3  
-**Last Updated:** 2026-05-19  
-**Status:** Production-ready
+**Version:** 2.5.0  
+**Last Updated:** 2026-05-21  
+**Status:** Production-ready with Split Testing
 
 **END OF SKILL**

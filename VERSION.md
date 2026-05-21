@@ -190,43 +190,73 @@ git push origin v2.5.0
 **Version:** v2.4.0  
 **Next Planned:** v2.5.0 (Split Testing / A-B Testing)
 
-## Development Versions
+## Current Version
 
-### v2.5.0 - IN DEVELOPMENT (Split Testing)
-**Started:** 2026-05-20
-**Target Completion:** 2026-05-24
-**Current Phase:** 1 of 4 (Backend API) ✅
-**Rollback To:** v2.4.0 (tag: v2.4.0, commit: 97779ad)
+### v2.5.0 - PRODUCTION (Split Testing / A/B Testing)
+**Release Date:** 2026-05-21
+**Commit:** `288e720`
+**Status:** ✅ Production Ready
 
-**Feature:** A/B Split Testing
-- Create tests between two popups
-- 50/50 random traffic split
-- Conversion tracking with email deduplication
-- Champion vs Challenger workflow
-- Three trigger types: button, exit, delay
+**Feature:** A/B Split Testing - Complete implementation allowing users to test two popup variations with real-time conversion tracking.
 
-**Implementation Status:**
-- ✅ Phase 1: Backend API endpoints (COMPLETE)
-- ⏳ Phase 2: Admin Dashboard UI (Day 2)
-- ⏳ Phase 3: Frontend Library updates (Day 3)
-- ⏳ Phase 4: Testing & Deployment (Day 4)
+**What's in v2.5.0:**
+
+**Split Testing Features:**
+- Create A/B tests between any two popups
+- Fixed 50/50 traffic split (random on each page load)
+- Conversion tracking on successful form submissions
+- Email deduplication (one conversion per email per test)
+- Manual winner selection (you decide, not auto)
+- Champion vs Challenger workflow (test winner against new variant)
+- Three trigger types: Button click, Exit intent, Time delay
+- Auto-generated button IDs (no manual entry needed)
+- Archive/unarchive tests (soft delete)
+- Real-time stats display (no minimum sample size)
+
+**Admin Dashboard:**
+- New "Split Tests (A/B Testing)" section
+- Create test form with popup selection
+- Test list showing all statuses (running/completed/archived)
+- Conversion counts for each variant
+- Complete test modal with winner selection
+- Implementation code display
+- Champion vs Challenger creation flow
+
+**Frontend Library (v2.5.0):**
+- Automatic split test detection
+- Built-in conversion tracking
+- Backward compatible with existing popups
+- No code changes needed on client sites
+
+**API Endpoints:**
+- `POST /api/admin/split-tests` - Create test
+- `GET /api/admin/split-tests` - List all tests
+- `GET/PUT/DELETE /api/admin/split-tests/[testId]` - Manage tests
+- `POST /api/admin/split-tests/from-winner` - Champion vs Challenger
+- `POST /api/split-tests/[testId]/convert` - Record conversions
+- `GET /api/popups/[popupId]` - Modified to handle split-* IDs
 
 **Files Added/Modified:**
 - `/app/api/admin/split-tests/route.js` - Create, list tests
 - `/app/api/admin/split-tests/[testId]/route.js` - Manage individual tests
 - `/app/api/admin/split-tests/from-winner/route.js` - Champion vs Challenger
 - `/app/api/split-tests/[testId]/convert/route.js` - Record conversions
-- `/app/api/popups/[popupId]/route.js` - Handle split test IDs
+- `/app/api/popups/route.js` - Modified for single popup lookup
+- `/app/admin/components/SplitTestsSection.js` - NEW: Admin UI
+- `/app/admin/page.js` - Added SplitTestsSection
+- `/gc-modal-library/public/gc-modal.js` - v2.5.0 with split testing
 
 **Breaking Changes:** None - fully backward compatible
 
-**Files Added/Modified (continued):**
-- `/app/admin/components/SplitTestsSection.js` - NEW: Admin UI component
-- `/app/admin/page.js` - Added SplitTestsSection import and usage
-- `/gc-modal-library/public/gc-modal.js` - NEW: Frontend library v2.5.0
+**Rollback:** To v2.4.0 (commit 97779ad) if needed
 
-**Implementation Status:**
-- ✅ Phase 1: Backend API endpoints (COMPLETE)
-- ✅ Phase 2: Admin Dashboard UI (COMPLETE)  
-- ✅ Phase 3: Frontend Library updates (COMPLETE)
-- ⏳ Phase 4: Testing & Deployment (IN PROGRESS)
+---
+
+## Previous Versions
+
+### v2.4.0 - STABLE (Baseline)
+**Release Date:** 2026-05-20  
+**Commit:** `97779ad`  
+**Status:** ⚠️ Previous stable (before split testing)
+
+Use this if v2.5.0 has critical issues.
