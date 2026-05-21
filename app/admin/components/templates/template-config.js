@@ -120,15 +120,83 @@ export const templates = [
     config: {
       type: 'background',
       layout: 'overlay',
-      mobileBehavior: 'stack-no-image',
-      showImageOnMobile: false,
+      mobileBehavior: 'stack',
+      showImageOnMobile: true,
       hasAvatar: false,
       defaultVariant: 'dark',
       fields: ['email', 'firstName', 'phone'],
       styling: {
-        borderRadius: '0px',
+        borderRadius: '12px',
         padding: '40px',
         maxWidth: '500px',
+        overlay: true
+      }
+    }
+  },
+  {
+    id: 'full-background-tall',
+    name: 'Full Background Tall',
+    description: 'Taller version with more vertical space for content',
+    category: 'image',
+    preview: '/templates/previews/full-background-tall.jpg',
+    config: {
+      type: 'background',
+      layout: 'overlay',
+      mobileBehavior: 'stack',
+      showImageOnMobile: true,
+      hasAvatar: false,
+      defaultVariant: 'dark',
+      fields: ['email', 'firstName', 'phone'],
+      styling: {
+        borderRadius: '12px',
+        padding: '60px 40px',
+        maxWidth: '500px',
+        minHeight: '500px',
+        overlay: true
+      }
+    }
+  },
+  {
+    id: 'full-background-wide',
+    name: 'Full Background Wide',
+    description: 'Wider desktop view for more impact',
+    category: 'image',
+    preview: '/templates/previews/full-background-wide.jpg',
+    config: {
+      type: 'background',
+      layout: 'overlay',
+      mobileBehavior: 'stack',
+      showImageOnMobile: true,
+      hasAvatar: false,
+      defaultVariant: 'dark',
+      fields: ['email', 'firstName', 'phone'],
+      styling: {
+        borderRadius: '12px',
+        padding: '40px 60px',
+        maxWidth: '650px',
+        overlay: true
+      }
+    }
+  },
+  {
+    id: 'full-background-compact',
+    name: 'Full Background Compact',
+    description: 'Minimal height, just the essentials',
+    category: 'image',
+    preview: '/templates/previews/full-background-compact.jpg',
+    config: {
+      type: 'background',
+      layout: 'overlay',
+      mobileBehavior: 'stack',
+      showImageOnMobile: true,
+      hasAvatar: false,
+      defaultVariant: 'dark',
+      fields: ['email'],
+      styling: {
+        borderRadius: '12px',
+        padding: '30px',
+        maxWidth: '450px',
+        minHeight: '250px',
         overlay: true
       }
     }

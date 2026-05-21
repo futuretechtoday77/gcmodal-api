@@ -36,6 +36,9 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
     case 'personal-consultation':
       return renderPersonalConsultation()
     case 'full-background':
+    case 'full-background-tall':
+    case 'full-background-wide':
+    case 'full-background-compact':
       return renderFullBackground()
     case 'clean-gradient':
     default:
@@ -646,6 +649,32 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
   }
   
   function renderFullBackground() {
+    // Get height based on template or popup setting
+    const getMinHeight = () => {
+      if (template?.id === 'full-background-compact') return isMobile ? '220px' : '250px'
+      if (template?.id === 'full-background-tall') return isMobile ? '400px' : '500px'
+      if (template?.id === 'full-background-wide') return isMobile ? '300px' : 'auto'
+      // Default based on popupHeight setting
+      if (popup.popupHeight === 'compact') return isMobile ? '220px' : '250px'
+      if (popup.popupHeight === 'tall') return isMobile ? '400px' : '450px'
+      return isMobile ? '300px' : '350px'
+    }
+    
+    // Get maxWidth based on template
+    const getMaxWidth = () => {
+      if (template?.id === 'full-background-wide') return isMobile ? '320px' : '650px'
+      if (template?.id === 'full-background-compact') return isMobile ? '320px' : '450px'
+      return isMobile ? '320px' : '500px'
+    }
+    
+    // Get padding based on template
+    const getPadding = () => {
+      if (template?.id === 'full-background-tall') return isMobile ? '30px 15px' : '60px 40px'
+      if (template?.id === 'full-background-wide') return isMobile ? '25px 15px' : '40px 60px'
+      if (template?.id === 'full-background-compact') return isMobile ? '20px 15px' : '30px'
+      return isMobile ? '25px 15px' : '40px'
+    }
+    
     if (isMobile) {
       // Mobile: Show image with overlay option
       const showOverlayMobile = popup.showOverlay !== undefined ? popup.showOverlay : false
@@ -658,7 +687,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           position: 'relative',
           borderRadius: '12px',
           overflow: 'hidden',
-          minHeight: '300px'
+          minHeight: getMinHeight(),
+          maxWidth: getMaxWidth()
         }}>
           {/* Background Image */}
           <div style={{
@@ -758,7 +788,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
     return (
       <div style={{
         ...containerStyles,
-        maxWidth: '500px',
+        maxWidth: getMaxWidth(),
+        minHeight: getMinHeight(),
         position: 'relative',
         borderRadius: '12px',
         overflow: 'hidden'
@@ -790,7 +821,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         <div style={{
           position: 'relative',
           zIndex: 1,
-          padding: '40px',
+          padding: getPadding(),
           background: 'transparent',
           color: 'white'
         }}>

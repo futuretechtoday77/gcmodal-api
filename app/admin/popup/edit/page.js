@@ -15,7 +15,7 @@ export default function PopupEditPage() {
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
   const [activeTab, setActiveTab] = useState('content') // 'content', 'template', 'design'
-  const [isMobilePreview, setIsMobilePreview] = useState(false)
+  const [isMobilePreview, setIsMobilePreview] = useState(true)
   
   // Template selection
   const [selectedTemplate, setSelectedTemplate] = useState(templates[0])
@@ -44,6 +44,7 @@ export default function PopupEditPage() {
     overlayColor: '#000000',
     overlayOpacity: 50,
     buttonColor: '#3b82f6',
+    popupHeight: 'standard',
     triggerType: 'button',
     triggerDelay: 180,
     buttonAlign: 'center',
@@ -595,6 +596,20 @@ export default function PopupEditPage() {
                     />
                   ))}
                 </div>
+              </div>
+              
+              {/* Popup Height */}
+              <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
+                <h3 style={{ marginTop: 0 }}>Popup Height</h3>
+                <select
+                  value={popup.popupHeight}
+                  onChange={(e) => setPopup({...popup, popupHeight: e.target.value})}
+                  style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+                >
+                  <option value="compact">Compact (minimal)</option>
+                  <option value="standard">Standard</option>
+                  <option value="tall">Tall (more content space)</option>
+                </select>
               </div>
               
               {/* Full Background Overlay Settings */}
