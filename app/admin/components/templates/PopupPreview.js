@@ -730,18 +730,49 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Pointed arrow shape pointing right toward form */}
+          {/* Concave curves meeting at point toward form */}
           <div style={{
             position: 'absolute',
-            right: '0',
+            right: '-40px',
             top: '50%',
             transform: 'translateY(-50%)',
-            width: '0',
-            height: '0',
-            borderTop: '25px solid transparent',
-            borderBottom: '25px solid transparent',
-            borderLeft: '35px solid #e8f4fc'
-          }} />
+            width: '80px',
+            height: '120px',
+            overflow: 'hidden'
+          }}>
+            {/* Top concave curve */}
+            <div style={{
+              position: 'absolute',
+              top: '0',
+              left: '0',
+              width: '80px',
+              height: '60px',
+              background: '#e8f4fc',
+              borderRadius: '0 0 50% 50% / 0 0 100% 100%'
+            }} />
+            {/* Bottom concave curve */}
+            <div style={{
+              position: 'absolute',
+              bottom: '0',
+              left: '0',
+              width: '80px',
+              height: '60px',
+              background: '#e8f4fc',
+              borderRadius: '50% 50% 0 0 / 100% 100% 0 0'
+            }} />
+            {/* Center point */}
+            <div style={{
+              position: 'absolute',
+              left: '0',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: '0',
+              height: '0',
+              borderTop: '8px solid transparent',
+              borderBottom: '8px solid transparent',
+              borderLeft: '12px solid #e8f4fc'
+            }} />
+          </div>
         </div>
         
         {/* Right: Form with white background */}
