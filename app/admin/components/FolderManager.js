@@ -9,7 +9,7 @@
 
 import { useState, useEffect } from 'react'
 
-export default function FolderManager({ type, items, onItemMove }) {
+export default function FolderManager({ type, items, stats, onItemMove, onFoldersChange, onEditItem, onCloneItem, onShowCode, onDeleteItem }) {
   const [folders, setFolders] = useState([])
   const [loading, setLoading] = useState(true)
   const [expandedFolders, setExpandedFolders] = useState(new Set())
@@ -24,6 +24,13 @@ export default function FolderManager({ type, items, onItemMove }) {
     loadFolders()
   }, [type])
 
+  // Notify parent when folders change
+  useEffect(() => {
+    if (onFoldersChange) {
+      onFoldersChange(folders)
+    }
+  }, [folders, onFoldersChange])
+
   async function loadFolders() {
     try {
       const token = localStorage.getItem('mv_popup_token')
@@ -35,6 +42,10 @@ export default function FolderManager({ type, items, onItemMove }) {
         // Filter folders by type
         const typeFolders = data.folders.filter(f => f.type === type)
         setFolders(typeFolders)
+        // Notify parent of initial load
+        if (onFoldersChange) {
+          onFoldersChange(typeFolders)
+        }
       }
     } catch (error) {
       console.error('Error loading folders:', error)
@@ -62,7 +73,8 @@ export default function FolderManager({ type, items, onItemMove }) {
 
       const data = await response.json()
       if (data.success) {
-        setFolders([...folders, data.folder])
+        const newFolders = [...folders, data.folder]
+        setFolders(newFolders)
         setNewFolderName('')
         setShowCreateForm(false)
         // Auto-expand new folder
@@ -91,7 +103,8 @@ export default function FolderManager({ type, items, onItemMove }) {
 
       const data = await response.json()
       if (data.success) {
-        setFolders(folders.map(f => f.id === folderId ? data.folder : f))
+        const updatedFolders = folders.map(f => f.id === folderId ? data.folder : f)
+        setFolders(updatedFolders)
         setEditingFolder(null)
       }
     } catch (error) {
@@ -113,7 +126,8 @@ export default function FolderManager({ type, items, onItemMove }) {
 
       const data = await response.json()
       if (data.success) {
-        setFolders(folders.filter(f => f.id !== folderId))
+        const updatedFolders = folders.filter(f => f.id !== folderId)
+        setFolders(updatedFolders)
       }
     } catch (error) {
       console.error('Error deleting folder:', error)
@@ -138,7 +152,8 @@ export default function FolderManager({ type, items, onItemMove }) {
 
       const data = await response.json()
       if (data.success) {
-        setFolders(folders.map(f => f.id === folderId ? data.folder : f))
+        const updatedFolders = folders.map(f => f.id === folderId ? data.folder : f)
+        setFolders(updatedFolders)
       }
     } catch (error) {
       console.error('Error adding item to folder:', error)
@@ -163,7 +178,8 @@ export default function FolderManager({ type, items, onItemMove }) {
 
       const data = await response.json()
       if (data.success) {
-        setFolders(folders.map(f => f.id === folderId ? data.folder : f))
+        const updatedFolders = folders.map(f => f.id === folderId ? data.folder : f)
+        setFolders(updatedFolders)
       }
     } catch (error) {
       console.error('Error removing item from folder:', error)
@@ -418,60 +434,173 @@ export default function FolderManager({ type, items, onItemMove }) {
 
             {/* Folder Items */}
             {expandedFolders.has(folder.id) && (
-              <div style={{ padding: '10px 15px 10px 40px' }}>
+              <div style={{ padding: '10px' }}>
                 {folder.items.length === 0 ? (
                   <p style={{ 
                     margin: 0, 
                     color: '#999', 
                     fontSize: '13px',
-                    fontStyle: 'italic'
+                    fontStyle: 'italic',
+                    textAlign: 'center',
+                    padding: '20px'
                   }}>
                     Drop items here
                   </p>
                 ) : (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    {folder.items.map(itemId => {
-                      const item = items.find(i => (i.id || i.testId) === itemId)
-                      if (!item) return null
-                      
-                      return (
-                        <div
-                          key={itemId}
-                          draggable
-                          onDragStart={(e) => handleDragStart(e, item)}
-                          style={{
-                            padding: '8px 12px',
-                            background: '#f8f9fa',
-                            borderRadius: '4px',
-                            border: '1px solid #e0e0e0',
-                            cursor: 'grab',
-                            fontSize: '13px',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <span>
-                            {type === 'popup' ? '📄' : '🧪'} {item.name || item.testId}
-                          </span>
-                          <button
-                            onClick={() => removeItemFromFolder(folder.id, itemId)}
-                            style={{
-                              padding: '2px 6px',
-                              background: 'transparent',
-                              border: 'none',
-                              cursor: 'pointer',
-                              fontSize: '11px',
-                              color: '#999'
+                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr style={{ background: '#f1f3f5', borderBottom: '1px solid #dee2e6' }}>
+                        <th style={{ padding: '8px', textAlign: 'left', fontSize: '12px' }}>Name</th>
+                        <th style={{ padding: '8px', textAlign: 'left', fontSize: '12px' }}>ID</th>
+                        <th style={{ padding: '8px', textAlign: 'right', fontSize: '12px' }}>Shown</th>
+                        <th style={{ padding: '8px', textAlign: 'right', fontSize: '12px' }}>Submitted</th>
+                        <th style={{ padding: '8px', textAlign: 'right', fontSize: '12px' }}>Conversion</th>
+                        <th style={{ padding: '8px', textAlign: 'center', fontSize: '12px' }}>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {folder.items.map(itemId => {
+                        const item = items.find(i => (i.id || i.testId) === itemId)
+                        if (!item) return null
+                        
+                        const itemStats = stats?.[item.id] || { shown: 0, submitted: 0 }
+                        const conversion = itemStats.shown > 0 
+                          ? ((itemStats.submitted / itemStats.shown) * 100).toFixed(1) 
+                          : '0.0'
+                        
+                        return (
+                          <tr 
+                            key={itemId}
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, item)}
+                            style={{ 
+                              borderBottom: '1px solid #e9ecef',
+                              cursor: 'grab',
+                              background: 'white'
                             }}
-                            title="Remove from folder"
                           >
-                            ✕
-                          </button>
-                        </div>
-                      )
-                    })}
-                  </div>
+                            <td style={{ padding: '8px', fontSize: '13px' }}>
+                              📄 {item.name || item.testId}
+                            </td>
+                            <td style={{ padding: '8px', fontFamily: 'monospace', fontSize: '12px' }}>
+                              {item.id}
+                            </td>
+                            <td style={{ padding: '8px', textAlign: 'right', fontSize: '13px' }}>
+                              {itemStats.shown.toLocaleString()}
+                            </td>
+                            <td style={{ padding: '8px', textAlign: 'right', fontSize: '13px' }}>
+                              {itemStats.submitted.toLocaleString()}
+                            </td>
+                            <td style={{ padding: '8px', textAlign: 'right', fontWeight: 'bold', fontSize: '13px' }}>
+                              {conversion}%
+                            </td>
+                            <td style={{ padding: '8px', textAlign: 'center' }}>
+                              <div style={{ display: 'flex', gap: '4px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                                {onEditItem && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      onEditItem(item)
+                                    }}
+                                    style={{
+                                      padding: '4px 8px',
+                                      background: '#6c757d',
+                                      color: 'white',
+                                      border: 'none',
+                                      borderRadius: '3px',
+                                      cursor: 'pointer',
+                                      fontSize: '11px'
+                                    }}
+                                    title="Edit"
+                                  >
+                                    Edit
+                                  </button>
+                                )}
+                                {onCloneItem && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      onCloneItem(item)
+                                    }}
+                                    style={{
+                                      padding: '4px 8px',
+                                      background: '#17a2b8',
+                                      color: 'white',
+                                      border: 'none',
+                                      borderRadius: '3px',
+                                      cursor: 'pointer',
+                                      fontSize: '11px'
+                                    }}
+                                    title="Clone"
+                                  >
+                                    Clone
+                                  </button>
+                                )}
+                                {onShowCode && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      onShowCode(item)
+                                    }}
+                                    style={{
+                                      padding: '4px 8px',
+                                      background: '#28a745',
+                                      color: 'white',
+                                      border: 'none',
+                                      borderRadius: '3px',
+                                      cursor: 'pointer',
+                                      fontSize: '11px'
+                                    }}
+                                    title="View Code"
+                                  >
+                                    Code
+                                  </button>
+                                )}
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    removeItemFromFolder(folder.id, itemId)
+                                  }}
+                                  style={{
+                                    padding: '4px 8px',
+                                    background: '#ffc107',
+                                    color: '#000',
+                                    border: 'none',
+                                    borderRadius: '3px',
+                                    cursor: 'pointer',
+                                    fontSize: '11px'
+                                  }}
+                                  title="Remove from folder (doesn't delete popup)"
+                                >
+                                  Remove
+                                </button>
+                                {onDeleteItem && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      onDeleteItem(item)
+                                    }}
+                                    style={{
+                                      padding: '4px 8px',
+                                      background: '#dc3545',
+                                      color: 'white',
+                                      border: 'none',
+                                      borderRadius: '3px',
+                                      cursor: 'pointer',
+                                      fontSize: '11px'
+                                    }}
+                                    title="Delete popup permanently"
+                                  >
+                                    Delete
+                                  </button>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
                 )}
               </div>
             )}

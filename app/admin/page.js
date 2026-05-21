@@ -804,6 +804,7 @@ export default function AdminDashboard() {
   const [authenticated, setAuthenticated] = useState(false)
   const [loading, setLoading] = useState(true)
   const [popups, setPopups] = useState([])
+  const [folders, setFolders] = useState([])
   const [stats, setStats] = useState({})
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [editingPopup, setEditingPopup] = useState(null)
@@ -1378,9 +1379,39 @@ export default function AdminDashboard() {
       <FolderManager 
         type="popup" 
         items={popups}
+        stats={stats}
+        onFoldersChange={setFolders}
+        onEditItem={handleEditPopup}
+        onCloneItem={handleClonePopup}
+        onShowCode={(popup) => setShowCodeModal({
+          popupId: popup.id,
+          name: popup.name,
+          code: `<!-- GC Modal Popup: ${popup.name} -->\n<script src="https://gcmodal.vercel.app/gc-modal.js"></script>\n<script>\n  GCModal.init({\n    popupId: '${popup.id}',\n    apiUrl: 'https://gcmodal-api.vercel.app'\n  });\n</script>`
+        })}
+        onDeleteItem={async (popup) => {
+          if (confirm(`Delete popup "${popup.name}"? This cannot be undone.`)) {
+            try {
+              const response = await fetch('/api/popups/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ popupId: popup.id })
+              });
+              const data = await response.json();
+              if (data.success) {
+                alert(data.message + '\n\nRefreshing page...');
+                window.location.reload();
+              } else {
+                alert('Delete failed: ' + data.error);
+              }
+            } catch (error) {
+              console.error('Delete error:', error);
+              alert('Delete error: ' + error.message);
+            }
+          }
+        }}
       />
 
-      <h3 style={{ marginTop: '30px', marginBottom: '15px' }}>All Popups</h3>
+      <h3 style={{ marginTop: '30px', marginBottom: '15px' }}>Unorganized Popups</h3>
 
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
@@ -1394,7 +1425,11 @@ export default function AdminDashboard() {
           </tr>
         </thead>
         <tbody>
-          {popups.map(popup => {
+          {popups.filter(popup => {
+            // Only show popups that are NOT in any folder
+            const allFolderedItemIds = folders.flatMap(f => f.items || [])
+            return !allFolderedItemIds.includes(popup.id)
+          }).map(popup => {
             const popupStats = stats[popup.id] || { shown: 0, submitted: 0 }
             const conversion = popupStats.shown > 0 
               ? ((popupStats.submitted / popupStats.shown) * 100).toFixed(1) 
