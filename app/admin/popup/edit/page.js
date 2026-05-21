@@ -2,118 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-
-// Popup Preview Component
-function PopupPreview({ config }) {
-  const variantColors = {
-    purple: { primary: '#7c3aed', secondary: '#a78bfa', bg: '#faf5ff' },
-    blue: { primary: '#2563eb', secondary: '#60a5fa', bg: '#eff6ff' },
-    green: { primary: '#059669', secondary: '#34d399', bg: '#ecfdf5' },
-    red: { primary: '#dc2626', secondary: '#f87171', bg: '#fef2f2' },
-    orange: { primary: '#ea580c', secondary: '#fb923c', bg: '#fff7ed' }
-  }
-
-  const colors = variantColors[config.variant] || variantColors.purple
-
-  const layoutStyles = {
-    centered: {
-      container: { maxWidth: '500px', textAlign: 'center' },
-      image: { width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' },
-      content: {}
-    },
-    'side-by-side': {
-      container: { maxWidth: '700px', display: 'flex', gap: '30px', alignItems: 'center' },
-      image: { width: '280px', height: 'auto', objectFit: 'cover', borderRadius: '8px' },
-      content: { flex: 1 }
-    },
-    compact: {
-      container: { maxWidth: '550px' },
-      image: { width: '120px', height: '120px', objectFit: 'cover', borderRadius: '8px', float: 'left', marginRight: '20px', marginBottom: '10px' },
-      content: {}
-    },
-    overlay: {
-      container: { maxWidth: '500px', position: 'relative' },
-      image: { width: '100%', height: '300px', objectFit: 'cover', borderRadius: '8px' },
-      content: { position: 'absolute', bottom: '20px', left: '20px', right: '20px', background: 'rgba(255,255,255,0.95)', padding: '20px', borderRadius: '8px' }
-    }
-  }
-
-  const layout = layoutStyles[config.layout] || layoutStyles.centered
-
-  const renderImage = () => {
-    if (!config.imageUrl || config.imagePosition === 'none') return null
-    return <img src={config.imageUrl} alt="" style={layout.image} />
-  }
-
-  const renderForm = () => (
-    <div style={layout.content}>
-      <h2 style={{ color: colors.primary, marginBottom: '10px', fontSize: '24px' }}>{config.headline || 'Headline'}</h2>
-      <p style={{ color: '#4b5563', marginBottom: '15px', fontSize: '16px' }}>{config.subheadline || 'Subheadline'}</p>
-      {config.bodyCopy && (
-        <p style={{ color: '#6b7280', marginBottom: '20px', fontSize: '14px', lineHeight: '1.5' }}>{config.bodyCopy}</p>
-      )}
-      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '15px' }}>
-        {config.includeFirstName && (
-          <input
-            type="text"
-            placeholder="First Name"
-            style={{ flex: 1, minWidth: '120px', padding: '12px', border: '2px solid #e5e7eb', borderRadius: '6px', fontSize: '14px' }}
-          />
-        )}
-        <input
-          type="email"
-          placeholder="Email Address"
-          style={{ flex: 2, minWidth: '150px', padding: '12px', border: '2px solid #e5e7eb', borderRadius: '6px', fontSize: '14px' }}
-        />
-      </div>
-      <button style={{
-        width: '100%',
-        padding: '14px',
-        background: colors.primary,
-        color: 'white',
-        border: 'none',
-        borderRadius: '6px',
-        fontSize: '16px',
-        fontWeight: '600',
-        cursor: 'pointer'
-      }}>
-        {config.buttonText || 'Get Access'}
-      </button>
-    </div>
-  )
-
-  return (
-    <div style={{
-      background: colors.bg,
-      padding: '30px',
-      borderRadius: '12px',
-      border: `2px solid ${colors.secondary}`,
-      ...layout.container
-    }}>
-      {config.layout === 'side-by-side' ? (
-        <>
-          {renderImage()}
-          {renderForm()}
-        </>
-      ) : config.layout === 'overlay' ? (
-        <>
-          {renderImage()}
-          {renderForm()}
-        </>
-      ) : config.layout === 'compact' ? (
-        <>
-          {renderImage()}
-          {renderForm()}
-        </>
-      ) : (
-        <>
-          {renderImage()}
-          {renderForm()}
-        </>
-      )}
-    </div>
-  )
-}
+import TemplateSelector from '../../components/templates/TemplateSelector'
+import PopupPreview from '../../components/templates/PopupPreview'
+import { templates, colorVariants } from '../../components/templates/template-config'
 
 export default function PopupEditPage() {
   const router = useRouter()
@@ -123,6 +14,11 @@ export default function PopupEditPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
+  const [activeTab, setActiveTab] = useState('content') // 'content', 'template', 'design'
+  const [isMobilePreview, setIsMobilePreview] = useState(false)
+  
+  // Template selection
+  const [selectedTemplate, setSelectedTemplate] = useState(templates[0])
   
   const [popup, setPopup] = useState({
     id: '',
@@ -138,9 +34,11 @@ export default function PopupEditPage() {
     imagePosition: 'none',
     imageScale: 100,
     includeFirstName: true,
+    includePhone: false,
     triggerType: 'button',
     triggerDelay: 180,
-    buttonAlign: 'center'
+    buttonAlign: 'center',
+    template: 'clean-gradient'
   })
 
   // Mount detection and URL parsing
@@ -169,10 +67,18 @@ export default function PopupEditPage() {
           imagePosition: params.get('imagePosition') || 'none',
           imageScale: parseInt(params.get('imageScale')) || 100,
           includeFirstName: params.get('includeFirstName') === 'true',
+          includePhone: false,
           triggerType: params.get('triggerType') || 'button',
           triggerDelay: parseInt(params.get('triggerDelay')) || 180,
-          buttonAlign: params.get('buttonAlign') || 'center'
+          buttonAlign: params.get('buttonAlign') || 'center',
+          template: params.get('template') || 'clean-gradient'
         })
+        
+        // Set template
+        const templateId = params.get('template') || 'clean-gradient'
+        const template = templates.find(t => t.id === templateId) || templates[0]
+        setSelectedTemplate(template)
+        
         setLoading(false)
       } else if (!id) {
         setLoading(false)
@@ -229,6 +135,10 @@ export default function PopupEditPage() {
           return
         }
         
+        const templateId = existing.template || 'clean-gradient'
+        const template = templates.find(t => t.id === templateId) || templates[0]
+        setSelectedTemplate(template)
+        
         setPopup({
           id: existing.id,
           name: existing.name,
@@ -243,9 +153,11 @@ export default function PopupEditPage() {
           imagePosition: existing.design?.image?.position || 'none',
           imageScale: existing.design?.image?.scale || 100,
           includeFirstName: existing.fields?.includes('firstName') || false,
+          includePhone: existing.fields?.includes('phone') || false,
           triggerType: existing.triggerType || 'button',
           triggerDelay: existing.triggerDelay || 180,
-          buttonAlign: existing.buttonAlign || 'center'
+          buttonAlign: existing.buttonAlign || 'center',
+          template: templateId
         })
         
         setLoading(false)
@@ -257,6 +169,18 @@ export default function PopupEditPage() {
     
     load()
   }, [mounted, popupId])
+
+  // Update popup when template changes
+  useEffect(() => {
+    if (selectedTemplate) {
+      setPopup(prev => ({
+        ...prev,
+        template: selectedTemplate.id,
+        layout: selectedTemplate.config.layout,
+        variant: selectedTemplate.config.defaultVariant
+      }))
+    }
+  }, [selectedTemplate])
 
   async function handleSave() {
     if (!popup.id || !popup.name || !popup.tagId || !popup.headline || !popup.buttonText) {
@@ -273,6 +197,10 @@ export default function PopupEditPage() {
         return
       }
       
+      const fields = ['email']
+      if (popup.includeFirstName) fields.push('firstName')
+      if (popup.includePhone) fields.push('phone')
+      
       const res = await fetch('/api/popups/save', {
         method: 'POST',
         headers: {
@@ -282,11 +210,21 @@ export default function PopupEditPage() {
         body: JSON.stringify({
           popup: {
             ...popup,
-            image: {
-              url: popup.imageUrl,
-              position: popup.imagePosition,
-              scale: popup.imageScale
-            }
+            design: {
+              variant: popup.variant,
+              layout: popup.layout,
+              headline: popup.headline,
+              subheadline: popup.subheadline,
+              bodyCopy: popup.bodyCopy,
+              buttonText: popup.buttonText,
+              image: {
+                url: popup.imageUrl,
+                position: popup.imagePosition,
+                scale: popup.imageScale
+              }
+            },
+            fields,
+            template: selectedTemplate.id
           },
           isNew
         })
@@ -339,6 +277,19 @@ export default function PopupEditPage() {
     }
   }
 
+  function handleTemplateSelect(template) {
+    setSelectedTemplate(template)
+    // Update popup fields based on template defaults
+    setPopup(prev => ({
+      ...prev,
+      template: template.id,
+      layout: template.config.layout,
+      variant: template.config.defaultVariant,
+      includeFirstName: template.config.fields.includes('firstName'),
+      includePhone: template.config.fields.includes('phone')
+    }))
+  }
+
   if (!mounted) return <div style={{ padding: 40 }}>Initializing...</div>
   if (loading) return <div style={{ padding: 40 }}>Loading...</div>
   if (error) {
@@ -353,7 +304,7 @@ export default function PopupEditPage() {
   }
 
   return (
-    <div style={{ maxWidth: 1200, margin: '0 auto', padding: 20 }}>
+    <div style={{ maxWidth: 1400, margin: '0 auto', padding: 20 }}>
       {/* Header */}
       <div style={{ 
         display: 'flex', 
@@ -369,201 +320,220 @@ export default function PopupEditPage() {
         </button>
       </div>
 
+      {/* Tabs */}
+      <div style={{ 
+        display: 'flex', 
+        gap: '5px', 
+        marginBottom: '30px',
+        borderBottom: '2px solid #e5e7eb'
+      }}>
+        {[
+          { id: 'template', label: 'Template', icon: '🎨' },
+          { id: 'content', label: 'Content', icon: '📝' },
+          { id: 'design', label: 'Design', icon: '🎭' }
+        ].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            style={{
+              padding: '12px 24px',
+              background: activeTab === tab.id ? '#007bff' : 'transparent',
+              color: activeTab === tab.id ? 'white' : '#333',
+              border: 'none',
+              borderRadius: '6px 6px 0 0',
+              cursor: 'pointer',
+              fontWeight: activeTab === tab.id ? 'bold' : 'normal',
+              fontSize: '14px'
+            }}
+          >
+            {tab.icon} {tab.label}
+          </button>
+        ))}
+      </div>
+
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 30 }}>
         {/* Left: Form */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
-          
-          {/* Basic Info */}
-          <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
-            <h3 style={{ marginTop: 0 }}>Basic Info</h3>
-            
-            <div style={{ marginBottom: 15 }}>
-              <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
-                Popup ID {isNew && <span style={{ color: '#dc3545' }}>*</span>}
-              </label>
-              <input
-                value={popup.id}
-                onChange={(e) => setPopup({...popup, id: e.target.value})}
-                disabled={!isNew}
-                placeholder="lowercase-with-dashes"
-                style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc', background: isNew ? 'white' : '#e9ecef' }}
-              />
-              <small style={{ color: '#6c757d' }}>Cannot be changed after creation</small>
-            </div>
+        <div>
+          {activeTab === 'template' && (
+            <TemplateSelector
+              selectedTemplate={selectedTemplate}
+              onSelect={handleTemplateSelect}
+              selectedVariant={popup.variant}
+              onVariantChange={(variant) => setPopup({...popup, variant})}
+            />
+          )}
 
-            <div style={{ marginBottom: 15 }}>
-              <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
-                Display Name <span style={{ color: '#dc3545' }}>*</span>
-              </label>
-              <input
-                value={popup.name}
-                onChange={(e) => setPopup({...popup, name: e.target.value})}
-                placeholder="User-friendly name"
-                style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
-              />
-            </div>
-
-            <div style={{ marginBottom: 15 }}>
-              <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
-                Global Control Tag ID <span style={{ color: '#dc3545' }}>*</span>
-              </label>
-              <input
-                value={popup.tagId}
-                onChange={(e) => setPopup({...popup, tagId: e.target.value})}
-                placeholder="Tag ID from Global Control"
-                style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
-              />
-            </div>
-          </div>
-
-          {/* Design */}
-          <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
-            <h3 style={{ marginTop: 0 }}>Design</h3>
-            
-            <div style={{ marginBottom: 15 }}>
-              <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Color Variant</label>
-              <select
-                value={popup.variant}
-                onChange={(e) => setPopup({...popup, variant: e.target.value})}
-                style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
-              >
-                <option value="purple">Purple (ForbiddenFood)</option>
-                <option value="blue">Blue (HealthHarmonic)</option>
-                <option value="green">Green (Natural)</option>
-                <option value="red">Red (Urgent)</option>
-                <option value="orange">Orange (Energy)</option>
-              </select>
-            </div>
-
-            <div style={{ marginBottom: 15 }}>
-              <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Layout</label>
-              <select
-                value={popup.layout}
-                onChange={(e) => setPopup({...popup, layout: e.target.value})}
-                style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
-              >
-                <option value="centered">Centered Layout</option>
-                <option value="side-by-side">Side-by-Side Layout</option>
-                <option value="compact">Compact Layout</option>
-                <option value="overlay">Overlay Layout</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Content */}
-          <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
-            <h3 style={{ marginTop: 0 }}>Content</h3>
-            
-            <div style={{ marginBottom: 15 }}>
-              <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
-                Headline <span style={{ color: '#dc3545' }}>*</span>
-              </label>
-              <input
-                value={popup.headline}
-                onChange={(e) => setPopup({...popup, headline: e.target.value})}
-                placeholder="Main headline"
-                style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
-              />
-            </div>
-
-            <div style={{ marginBottom: 15 }}>
-              <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Subheadline</label>
-              <input
-                value={popup.subheadline}
-                onChange={(e) => setPopup({...popup, subheadline: e.target.value})}
-                placeholder="Supporting text"
-                style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
-              />
-            </div>
-
-            <div style={{ marginBottom: 15 }}>
-              <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Body Copy</label>
-              <textarea
-                value={popup.bodyCopy}
-                onChange={(e) => setPopup({...popup, bodyCopy: e.target.value})}
-                placeholder="Additional details (optional)"
-                style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc', minHeight: 80 }}
-              />
-            </div>
-
-            <div style={{ marginBottom: 15 }}>
-              <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
-                Button Text <span style={{ color: '#dc3545' }}>*</span>
-              </label>
-              <input
-                value={popup.buttonText}
-                onChange={(e) => setPopup({...popup, buttonText: e.target.value})}
-                placeholder="Call to action"
-                style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
-              />
-            </div>
-          </div>
-
-          {/* Image */}
-          <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
-            <h3 style={{ marginTop: 0 }}>Image (Optional)</h3>
-            
-            <div style={{ marginBottom: 15 }}>
-              <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Image Position</label>
-              <select
-                value={popup.imagePosition}
-                onChange={(e) => setPopup({...popup, imagePosition: e.target.value})}
-                style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
-              >
-                <option value="none">No Image</option>
-                <option value="full-width">Top, Full Width</option>
-                <option value="top-right">Top Right Corner</option>
-                <option value="left-side">Left Side</option>
-              </select>
-            </div>
-
-            {popup.imagePosition !== 'none' && (
-              <>
+          {activeTab === 'content' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
+              <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
+                <h3 style={{ marginTop: 0 }}>Basic Info</h3>
+                
                 <div style={{ marginBottom: 15 }}>
-                  <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Image</label>
+                  <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
+                    Popup ID {isNew && <span style={{ color: '#dc3545' }}>*</span>}
+                  </label>
                   <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    style={{ marginBottom: 10 }}
+                    value={popup.id}
+                    onChange={(e) => setPopup({...popup, id: e.target.value})}
+                    disabled={!isNew}
+                    placeholder="lowercase-with-dashes"
+                    style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc', background: isNew ? 'white' : '#e9ecef' }}
                   />
+                  <small style={{ color: '#6c757d' }}>Cannot be changed after creation</small>
+                </div>
+
+                <div style={{ marginBottom: 15 }}>
+                  <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
+                    Display Name <span style={{ color: '#dc3545' }}>*</span>
+                  </label>
                   <input
-                    placeholder="Or enter image URL"
-                    value={popup.imageUrl}
-                    onChange={(e) => setPopup({...popup, imageUrl: e.target.value})}
+                    value={popup.name}
+                    onChange={(e) => setPopup({...popup, name: e.target.value})}
+                    placeholder="User-friendly name"
                     style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
                   />
                 </div>
 
                 <div style={{ marginBottom: 15 }}>
                   <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
-                    Scale: {popup.imageScale}%
+                    Global Control Tag ID <span style={{ color: '#dc3545' }}>*</span>
                   </label>
                   <input
-                    type="range"
-                    min="0"
-                    max="200"
-                    value={popup.imageScale}
-                    onChange={(e) => setPopup({...popup, imageScale: parseInt(e.target.value)})}
-                    style={{ width: '100%' }}
+                    value={popup.tagId}
+                    onChange={(e) => setPopup({...popup, tagId: e.target.value})}
+                    placeholder="Tag ID from Global Control"
+                    style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
                   />
                 </div>
-              </>
-            )}
-          </div>
+              </div>
 
-          {/* Fields */}
-          <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
-            <h3 style={{ marginTop: 0 }}>Fields</h3>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <input
-                type="checkbox"
-                checked={popup.includeFirstName}
-                onChange={(e) => setPopup({...popup, includeFirstName: e.target.checked})}
-              />
-              <span>Include First Name field</span>
-            </label>
-          </div>
+              <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
+                <h3 style={{ marginTop: 0 }}>Content</h3>
+                
+                <div style={{ marginBottom: 15 }}>
+                  <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
+                    Headline <span style={{ color: '#dc3545' }}>*</span>
+                  </label>
+                  <input
+                    value={popup.headline}
+                    onChange={(e) => setPopup({...popup, headline: e.target.value})}
+                    placeholder="Main headline"
+                    style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+                  />
+                </div>
+
+                <div style={{ marginBottom: 15 }}>
+                  <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Subheadline</label>
+                  <input
+                    value={popup.subheadline}
+                    onChange={(e) => setPopup({...popup, subheadline: e.target.value})}
+                    placeholder="Supporting text"
+                    style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+                  />
+                </div>
+
+                <div style={{ marginBottom: 15 }}>
+                  <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Body Copy</label>
+                  <textarea
+                    value={popup.bodyCopy}
+                    onChange={(e) => setPopup({...popup, bodyCopy: e.target.value})}
+                    placeholder="Additional details (optional)"
+                    style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc', minHeight: 80 }}
+                  />
+                </div>
+
+                <div style={{ marginBottom: 15 }}>
+                  <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
+                    Button Text <span style={{ color: '#dc3545' }}>*</span>
+                  </label>
+                  <input
+                    value={popup.buttonText}
+                    onChange={(e) => setPopup({...popup, buttonText: e.target.value})}
+                    placeholder="Call to action"
+                    style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'design' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
+              <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
+                <h3 style={{ marginTop: 0 }}>Fields</h3>
+                
+                <label style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                  <input
+                    type="checkbox"
+                    checked={popup.includeFirstName}
+                    onChange={(e) => setPopup({...popup, includeFirstName: e.target.checked})}
+                  />
+                  <span>Include First Name field</span>
+                </label>
+                
+                <label style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <input
+                    type="checkbox"
+                    checked={popup.includePhone}
+                    onChange={(e) => setPopup({...popup, includePhone: e.target.checked})}
+                  />
+                  <span>Include Phone Number field</span>
+                </label>
+              </div>
+
+              <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
+                <h3 style={{ marginTop: 0 }}>Image (Optional)</h3>
+                
+                <div style={{ marginBottom: 15 }}>
+                  <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Image Position</label>
+                  <select
+                    value={popup.imagePosition}
+                    onChange={(e) => setPopup({...popup, imagePosition: e.target.value})}
+                    style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+                  >
+                    <option value="none">No Image</option>
+                    <option value="full-width">Top, Full Width</option>
+                    <option value="top-right">Top Right Corner</option>
+                    <option value="left-side">Left Side</option>
+                  </select>
+                </div>
+
+                {popup.imagePosition !== 'none' && (
+                  <>
+                    <div style={{ marginBottom: 15 }}>
+                      <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Image</label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        style={{ marginBottom: 10 }}
+                      />
+                      <input
+                        placeholder="Or enter image URL"
+                        value={popup.imageUrl}
+                        onChange={(e) => setPopup({...popup, imageUrl: e.target.value})}
+                        style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+                      />
+                    </div>
+
+                    <div style={{ marginBottom: 15 }}>
+                      <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
+                        Scale: {popup.imageScale}%
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="200"
+                        value={popup.imageScale}
+                        onChange={(e) => setPopup({...popup, imageScale: parseInt(e.target.value)})}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Save/Cancel */}
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
@@ -604,14 +574,69 @@ export default function PopupEditPage() {
 
         {/* Right: Preview */}
         <div>
-          <h3 style={{ marginBottom: 15 }}>Live Preview</h3>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center',
+            marginBottom: 15 
+          }}>
+            <h3 style={{ margin: 0 }}>Live Preview</h3>
+            <div>
+              <button
+                onClick={() => setIsMobilePreview(false)}
+                style={{
+                  padding: '6px 12px',
+                  background: !isMobilePreview ? '#007bff' : '#e5e7eb',
+                  color: !isMobilePreview ? 'white' : '#333',
+                  border: 'none',
+                  borderRadius: '4px 0 0 4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Desktop
+              </button>
+              <button
+                onClick={() => setIsMobilePreview(true)}
+                style={{
+                  padding: '6px 12px',
+                  background: isMobilePreview ? '#007bff' : '#e5e7eb',
+                  color: isMobilePreview ? 'white' : '#333',
+                  border: 'none',
+                  borderRadius: '0 4px 4px 0',
+                  cursor: 'pointer'
+                }}
+              >
+                Mobile
+              </button>
+            </div>
+          </div>
+          
           <div style={{ 
             background: '#f0f0f0', 
-            padding: 30, 
+            padding: isMobilePreview ? '20px' : '30px', 
             borderRadius: 8,
-            minHeight: 500
+            minHeight: 500,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}>
-            <PopupPreview config={popup} />
+            <PopupPreview 
+              popup={popup} 
+              template={selectedTemplate}
+              isMobile={isMobilePreview}
+            />
+          </div>
+          
+          <div style={{ marginTop: 15, padding: 15, background: '#f8f9fa', borderRadius: 8 }}>
+            <h4 style={{ margin: '0 0 10px 0' }}>Template: {selectedTemplate.name}</h4>
+            <p style={{ margin: 0, fontSize: 13, color: '#666' }}>
+              {isMobilePreview 
+                ? selectedTemplate.config.showImageOnMobile 
+                  ? 'Mobile: Image shown (compact)'
+                  : 'Mobile: Clean form, image hidden'
+                : 'Desktop: Full design with image'
+              }
+            </p>
           </div>
         </div>
       </div>

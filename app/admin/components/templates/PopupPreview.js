@@ -1,0 +1,581 @@
+'use client'
+
+import { colorVariants } from './template-config'
+
+export default function PopupPreview({ popup, template, isMobile = false }) {
+  const variant = colorVariants[popup.variant] || colorVariants.purple
+  const templateConfig = template?.config || {}
+  
+  // Determine if we should show image
+  const showImage = !isMobile || templateConfig.showImageOnMobile
+  const hasImage = popup.imageUrl && popup.imagePosition !== 'none' && showImage
+  
+  // Base container styles
+  const containerStyles = {
+    background: variant.bg,
+    borderRadius: templateConfig.styling?.borderRadius || '12px',
+    overflow: 'hidden',
+    fontFamily: 'system-ui, -apple-system, sans-serif',
+    maxWidth: isMobile ? '100%' : (templateConfig.styling?.maxWidth || '500px'),
+    margin: '0 auto',
+    boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
+  }
+  
+  // Render different layouts based on template type
+  switch (template?.id) {
+    case 'split-screen':
+      return renderSplitScreen()
+    case 'ultra-minimal':
+      return renderUltraMinimal()
+    case 'lead-magnet':
+      return renderLeadMagnet()
+    case 'personal-consultation':
+      return renderPersonalConsultation()
+    case 'full-background':
+      return renderFullBackground()
+    case 'clean-gradient':
+    default:
+      return renderCleanGradient()
+  }
+  
+  function renderCleanGradient() {
+    return (
+      <div style={{
+        ...containerStyles,
+        padding: isMobile ? '30px 20px' : '40px',
+        textAlign: 'center'
+      }}>
+        {/* Close button */}
+        <button style={{
+          position: 'absolute',
+          top: '15px',
+          right: '15px',
+          background: 'rgba(255,255,255,0.9)',
+          border: 'none',
+          borderRadius: '50%',
+          width: '32px',
+          height: '32px',
+          fontSize: '20px',
+          cursor: 'pointer',
+          color: '#6b7280'
+        }}>×</button>
+        
+        {/* Image (if any) */}
+        {hasImage && (
+          <img 
+            src={popup.imageUrl} 
+            alt="" 
+            style={{
+              width: '100%',
+              maxHeight: '180px',
+              objectFit: 'cover',
+              borderRadius: '8px',
+              marginBottom: '20px'
+            }}
+          />
+        )}
+        
+        {/* Content */}
+        <h2 style={{ 
+          color: variant.primary, 
+          margin: '0 0 10px 0', 
+          fontSize: isMobile ? '22px' : '26px',
+          fontWeight: 'bold'
+        }}>
+          {popup.headline || 'Your Headline'}
+        </h2>
+        
+        {popup.subheadline && (
+          <p style={{ 
+            color: '#4b5563', 
+            margin: '0 0 15px 0', 
+            fontSize: isMobile ? '14px' : '16px'
+          }}>
+            {popup.subheadline}
+          </p>
+        )}
+        
+        {popup.bodyCopy && (
+          <p style={{ 
+            color: '#6b7280', 
+            margin: '0 0 20px 0', 
+            fontSize: '14px',
+            lineHeight: '1.5'
+          }}>
+            {popup.bodyCopy}
+          </p>
+        )}
+        
+        {/* Form */}
+        <div style={{ marginTop: '20px' }}>
+          {popup.includeFirstName && !isMobile && (
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '12px' }}>
+              <input 
+                type="text" 
+                placeholder="First Name" 
+                disabled
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '14px'
+                }}
+              />
+              <input 
+                type="text" 
+                placeholder="Last Name" 
+                disabled
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '14px'
+                }}
+              />
+            </div>
+          )}
+          
+          {popup.includeFirstName && isMobile && (
+            <>
+              <input 
+                type="text" 
+                placeholder="First Name" 
+                disabled
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  marginBottom: '10px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '14px'
+                }}
+              />
+              <input 
+                type="text" 
+                placeholder="Last Name" 
+                disabled
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  marginBottom: '10px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '14px'
+                }}
+              />
+            </>
+          )}
+          
+          <input 
+            type="email" 
+            placeholder="Email Address" 
+            disabled
+            style={{
+              width: '100%',
+              padding: '12px',
+              marginBottom: '12px',
+              border: '2px solid #e5e7eb',
+              borderRadius: '6px',
+              fontSize: '14px'
+            }}
+          />
+          
+          <button 
+            disabled
+            style={{
+              width: '100%',
+              padding: '14px',
+              background: variant.primary,
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }}
+          >
+            {popup.buttonText || 'Submit'}
+          </button>
+        </div>
+      </div>
+    )
+  }
+  
+  function renderSplitScreen() {
+    if (isMobile) {
+      // Mobile: No image, clean form
+      return renderCleanGradient()
+    }
+    
+    // Desktop: Side by side
+    return (
+      <div style={{
+        ...containerStyles,
+        display: 'flex',
+        maxWidth: '700px'
+      }}>
+        {/* Left: Image */}
+        <div style={{
+          width: '45%',
+          background: hasImage ? `url(${popup.imageUrl}) center center / cover no-repeat` : variant.secondary,
+          minHeight: '400px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          {!hasImage && <span style={{ color: 'white', fontSize: '14px' }}>Image Placeholder</span>}
+        </div>
+        
+        {/* Right: Form */}
+        <div style={{
+          flex: 1,
+          padding: '40px',
+          background: variant.bg
+        }}>
+          <h2 style={{ 
+            color: variant.primary, 
+            margin: '0 0 10px 0', 
+            fontSize: '24px',
+            fontWeight: 'bold'
+          }}>
+            {popup.headline || 'Your Headline'}
+          </h2>
+          
+          {popup.subheadline && (
+            <p style={{ color: '#4b5563', margin: '0 0 15px 0', fontSize: '15px' }}>
+              {popup.subheadline}
+            </p>
+          )}
+          
+          {/* Form fields */}
+          <div style={{ marginTop: '20px' }}>
+            {popup.includeFirstName && (
+              <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                <input type="text" placeholder="First Name" disabled style={{ flex: 1, padding: '12px', border: '2px solid #e5e7eb', borderRadius: '6px' }} />
+                <input type="text" placeholder="Last Name" disabled style={{ flex: 1, padding: '12px', border: '2px solid #e5e7eb', borderRadius: '6px' }} />
+              </div>
+            )}
+            <input type="email" placeholder="Email" disabled style={{ width: '100%', padding: '12px', marginBottom: '10px', border: '2px solid #e5e7eb', borderRadius: '6px' }} />
+            <button disabled style={{ width: '100%', padding: '14px', background: variant.primary, color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold' }}>
+              {popup.buttonText || 'Submit'}
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  
+  function renderUltraMinimal() {
+    return (
+      <div style={{
+        ...containerStyles,
+        background: 'white',
+        padding: isMobile ? '25px 20px' : '30px',
+        textAlign: 'center',
+        maxWidth: '400px'
+      }}>
+        <h2 style={{ 
+          color: '#1f2937', 
+          margin: '0 0 8px 0', 
+          fontSize: isMobile ? '20px' : '22px',
+          fontWeight: 'bold',
+          lineHeight: '1.3'
+        }}>
+          {popup.headline || 'Your Headline'}
+        </h2>
+        
+        {popup.subheadline && (
+          <p style={{ color: '#6b7280', margin: '0 0 20px 0', fontSize: '14px' }}>
+            {popup.subheadline}
+          </p>
+        )}
+        
+        <input 
+          type="email" 
+          placeholder="your@email.com" 
+          disabled
+          style={{
+            width: '100%',
+            padding: '12px',
+            marginBottom: '12px',
+            border: '2px solid #e5e7eb',
+            borderRadius: '6px',
+            fontSize: '14px'
+          }}
+        />
+        
+        <button 
+          disabled
+          style={{
+            width: '100%',
+            padding: '14px',
+            background: variant.primary,
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            fontSize: '15px',
+            fontWeight: 'bold'
+          }}
+        >
+          {popup.buttonText || 'Download'}
+        </button>
+        
+        <p style={{ marginTop: '15px', fontSize: '12px', color: '#9ca3af' }}>
+          We respect your email inbox
+        </p>
+      </div>
+    )
+  }
+  
+  function renderLeadMagnet() {
+    return (
+      <div style={{
+        ...containerStyles,
+        padding: isMobile ? '25px 20px' : '30px',
+        textAlign: 'center'
+      }}>
+        {/* Product Image */}
+        {showImage && (
+          <div style={{
+            width: isMobile ? '120px' : '150px',
+            height: isMobile ? '160px' : '200px',
+            background: '#e5e7eb',
+            margin: '0 auto 20px',
+            borderRadius: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '12px',
+            color: '#666'
+          }}>
+            {hasImage ? <img src={popup.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} /> : 'Book/Mockup'}
+          </div>
+        )}
+        
+        <h2 style={{ 
+          color: variant.primary, 
+          margin: '0 0 10px 0', 
+          fontSize: isMobile ? '20px' : '22px',
+          fontWeight: 'bold'
+        }}>
+          {popup.headline || 'Free Guide'}
+        </h2>
+        
+        <input 
+          type="email" 
+          placeholder="your@email.com" 
+          disabled
+          style={{
+            width: '100%',
+            padding: '12px',
+            marginBottom: '12px',
+            border: '2px solid #e5e7eb',
+            borderRadius: '6px',
+            fontSize: '14px'
+          }}
+        />
+        
+        <button 
+          disabled
+          style={{
+            width: '100%',
+            padding: '14px',
+            background: variant.primary,
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            fontSize: '15px',
+            fontWeight: 'bold'
+          }}
+        >
+          {popup.buttonText || 'Download Now'}
+        </button>
+      </div>
+    )
+  }
+  
+  function renderPersonalConsultation() {
+    return (
+      <div style={{ position: 'relative' }}>
+        <div style={{
+          ...containerStyles,
+          padding: 0,
+          overflow: 'hidden'
+        }}>
+          {/* Header Image */}
+          {showImage && (
+            <div style={{
+              height: isMobile ? '150px' : '200px',
+              background: hasImage ? `url(${popup.imageUrl}) center center / cover no-repeat` : variant.secondary,
+              position: 'relative'
+            }}>
+              {!hasImage && (
+                <div style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  color: 'white',
+                  fontSize: '14px'
+                }}>
+                  Professional Photo
+                </div>
+              )}
+            </div>
+          )}
+          
+          {/* Form Section */}
+          <div style={{ padding: isMobile ? '25px 20px' : '30px' }}>
+            <h2 style={{ 
+              color: variant.primary, 
+              margin: '0 0 10px 0', 
+              fontSize: isMobile ? '20px' : '22px',
+              fontWeight: 'bold',
+              textAlign: 'center'
+            }}>
+              {popup.headline || 'Book a Consultation'}
+            </h2>
+            
+            {popup.subheadline && (
+              <p style={{ color: '#4b5563', margin: '0 0 20px 0', fontSize: '14px', textAlign: 'center' }}>
+                {popup.subheadline}
+              </p>
+            )}
+            
+            <input 
+              type="email" 
+              placeholder="your@email.com" 
+              disabled
+              style={{
+                width: '100%',
+                padding: '12px',
+                marginBottom: '12px',
+                border: '2px solid #e5e7eb',
+                borderRadius: '6px',
+                fontSize: '14px'
+              }}
+            />
+            
+            <button 
+              disabled
+              style={{
+                width: '100%',
+                padding: '14px',
+                background: variant.primary,
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                fontSize: '15px',
+                fontWeight: 'bold'
+              }}
+            >
+              {popup.buttonText || 'Schedule Now'}
+            </button>
+          </div>
+        </div>
+        
+        {/* Floating Avatar */}
+        <div style={{
+          position: 'absolute',
+          bottom: '-20px',
+          left: isMobile ? '10px' : '20px',
+          width: isMobile ? '50px' : '60px',
+          height: isMobile ? '50px' : '60px',
+          borderRadius: '50%',
+          background: '#e5e7eb',
+          border: '3px solid white',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '20px'
+        }}>
+          👤
+        </div>
+      </div>
+    )
+  }
+  
+  function renderFullBackground() {
+    if (isMobile) {
+      // Mobile: Clean form without background image
+      return renderCleanGradient()
+    }
+    
+    // Desktop: Full background with overlay
+    return (
+      <div style={{
+        ...containerStyles,
+        maxWidth: '500px',
+        position: 'relative'
+      }}>
+        {/* Background Image */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: hasImage ? `url(${popup.imageUrl}) center center / cover no-repeat` : '#1f2937',
+          opacity: hasImage ? 0.8 : 1
+        }} />
+        
+        {/* Overlay Form */}
+        <div style={{
+          position: 'relative',
+          zIndex: 1,
+          padding: '40px',
+          background: 'rgba(0,0,0,0.7)',
+          color: 'white'
+        }}>
+          <h2 style={{ 
+            color: 'white', 
+            margin: '0 0 10px 0', 
+            fontSize: '24px',
+            fontWeight: 'bold'
+          }}>
+            {popup.headline || 'Your Headline'}
+          </h2>
+          
+          {popup.subheadline && (
+            <p style={{ color: 'rgba(255,255,255,0.8)', margin: '0 0 20px 0', fontSize: '15px' }}>
+              {popup.subheadline}
+            </p>
+          )}
+          
+          <input 
+            type="email" 
+            placeholder="your@email.com" 
+            disabled
+            style={{
+              width: '100%',
+              padding: '12px',
+              marginBottom: '12px',
+              border: 'none',
+              borderRadius: '6px',
+              fontSize: '14px'
+            }}
+          />
+          
+          <button 
+            disabled
+            style={{
+              width: '100%',
+              padding: '14px',
+              background: variant.primary,
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              fontSize: '15px',
+              fontWeight: 'bold'
+            }}
+          >
+            {popup.buttonText || 'Get Started'}
+          </button>
+        </div>
+      </div>
+    )
+  }
+}
