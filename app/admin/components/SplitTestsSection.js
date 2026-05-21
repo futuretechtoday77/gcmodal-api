@@ -310,15 +310,6 @@ export default function SplitTestsSection({ popups }) {
               </div>
             </div>
 
-            {newTest.triggerType === 'button' && (
-              <input
-                placeholder="Button ID *"
-                value={newTest.buttonId}
-                onChange={(e) => setNewTest({...newTest, buttonId: e.target.value})}
-                style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
-              />
-            )}
-
             {newTest.triggerType === 'delay' && (
               <div>
                 <label style={{ display: 'block', marginBottom: '5px' }}>

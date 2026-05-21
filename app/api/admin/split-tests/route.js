@@ -184,13 +184,6 @@ export async function POST(req) {
       )
     }
 
-    if (triggerType === 'button' && !buttonId) {
-      return NextResponse.json(
-        { success: false, error: 'buttonId required for button trigger type' },
-        { status: 400 }
-      )
-    }
-
     // Check for duplicate name
     const existingTests = await getAllSplitTests()
     const nameExists = Object.values(existingTests).some(
@@ -207,6 +200,11 @@ export async function POST(req) {
     // Generate test ID
     const testId = generateTestId(name)
 
+    // Auto-generate buttonId for button triggers (use testId as button ID for simplicity)
+    const finalButtonId = triggerType === 'button' 
+      ? testId
+      : null
+
     // Create test object
     const test = {
       testId,
@@ -221,7 +219,7 @@ export async function POST(req) {
       },
       triggerType,
       triggerDelay: triggerDelay || null,
-      buttonId: buttonId || null,
+      buttonId: finalButtonId,
       status: 'running',
       winnerPopupId: null,
       completedAt: null,
@@ -270,7 +268,8 @@ function generateImplementationCode(test) {
   if (test.triggerType === 'button') {
     triggerCode = `
 <!-- Trigger: Button Click -->
-<button data-popup-id="${test.testId}">Get Free Report</button>`
+<!-- Copy this button HTML to your site: -->
+<button id="${test.buttonId}">Get Free Report</button>`
   } else if (test.triggerType === 'exit') {
     triggerCode = `
 <!-- Trigger: Exit Intent (auto-detects mouse leaving viewport) -->

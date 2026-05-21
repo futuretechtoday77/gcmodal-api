@@ -29,12 +29,22 @@
      * Attach event listeners for buttons, exit intent, etc.
      */
     attachEventListeners: function() {
-      // Button triggers
+      // Button triggers (data-popup-id attribute)
       document.addEventListener('click', (e) => {
         const button = e.target.closest('[data-popup-id]');
         if (button) {
           const popupId = button.getAttribute('data-popup-id');
           this.showPopup(popupId);
+        }
+      });
+
+      // Button triggers (ID attribute - for split tests)
+      // Buttons with IDs starting with "split-" are treated as split test triggers
+      document.addEventListener('click', (e) => {
+        const button = e.target.closest('button[id^="split-"]');
+        if (button && button.id) {
+          // The button ID is the split test ID - show it directly
+          this.showPopup(button.id);
         }
       });
 
