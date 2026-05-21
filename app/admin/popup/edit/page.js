@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 
 // Popup Preview Component
@@ -115,7 +115,7 @@ function PopupPreview({ config }) {
   )
 }
 
-export default function PopupEditPage() {
+function PopupEditForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const popupId = searchParams.get('id')
@@ -548,5 +548,18 @@ export default function PopupEditPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+// Wrapper with Suspense for useSearchParams
+export default function PopupEditPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ padding: '40px', textAlign: 'center' }}>
+        <p>Loading...</p>
+      </div>
+    }>
+      <PopupEditForm />
+    </Suspense>
   )
 }
