@@ -657,7 +657,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           ...containerStyles,
           position: 'relative',
           borderRadius: '12px',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          minHeight: '300px'
         }}>
           {/* Background Image */}
           <div style={{
@@ -666,7 +667,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             left: 0,
             right: 0,
             bottom: 0,
-            background: hasImage ? `url(${popup.imageUrl}) center center / cover no-repeat` : '#1f2937'
+            background: popup.imageUrl ? `url(${popup.imageUrl}) center center / cover no-repeat` : '#1f2937'
           }} />
           
           {/* Overlay Layer - only show if enabled */}
