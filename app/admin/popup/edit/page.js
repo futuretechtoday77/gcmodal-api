@@ -29,16 +29,21 @@ export default function PopupEditPage() {
 
   // Mount detection
   useEffect(() => {
-    setMounted(true)
-    
-    // Parse URL
-    const params = new URLSearchParams(window.location.search)
-    const id = params.get('id') || ''
-    setPopupId(id)
-    setIsNew(!id)
-    
-    if (!id) {
-      // New popup - ready to go
+    try {
+      setMounted(true)
+      
+      // Parse URL
+      const params = new URLSearchParams(window.location.search)
+      const id = params.get('id') || ''
+      setPopupId(id)
+      setIsNew(!id)
+      
+      if (!id) {
+        // New popup - ready to go
+        setLoading(false)
+      }
+    } catch (err) {
+      setError('Init error: ' + err.message)
       setLoading(false)
     }
   }, [])
@@ -132,7 +137,16 @@ export default function PopupEditPage() {
 
   if (!mounted) return <div style={{ padding: 40 }}>Initializing...</div>
   if (loading) return <div style={{ padding: 40 }}>Loading...</div>
-  if (error) return <div style={{ padding: 40, color: 'red' }}>{error} <button onClick={() => router.push('/admin')}>Back</button></div>
+  if (error) {
+    return (
+      <div style={{ padding: 40 }}>
+        <div style={{ background: '#fee', color: '#c00', padding: 20, borderRadius: 8, marginBottom: 20, border: '2px solid #c00' }}>
+          <strong>Error:</strong> {error}
+        </div>
+        <button onClick={() => router.push('/admin')}>Back to Admin</button>
+      </div>
+    )
+  }
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: 20 }}>
