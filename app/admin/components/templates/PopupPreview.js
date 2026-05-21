@@ -43,8 +43,9 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
     return (
       <div style={{
         ...containerStyles,
-        padding: isMobile ? '30px 20px' : '40px',
-        textAlign: 'center'
+        padding: isMobile ? '20px 15px' : '40px',
+        textAlign: 'center',
+        boxSizing: 'border-box'
       }}>
         {/* Close button */}
         <button style={{
@@ -108,7 +109,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         )}
         
         {/* Form */}
-        <div style={{ marginTop: '20px' }}>
+        <div style={{ marginTop: '20px', width: '100%', boxSizing: 'border-box' }}>
           {popup.includeFirstName && !isMobile && (
             <div style={{ display: 'flex', gap: '10px', marginBottom: '12px' }}>
               <input 
@@ -120,7 +121,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
                   padding: '12px',
                   border: '2px solid #e5e7eb',
                   borderRadius: '6px',
-                  fontSize: '14px'
+                  fontSize: '14px',
+                  boxSizing: 'border-box'
                 }}
               />
               <input 
@@ -132,7 +134,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
                   padding: '12px',
                   border: '2px solid #e5e7eb',
                   borderRadius: '6px',
-                  fontSize: '14px'
+                  fontSize: '14px',
+                  boxSizing: 'border-box'
                 }}
               />
             </div>
@@ -146,11 +149,12 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
                 disabled
                 style={{
                   width: '100%',
-                  padding: '12px',
-                  marginBottom: '10px',
+                  padding: '10px',
+                  marginBottom: '8px',
                   border: '2px solid #e5e7eb',
                   borderRadius: '6px',
-                  fontSize: '14px'
+                  fontSize: '14px',
+                  boxSizing: 'border-box'
                 }}
               />
               <input 
@@ -159,11 +163,12 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
                 disabled
                 style={{
                   width: '100%',
-                  padding: '12px',
-                  marginBottom: '10px',
+                  padding: '10px',
+                  marginBottom: '8px',
                   border: '2px solid #e5e7eb',
                   borderRadius: '6px',
-                  fontSize: '14px'
+                  fontSize: '14px',
+                  boxSizing: 'border-box'
                 }}
               />
             </>
@@ -175,11 +180,12 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             disabled
             style={{
               width: '100%',
-              padding: '12px',
-              marginBottom: '12px',
+              padding: isMobile ? '10px' : '12px',
+              marginBottom: isMobile ? '8px' : '12px',
               border: '2px solid #e5e7eb',
               borderRadius: '6px',
-              fontSize: '14px'
+              fontSize: '14px',
+              boxSizing: 'border-box'
             }}
           />
           
@@ -187,14 +193,15 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             disabled
             style={{
               width: '100%',
-              padding: '14px',
+              padding: isMobile ? '12px' : '14px',
               background: variant.primary,
               color: 'white',
               border: 'none',
               borderRadius: '6px',
-              fontSize: '16px',
+              fontSize: isMobile ? '14px' : '16px',
               fontWeight: 'bold',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              boxSizing: 'border-box'
             }}
           >
             {popup.buttonText || 'Submit'}
@@ -251,15 +258,15 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           )}
           
           {/* Form fields */}
-          <div style={{ marginTop: '20px' }}>
+          <div style={{ marginTop: '20px', width: '100%', boxSizing: 'border-box' }}>
             {popup.includeFirstName && (
               <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-                <input type="text" placeholder="First Name" disabled style={{ flex: 1, padding: '12px', border: '2px solid #e5e7eb', borderRadius: '6px' }} />
-                <input type="text" placeholder="Last Name" disabled style={{ flex: 1, padding: '12px', border: '2px solid #e5e7eb', borderRadius: '6px' }} />
+                <input type="text" placeholder="First Name" disabled style={{ flex: 1, padding: '12px', border: '2px solid #e5e7eb', borderRadius: '6px', boxSizing: 'border-box' }} />
+                <input type="text" placeholder="Last Name" disabled style={{ flex: 1, padding: '12px', border: '2px solid #e5e7eb', borderRadius: '6px', boxSizing: 'border-box' }} />
               </div>
             )}
-            <input type="email" placeholder="Email" disabled style={{ width: '100%', padding: '12px', marginBottom: '10px', border: '2px solid #e5e7eb', borderRadius: '6px' }} />
-            <button disabled style={{ width: '100%', padding: '14px', background: variant.primary, color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold' }}>
+            <input type="email" placeholder="Email" disabled style={{ width: '100%', padding: '12px', marginBottom: '10px', border: '2px solid #e5e7eb', borderRadius: '6px', boxSizing: 'border-box' }} />
+            <button disabled style={{ width: '100%', padding: '14px', background: variant.primary, color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold', boxSizing: 'border-box' }}>
               {popup.buttonText || 'Submit'}
             </button>
           </div>
@@ -273,14 +280,15 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
       <div style={{
         ...containerStyles,
         background: 'white',
-        padding: isMobile ? '25px 20px' : '30px',
+        padding: isMobile ? '20px 15px' : '30px',
         textAlign: 'center',
-        maxWidth: '400px'
+        maxWidth: isMobile ? '320px' : '400px',
+        boxSizing: 'border-box'
       }}>
         <h2 style={{ 
           color: '#1f2937', 
           margin: '0 0 8px 0', 
-          fontSize: isMobile ? '20px' : '22px',
+          fontSize: isMobile ? '18px' : '22px',
           fontWeight: 'bold',
           lineHeight: '1.3'
         }}>
@@ -288,7 +296,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         </h2>
         
         {popup.subheadline && (
-          <p style={{ color: '#6b7280', margin: '0 0 20px 0', fontSize: '14px' }}>
+          <p style={{ color: '#6b7280', margin: '0 0 15px 0', fontSize: '13px' }}>
             {popup.subheadline}
           </p>
         )}
@@ -299,11 +307,12 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           disabled
           style={{
             width: '100%',
-            padding: '12px',
-            marginBottom: '12px',
+            padding: isMobile ? '10px' : '12px',
+            marginBottom: isMobile ? '10px' : '12px',
             border: '2px solid #e5e7eb',
             borderRadius: '6px',
-            fontSize: '14px'
+            fontSize: '14px',
+            boxSizing: 'border-box'
           }}
         />
         
@@ -311,13 +320,14 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           disabled
           style={{
             width: '100%',
-            padding: '14px',
+            padding: isMobile ? '12px' : '14px',
             background: variant.primary,
             color: 'white',
             border: 'none',
             borderRadius: '6px',
-            fontSize: '15px',
-            fontWeight: 'bold'
+            fontSize: isMobile ? '14px' : '15px',
+            fontWeight: 'bold',
+            boxSizing: 'border-box'
           }}
         >
           {popup.buttonText || 'Download'}
@@ -334,16 +344,17 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
     return (
       <div style={{
         ...containerStyles,
-        padding: isMobile ? '25px 20px' : '30px',
-        textAlign: 'center'
+        padding: isMobile ? '20px 15px' : '30px',
+        textAlign: 'center',
+        boxSizing: 'border-box'
       }}>
         {/* Product Image */}
         {showImage && (
           <div style={{
-            width: isMobile ? '120px' : '150px',
-            height: isMobile ? '160px' : '200px',
+            width: isMobile ? '100px' : '150px',
+            height: isMobile ? '130px' : '200px',
             background: '#e5e7eb',
-            margin: '0 auto 20px',
+            margin: '0 auto 15px',
             borderRadius: '8px',
             display: 'flex',
             alignItems: 'center',
@@ -358,7 +369,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         <h2 style={{ 
           color: variant.primary, 
           margin: '0 0 10px 0', 
-          fontSize: isMobile ? '20px' : '22px',
+          fontSize: isMobile ? '18px' : '22px',
           fontWeight: 'bold'
         }}>
           {popup.headline || 'Free Guide'}
@@ -370,11 +381,12 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           disabled
           style={{
             width: '100%',
-            padding: '12px',
-            marginBottom: '12px',
+            padding: isMobile ? '10px' : '12px',
+            marginBottom: isMobile ? '10px' : '12px',
             border: '2px solid #e5e7eb',
             borderRadius: '6px',
-            fontSize: '14px'
+            fontSize: '14px',
+            boxSizing: 'border-box'
           }}
         />
         
@@ -382,13 +394,14 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           disabled
           style={{
             width: '100%',
-            padding: '14px',
+            padding: isMobile ? '12px' : '14px',
             background: variant.primary,
             color: 'white',
             border: 'none',
             borderRadius: '6px',
-            fontSize: '15px',
-            fontWeight: 'bold'
+            fontSize: isMobile ? '14px' : '15px',
+            fontWeight: 'bold',
+            boxSizing: 'border-box'
           }}
         >
           {popup.buttonText || 'Download Now'}
@@ -601,7 +614,62 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
   function renderFullBackground() {
     if (isMobile) {
       // Mobile: Clean form without background image
-      return renderCleanGradient()
+      return (
+        <div style={{
+          ...containerStyles,
+          background: '#1f2937',
+          padding: '20px 15px',
+          textAlign: 'center',
+          boxSizing: 'border-box'
+        }}>
+          <h2 style={{ 
+            color: 'white', 
+            margin: '0 0 10px 0', 
+            fontSize: '20px',
+            fontWeight: 'bold'
+          }}>
+            {popup.headline || 'Your Headline'}
+          </h2>
+          
+          {popup.subheadline && (
+            <p style={{ color: 'rgba(255,255,255,0.8)', margin: '0 0 15px 0', fontSize: '14px' }}>
+              {popup.subheadline}
+            </p>
+          )}
+          
+          <input 
+            type="email" 
+            placeholder="your@email.com" 
+            disabled
+            style={{
+              width: '100%',
+              padding: '10px',
+              marginBottom: '10px',
+              border: 'none',
+              borderRadius: '6px',
+              fontSize: '14px',
+              boxSizing: 'border-box'
+            }}
+          />
+          
+          <button 
+            disabled
+            style={{
+              width: '100%',
+              padding: '12px',
+              background: variant.primary,
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              fontSize: '14px',
+              fontWeight: 'bold',
+              boxSizing: 'border-box'
+            }}
+          >
+            {popup.buttonText || 'Get Started'}
+          </button>
+        </div>
+      )
     }
     
     // Desktop: Full background with overlay
@@ -655,7 +723,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               marginBottom: '12px',
               border: 'none',
               borderRadius: '6px',
-              fontSize: '14px'
+              fontSize: '14px',
+              boxSizing: 'border-box'
             }}
           />
           
@@ -669,7 +738,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               border: 'none',
               borderRadius: '6px',
               fontSize: '15px',
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              boxSizing: 'border-box'
             }}
           >
             {popup.buttonText || 'Get Started'}
