@@ -12,33 +12,46 @@ We use **Semantic Versioning** (SemVer) with the format: `MAJOR.MINOR.PATCH`
 
 ## Current Version
 
-### v2.7.0 - PRODUCTION (Dedicated Edit Pages)
+### v2.7.1 - PRODUCTION (Complete Edit Page)
 **Release Date:** 2026-05-21  
-**Commit:** `b7e3a3b`  
+**Commit:** `cebb74d`  
 **Status:** ✅ Production Ready
 
-**Feature:** Popup edit/create forms moved to dedicated pages
+**Feature:** Fully functional dedicated edit page with all features restored
 
-**What's New in v2.7.0:**
-- **Dedicated Edit Page** - `/admin/popup/edit` for creating and editing popups:
-  - Clean, focused interface without distractions
-  - Full form with all fields (ID, Name, Tag ID, Design, Content, Image, Fields)
-  - Live preview on the right side
-  - Handles both new popups and editing existing ones
-  - Clone functionality passes data via URL params
-  - "Back to Admin" button for easy navigation
-- **Cleaner Admin Dashboard** - Main page no longer has inline edit form:
-  - Much shorter, more navigable page
-  - "Create Popup" button navigates to edit page
-  - "Edit" and "Clone" buttons open dedicated page
-  - All popup management actions still available
-- **Next.js 15 Compatibility** - Fixed Suspense boundary for useSearchParams
+**What's New in v2.7.1:**
+- **Complete Edit Page** - Full-featured `/admin/popup/edit` page:
+  - All form fields: ID, Name, Tag ID, Design, Content, Image, Fields
+  - Image upload with file picker or URL input
+  - Image position selection (none, full-width, top-right, left-side)
+  - Image scale slider (0-200%)
+  - Color variants: Purple, Blue, Green, Red, Orange
+  - Layout options: Centered, Side-by-Side, Compact, Overlay
+  - First name field toggle
+  - Full live preview with actual layout rendering
+  - Proper error handling and loading states
+  - Handles API data format (object to array conversion)
+  - Clone functionality with URL parameter passing
+- **Bug Fixes:**
+  - Fixed data format handling (popups as object, not array)
+  - Fixed missing ID field extraction from object keys
+  - Fixed useSearchParams Suspense issue (using window.location)
+  - Added comprehensive error messages
 
-**Previous Features (from v2.6.0):**
-- **Functional Folder Navigation** - Popups in folders hidden from main table
-- **Unorganized Popups** - Main table only shows items not in folders
+**Previous Features (from v2.7.0):**
+- **Dedicated Edit Page** - Moved edit/create to separate page
+- **Cleaner Admin Dashboard** - No inline forms
 
-**Rollback:** To v2.6.0 (commit `f4ee310`) if needed
+**Rollback:** To v2.7.0 (commit `b7e3a3b`) or v2.6.0 (commit `f4ee310`) if needed
+
+---
+
+### v2.7.0 - STABLE
+**Release Date:** 2026-05-21  
+**Commit:** `b7e3a3b`  
+**Status:** ⚠️ Superseded
+
+Initial dedicated edit page (simplified version).
 
 ---
 
@@ -201,7 +214,8 @@ git push origin v2.5.0
 
 | Version | Tag | Commit | Date | Status |
 |---------|-----|--------|------|--------|
-| v2.7.0 | `v2.7.0` | `b7e3a3b` | 2026-05-21 | ✅ Current |
+| v2.7.1 | `v2.7.1` | `cebb74d` | 2026-05-21 | ✅ Current |
+| v2.7.0 | `v2.7.0` | `b7e3a3b` | 2026-05-21 | ⚠️ Superseded |
 | v2.6.0 | `v2.6.0` | `cdade2e` | 2026-05-21 | ⚠️ Superseded |
 | v2.5.3 | `v2.5.3` | `TBD` | 2026-05-21 | ⚠️ Superseded (folders decorative only) |
 | v2.5.2 | `v2.5.2` | `3325261` | 2026-05-21 | ⚠️ Superseded |
