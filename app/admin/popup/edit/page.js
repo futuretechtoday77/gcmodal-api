@@ -77,8 +77,11 @@ export default function PopupEditPage() {
         if (Array.isArray(data.popups)) {
           popupsArray = data.popups
         } else if (typeof data.popups === 'object' && data.popups !== null) {
-          // Convert object to array
-          popupsArray = Object.values(data.popups)
+          // Convert object to array, adding the key as 'id' to each object
+          popupsArray = Object.entries(data.popups).map(([id, popup]) => ({
+            ...popup,
+            id
+          }))
         } else {
           setError('Invalid data format: popups is not array or object')
           setLoading(false)
