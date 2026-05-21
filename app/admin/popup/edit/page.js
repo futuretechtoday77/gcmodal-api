@@ -122,12 +122,26 @@ function PopupEditForm() {
   
   // Get URL params on client side only
   useEffect(() => {
+    console.log('Edit page mounted, checking window...')
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search)
       const id = params.get('id')
+      console.log('URL params parsed, id:', id)
       setPopupId(id)
       setIsNew(!id)
+    } else {
+      console.log('Window is undefined')
+      // Fallback for SSR - assume new popup
+      setPopupId('')
+      setIsNew(true)
     }
+    
+    // Timeout to prevent infinite loading
+    const timeout = setTimeout(() => {
+      setLoading(false)
+    }, 3000)
+    
+    return () => clearTimeout(timeout)
   }, [])
 
   const [loading, setLoading] = useState(true)
@@ -154,25 +168,34 @@ function PopupEditForm() {
 
   // Load existing popup data if editing
   useEffect(() => {
+    console.log('Load popup effect running, popupId:', popupId, 'isNew:', isNew)
+    
     // Wait until we have determined if this is new or edit
     if (popupId === null) {
+      console.log('popupId is null, waiting...')
       return
     }
     
     if (isNew) {
+      console.log('New popup mode, setting loading false')
       setLoading(false)
       return
     }
 
     async function loadPopup() {
       try {
+        console.log('Loading popup data for id:', popupId)
+        
         // Check if we're in browser environment
         if (typeof window === 'undefined') {
+          console.log('Window undefined, cannot load')
           setLoading(false)
           return
         }
         
         const token = localStorage.getItem('mv_popup_token')
+        console.log('Token retrieved:', token ? 'yes' : 'no')
+        
         if (!token) {
           setError('Not authenticated. Please login again.')
           setLoading(false)
@@ -183,9 +206,11 @@ function PopupEditForm() {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         const data = await response.json()
+        console.log('API response:', data.success ? 'success' : 'failed')
         
         if (data.success) {
           const existingPopup = data.popups.find(p => p.id === popupId)
+          console.log('Found popup:', existingPopup ? 'yes' : 'no')
           if (existingPopup) {
             setPopup({
               id: existingPopup.id || '',
