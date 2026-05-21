@@ -67,7 +67,14 @@ export default function PopupEditPage() {
         const data = await res.json()
         
         if (!data.success) {
-          setError('Failed to load')
+          setError('Failed to load: ' + (data.error || 'Unknown error'))
+          setLoading(false)
+          return
+        }
+        
+        // Check if popups is an array
+        if (!Array.isArray(data.popups)) {
+          setError('Invalid data format: popups is not an array. Type: ' + typeof data.popups)
           setLoading(false)
           return
         }
