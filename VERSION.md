@@ -12,10 +12,49 @@ We use **Semantic Versioning** (SemVer) with the format: `MAJOR.MINOR.PATCH`
 
 ## Current Version
 
-### v2.4.0 - STABLE (Current Production)
+### v2.7.0 - PRODUCTION (Dedicated Edit Pages)
+**Release Date:** 2026-05-21  
+**Commit:** `b7e3a3b`  
+**Status:** ✅ Production Ready
+
+**Feature:** Popup edit/create forms moved to dedicated pages
+
+**What's New in v2.7.0:**
+- **Dedicated Edit Page** - `/admin/popup/edit` for creating and editing popups:
+  - Clean, focused interface without distractions
+  - Full form with all fields (ID, Name, Tag ID, Design, Content, Image, Fields)
+  - Live preview on the right side
+  - Handles both new popups and editing existing ones
+  - Clone functionality passes data via URL params
+  - "Back to Admin" button for easy navigation
+- **Cleaner Admin Dashboard** - Main page no longer has inline edit form:
+  - Much shorter, more navigable page
+  - "Create Popup" button navigates to edit page
+  - "Edit" and "Clone" buttons open dedicated page
+  - All popup management actions still available
+- **Next.js 15 Compatibility** - Fixed Suspense boundary for useSearchParams
+
+**Previous Features (from v2.6.0):**
+- **Functional Folder Navigation** - Popups in folders hidden from main table
+- **Unorganized Popups** - Main table only shows items not in folders
+
+**Rollback:** To v2.6.0 (commit `f4ee310`) if needed
+
+---
+
+### v2.6.0 - STABLE
+**Release Date:** 2026-05-21  
+**Commit:** `f4ee310`  
+**Status:** ⚠️ Superseded
+
+Functional folder navigation system.
+
+---
+
+### v2.4.0 - STABLE (Baseline)
 **Release Date:** 2026-05-20  
 **Commit:** `97779ad`  
-**Status:** ✅ Production Ready
+**Status:** ⚠️ Pre-folder-system
 
 ### What's in v2.4.0
 
@@ -162,7 +201,8 @@ git push origin v2.5.0
 
 | Version | Tag | Commit | Date | Status |
 |---------|-----|--------|------|--------|
-| v2.6.0 | `v2.6.0` | `cdade2e` | 2026-05-21 | ✅ Current |
+| v2.7.0 | `v2.7.0` | `b7e3a3b` | 2026-05-21 | ✅ Current |
+| v2.6.0 | `v2.6.0` | `cdade2e` | 2026-05-21 | ⚠️ Superseded |
 | v2.5.3 | `v2.5.3` | `TBD` | 2026-05-21 | ⚠️ Superseded (folders decorative only) |
 | v2.5.2 | `v2.5.2` | `3325261` | 2026-05-21 | ⚠️ Superseded |
 | v2.5.1 | `v2.5.1` | `3975fc2` | 2026-05-21 | ⚠️ Superseded |

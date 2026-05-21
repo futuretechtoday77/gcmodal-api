@@ -2,7 +2,7 @@
 
 **Purpose:** Create, modify, and manage lead capture popups for HealthHarmonic.com using the MV Popup Manager system, including A/B split testing.
 
-**Version:** 2.6.0  
+**Version:** 2.7.0  
 **Status:** Production  
 **Last Updated:** 2026-05-21
 
@@ -55,7 +55,65 @@ Use this skill when the user asks to:
 
 ---
 
-## Folder Organization - NEW in v2.6.0
+## Dedicated Edit Pages - NEW in v2.7.0
+
+### Overview
+
+Popup creation and editing now happens on dedicated pages instead of inline on the admin dashboard.
+
+**Benefits:**
+- Cleaner admin dashboard (no large inline forms)
+- Focused editing environment
+- Better mobile experience
+- Easier to navigate between popups
+
+### How It Works
+
+**Creating a New Popup:**
+1. Click "+ Create Popup" on admin dashboard
+2. Navigate to `/admin/popup/edit`
+3. Fill in all required fields
+4. See live preview on the right
+5. Click "Create Popup" to save
+6. Automatically redirected back to admin
+
+**Editing an Existing Popup:**
+1. Find popup in admin dashboard (in folders or unorganized table)
+2. Click "Edit" button
+3. Navigate to `/admin/popup/edit?id=POPUP_ID`
+4. Form pre-filled with existing data
+5. Make changes and see live preview
+6. Click "Save Changes" to update
+7. Automatically redirected back to admin
+
+**Cloning a Popup:**
+1. Click "Clone" button on any popup
+2. Navigate to edit page with pre-filled data
+3. ID and Name automatically have "-copy" and "(Copy)" appended
+4. Modify as needed
+5. Save as new popup
+
+### Edit Page Features
+
+**Left Side - Form Fields:**
+- Basic Info: ID, Name, Tag ID
+- Design: Color variant, Layout
+- Content: Headline, Subheadline, Body Copy, Button Text
+- Image: Upload or URL, position, scale
+- Fields: Include/exclude First Name
+
+**Right Side - Live Preview:**
+- Real-time preview of how popup will look
+- Updates as you type
+- Shows actual layout, colors, and content
+
+**Navigation:**
+- "Back to Admin" button returns to dashboard
+- Cancel button confirms before discarding changes
+
+---
+
+## Folder Organization
 
 ### Overview
 
