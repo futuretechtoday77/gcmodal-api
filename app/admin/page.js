@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import SplitTestsSection from './components/SplitTestsSection'
 import FolderManager from './components/FolderManager'
 
@@ -559,274 +560,14 @@ function CodeImplementationModal({ popup, onClose }) {
   );
 }
 
-// Popup Preview Component
-function PopupPreview({ config }) {
-  const variantColors = {
-    purple: { primary: '#6B46C1', bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
-    blue: { primary: '#2563eb', bg: 'linear-gradient(135deg, #667eea 0%, #2563eb 100%)' },
-    green: { primary: '#059669', bg: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' },
-    red: { primary: '#dc2626', bg: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)' }
-  };
-
-  const colors = variantColors[config.variant] || variantColors.purple;
-  const isSideBySide = config.layout === 'side-by-side';
-  const isOverlay = config.layout === 'overlay';
-  const hasImage = config.imagePosition !== 'none' && config.imageUrl;
-  const imageScale = (config.imageScale || 100) / 100; // Convert percentage to decimal
-
-  // OVERLAY LAYOUT PREVIEW
-  if (isOverlay && hasImage) {
-    return (
-      <div style={{
-        maxWidth: '500px',
-        borderRadius: '12px',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-        overflow: 'hidden',
-        fontFamily: 'system-ui, -apple-system, sans-serif'
-      }}>
-        <div style={{ 
-          position: 'relative', 
-          minHeight: '350px', 
-          background: `url(${config.imageUrl}) center center / cover no-repeat`
-        }}>
-          {/* Semi-transparent form overlay at bottom */}
-          <div style={{ 
-            position: 'absolute', 
-            bottom: 0, 
-            left: 0, 
-            right: 0, 
-            background: 'rgba(255,255,255,0.95)', 
-            padding: '20px', 
-            borderRadius: '0 0 12px 12px' 
-          }}>
-            {/* Close button */}
-            <button style={{
-              position: 'absolute',
-              top: '15px',
-              right: '15px',
-              background: 'rgba(255,255,255,0.9)',
-              border: 'none',
-              borderRadius: '50%',
-              width: '32px',
-              height: '32px',
-              fontSize: '20px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#6b7280'
-            }}>×</button>
-            
-            {/* Headline */}
-            <h2 style={{ fontSize: '20px', fontWeight: 'bold', margin: '0 0 8px 0', color: '#1a202c' }}>
-              {config.headline || 'Your Headline Here'}
-            </h2>
-            
-            {/* Subheadline */}
-            {config.subheadline && (
-              <p style={{ fontSize: '14px', color: '#4a5568', margin: '0 0 12px 0' }}>
-                {config.subheadline}
-              </p>
-            )}
-            
-            {/* Form preview */}
-            <div>
-              {config.includeFirstName ? (
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-                  <input type="text" placeholder="First Name" disabled style={{
-                    flex: 1, padding: '10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px'
-                  }} />
-                  <input type="email" placeholder="Email" disabled style={{
-                    flex: 1.5, padding: '10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px'
-                  }} />
-                </div>
-              ) : (
-                <input type="email" placeholder="Email Address" disabled style={{
-                  width: '100%', padding: '10px', marginBottom: '10px', 
-                  border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px'
-                }} />
-              )}
-              
-              <div style={{ textAlign: 'right' }}>
-                <button disabled style={{
-                  padding: '10px 24px', background: colors.bg, color: 'white', border: 'none',
-                  borderRadius: '6px', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer'
-                }}>
-                  {config.buttonText || 'Submit'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div style={{
-      maxWidth: isSideBySide ? '600px' : '450px',
-      background: 'white',
-      borderRadius: '12px',
-      boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-      overflow: 'hidden',
-      fontFamily: 'system-ui, -apple-system, sans-serif'
-    }}>
-      {/* Image rendering */}
-      {hasImage && config.imagePosition === 'full-width' && (
-        <div style={{ width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
-          <img src={config.imageUrl} alt="" style={{ width: `${imageScale * 100}%`, height: 'auto', display: 'block' }} />
-        </div>
-      )}
-
-      <div style={{
-        display: isSideBySide ? 'flex' : 'block',
-        position: 'relative'
-      }}>
-        {/* Left side image for side-by-side */}
-        {hasImage && config.imagePosition === 'left-side' && isSideBySide && (
-          <div style={{ 
-            width: '200px', 
-            height: imageScale > 100 ? '356px' : 'auto', // 9:16 aspect ratio when zoomed (200 * 16/9 = 356)
-            overflow: 'hidden', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            background: imageScale > 100 ? '#f0f0f0' : 'transparent'
-          }}>
-            <img src={config.imageUrl} alt="" style={{ 
-              width: imageScale > 100 ? `${imageScale}%` : `${imageScale * 100}%`, 
-              height: imageScale > 100 ? '100%' : 'auto',
-              objectFit: imageScale > 100 ? 'cover' : 'contain'
-            }} />
-          </div>
-        )}
-
-        {/* Content */}
-        <div style={{ padding: '30px', flex: 1, position: 'relative' }}>
-          {/* Top-right corner image */}
-          {hasImage && config.imagePosition === 'top-right' && !isSideBySide && (
-            <img src={config.imageUrl} alt="" style={{
-              position: 'absolute',
-              top: '20px',
-              right: '20px',
-              width: `${80 * imageScale}px`,
-              height: `${80 * imageScale}px`,
-              objectFit: 'cover',
-              borderRadius: '8px'
-            }} />
-          )}
-
-          <h2 style={{
-            fontSize: '24px',
-            fontWeight: 'bold',
-            marginBottom: '10px',
-            color: '#1a202c'
-          }}>
-            {config.headline || 'Your Headline Here'}
-          </h2>
-
-          {config.subheadline && (
-            <p style={{
-              fontSize: '16px',
-              color: '#4a5568',
-              marginBottom: '15px'
-            }}>
-              {config.subheadline}
-            </p>
-          )}
-
-          {config.bodyCopy && (
-            <p style={{
-              fontSize: '14px',
-              color: '#718096',
-              marginBottom: '20px',
-              lineHeight: '1.6'
-            }}>
-              {config.bodyCopy}
-            </p>
-          )}
-
-          {/* Form */}
-          <div style={{ marginTop: '20px' }}>
-            {config.includeFirstName && (
-              <input
-                type="text"
-                placeholder="First Name"
-                disabled
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  marginBottom: '10px',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '6px',
-                  fontSize: '14px'
-                }}
-              />
-            )}
-            <input
-              type="email"
-              placeholder="Email Address"
-              disabled
-              style={{
-                width: '100%',
-                padding: '12px',
-                marginBottom: '15px',
-                border: '1px solid #e2e8f0',
-                borderRadius: '6px',
-                fontSize: '14px'
-              }}
-            />
-            <button
-              disabled
-              style={{
-                width: '100%',
-                padding: '14px',
-                background: colors.bg,
-                color: 'white',
-                border: 'none',
-                borderRadius: '6px',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                cursor: 'not-allowed',
-                opacity: 0.9
-              }}
-            >
-              {config.buttonText || 'Submit'}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function AdminDashboard() {
+  const router = useRouter()
   const [authenticated, setAuthenticated] = useState(false)
   const [loading, setLoading] = useState(true)
   const [popups, setPopups] = useState([])
   const [folders, setFolders] = useState([])
   const [stats, setStats] = useState({})
-  const [showCreateForm, setShowCreateForm] = useState(false)
-  const [editingPopup, setEditingPopup] = useState(null)
   const [showCodeModal, setShowCodeModal] = useState(null)
-  const [newPopup, setNewPopup] = useState({
-    id: '',
-    name: '',
-    tagId: '',
-    variant: 'purple',
-    layout: 'centered',
-    headline: '',
-    subheadline: '',
-    bodyCopy: '',
-    buttonText: '',
-    imageUrl: '',
-    imagePosition: 'none',
-    imageScale: 100,         // 1-100% (shrink only)
-    includeFirstName: true,
-    triggerType: 'button',  // button, delay, exit
-    triggerDelay: 180,       // seconds (default 3 minutes)
-    buttonAlign: 'center'    // left, center, right
-  })
 
   useEffect(() => {
     checkAuth()
@@ -956,73 +697,15 @@ export default function AdminDashboard() {
     setStats(statsByPopup)
   }
 
-  async function handleCreatePopup() {
-    // Validate required fields
-    if (!newPopup.id || !newPopup.name || !newPopup.tagId || !newPopup.headline || !newPopup.buttonText) {
-      alert('Please fill in all required fields (ID, Name, Tag ID, Headline, Button Text)');
-      return;
-    }
-
-    try {
-      const response = await fetch('/api/popups/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          popup: newPopup,
-          isNew: !editingPopup
-        })
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // Close form and refresh data
-        handleCancelEdit();
-        const token = localStorage.getItem('mv_popup_token');
-        loadData(token);
-        
-        // Show success + implementation code in modal
-        setTimeout(() => {
-          alert(data.message);
-          setShowCodeModal({
-            popupId: data.popupId,
-            name: newPopup.name,
-            code: data.implementationCode
-          });
-        }, 300);
-      } else {
-        alert('Save failed: ' + data.error);
-      }
-    } catch (error) {
-      alert('Save failed: ' + error.message);
-    }
-  }
-
   function handleEditPopup(popup) {
-    setEditingPopup(popup)
-    setShowCreateForm(true)
-    setNewPopup({
-      id: popup.id,
-      name: popup.name,
-      tagId: popup.tagId,
-      variant: popup.design?.variant || 'purple',
-      layout: popup.design?.layout || 'centered',
-      headline: popup.design?.headline || '',
-      subheadline: popup.design?.subheadline || '',
-      bodyCopy: popup.design?.bodyCopy || '',
-      buttonText: popup.design?.buttonText || '',
-      imageUrl: popup.design?.image?.url || '',
-      imagePosition: popup.design?.image?.position || 'none',
-      imageScale: popup.design?.image?.scale || 100,
-      includeFirstName: popup.fields?.includes('firstName') || false
-    })
+    router.push(`/admin/popup/edit?id=${popup.id}`)
   }
 
   function handleClonePopup(popup) {
-    setEditingPopup(null) // Not editing, creating new
-    setShowCreateForm(true)
-    setNewPopup({
-      id: popup.id + '-copy', // Suggest a new ID
+    // Navigate to create page with pre-filled data from cloned popup
+    const params = new URLSearchParams({
+      clone: 'true',
+      id: popup.id + '-copy',
       name: popup.name + ' (Copy)',
       tagId: popup.tagId,
       variant: popup.design?.variant || 'purple',
@@ -1033,28 +716,10 @@ export default function AdminDashboard() {
       buttonText: popup.design?.buttonText || '',
       imageUrl: popup.design?.image?.url || '',
       imagePosition: popup.design?.image?.position || 'none',
-      imageScale: popup.design?.image?.scale || 100,
-      includeFirstName: popup.fields?.includes('firstName') || false
+      imageScale: popup.design?.image?.scale?.toString() || '100',
+      includeFirstName: popup.fields?.includes('firstName') ? 'true' : 'false'
     })
-  }
-
-  function handleCancelEdit() {
-    setShowCreateForm(false)
-    setEditingPopup(null)
-    setNewPopup({
-      id: '',
-      name: '',
-      tagId: '',
-      variant: 'purple',
-      layout: 'centered',
-      headline: '',
-      subheadline: '',
-      bodyCopy: '',
-      buttonText: '',
-      imageUrl: '',
-      imagePosition: 'none',
-      includeFirstName: true
-    })
+    router.push(`/admin/popup/edit?${params.toString()}`)
   }
 
   if (loading) {
@@ -1122,17 +787,17 @@ export default function AdminDashboard() {
         <h1>Popup Dashboard</h1>
         <div style={{ display: 'flex', gap: '10px' }}>
           <button
-            onClick={() => showCreateForm ? handleCancelEdit() : setShowCreateForm(true)}
+            onClick={() => router.push('/admin/popup/edit')}
             style={{
               padding: '12px 24px',
-              background: showCreateForm ? '#6c757d' : '#28a745',
+              background: '#28a745',
               color: 'white',
               border: 'none',
               borderRadius: '4px',
               cursor: 'pointer'
             }}
           >
-            {showCreateForm ? 'Cancel' : '+ Create Popup'}
+            + Create Popup
           </button>
           <button
             onClick={logout}
@@ -1149,231 +814,6 @@ export default function AdminDashboard() {
           </button>
         </div>
       </div>
-
-      {showCreateForm && (
-        <div key={editingPopup?.id || 'new'} style={{
-          background: '#f8f9fa',
-          padding: '20px',
-          borderRadius: '8px',
-          marginBottom: '30px'
-        }}>
-          <h2>{editingPopup ? `Edit: ${editingPopup.name}` : 'Create New Popup'}</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
-            {/* Left: Form */}
-            <div style={{ display: 'grid', gap: '15px' }}>
-            <input
-              placeholder="Popup ID (lowercase-with-dashes)"
-              value={newPopup.id}
-              onChange={(e) => setNewPopup({...newPopup, id: e.target.value})}
-              style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            <input
-              placeholder="Display Name"
-              value={newPopup.name}
-              onChange={(e) => setNewPopup({...newPopup, name: e.target.value})}
-              style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            <input
-              placeholder="Global Control Tag ID"
-              value={newPopup.tagId}
-              onChange={(e) => setNewPopup({...newPopup, tagId: e.target.value})}
-              style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            <select
-              value={newPopup.variant}
-              onChange={(e) => setNewPopup({...newPopup, variant: e.target.value})}
-              style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            >
-              <option value="purple">Purple (ForbiddenFood)</option>
-              <option value="blue">Blue (HealthHarmonic)</option>
-              <option value="green">Green (Natural)</option>
-              <option value="red">Red (Urgent)</option>
-            </select>
-            <select
-              value={newPopup.layout}
-              onChange={(e) => setNewPopup({...newPopup, layout: e.target.value})}
-              style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            >
-              <option value="centered">Centered Layout</option>
-              <option value="side-by-side">Side-by-Side Layout</option>
-              <option value="compact">Compact Layout (inline fields)</option>
-              <option value="overlay">Overlay (form on image)</option>
-            </select>
-            <input
-              placeholder="Headline"
-              value={newPopup.headline}
-              onChange={(e) => setNewPopup({...newPopup, headline: e.target.value})}
-              style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            <input
-              placeholder="Subheadline"
-              value={newPopup.subheadline}
-              onChange={(e) => setNewPopup({...newPopup, subheadline: e.target.value})}
-              style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            <textarea
-              placeholder="Body Copy (optional)"
-              value={newPopup.bodyCopy}
-              onChange={(e) => setNewPopup({...newPopup, bodyCopy: e.target.value})}
-              style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc', minHeight: '80px' }}
-            />
-            <input
-              placeholder="Button Text"
-              value={newPopup.buttonText}
-              onChange={(e) => setNewPopup({...newPopup, buttonText: e.target.value})}
-              style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            <div style={{ border: '1px solid #ccc', borderRadius: '4px', padding: '15px', background: '#f8f9fa' }}>
-              <label style={{ fontWeight: 'bold', marginBottom: '10px', display: 'block' }}>Image (Optional)</label>
-              <select
-                value={newPopup.imagePosition}
-                onChange={(e) => setNewPopup({...newPopup, imagePosition: e.target.value})}
-                style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc', width: '100%', marginBottom: '10px' }}
-              >
-                <option value="none">No Image</option>
-                <option value="full-width">Top, Full Width (Wide Image) - Centered Only</option>
-                <option value="top-right">Top Right Corner (Square Image) - Centered Only</option>
-                <option value="left-side">Left Side (Product/Book Cover) - Side-by-Side Only</option>
-              </select>
-              {newPopup.imagePosition !== 'none' && (
-                <>
-                  <div style={{ marginBottom: '10px' }}>
-                    <label style={{ fontSize: '13px', marginBottom: '5px', display: 'block' }}>Upload Image</label>
-                    <input
-                      type="file"
-                      accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
-                      onChange={async (e) => {
-                        const file = e.target.files[0];
-                        if (!file) return;
-                        
-                        // Show uploading state
-                        const uploadBtn = e.target.nextElementSibling;
-                        if (uploadBtn) uploadBtn.textContent = '⏳ Uploading...';
-                        
-                        try {
-                          const formData = new FormData();
-                          formData.append('file', file);
-                          
-                          const token = localStorage.getItem('mv_popup_token');
-                          const response = await fetch('/api/upload', {
-                            method: 'POST',
-                            headers: {
-                              'Authorization': `Bearer ${token}`
-                            },
-                            body: formData
-                          });
-                          
-                          const data = await response.json();
-                          
-                          if (data.success) {
-                            setNewPopup({...newPopup, imageUrl: data.url});
-                            alert('✅ Image uploaded successfully!');
-                          } else {
-                            alert('❌ Upload failed: ' + data.error);
-                          }
-                        } catch (error) {
-                          alert('❌ Upload error: ' + error.message);
-                        } finally {
-                          if (uploadBtn) uploadBtn.textContent = '📁 Choose File';
-                          e.target.value = ''; // Reset file input
-                        }
-                      }}
-                      style={{ display: 'none' }}
-                      id="image-upload-input"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => document.getElementById('image-upload-input').click()}
-                      style={{
-                        padding: '8px 16px',
-                        background: '#0066cc',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        fontSize: '13px'
-                      }}
-                    >
-                      📁 Choose File
-                    </button>
-                    <p style={{ fontSize: '11px', color: '#666', marginTop: '5px' }}>Max 5MB (jpg, png, gif, webp)</p>
-                  </div>
-                  <div style={{ marginBottom: '10px', textAlign: 'center', color: '#999', fontSize: '12px' }}>— OR —</div>
-                  <input
-                    placeholder="Image URL (or upload above)"
-                    value={newPopup.imageUrl}
-                    onChange={(e) => setNewPopup({...newPopup, imageUrl: e.target.value})}
-                    style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc', width: '100%', marginBottom: '10px' }}
-                  />
-                  <div>
-                    <label style={{ fontSize: '13px', marginBottom: '5px', display: 'block' }}>Image Display Size: {newPopup.imageScale}%</label>
-                    <input
-                      type="range"
-                      min="0"
-                      max="200"
-                      value={newPopup.imageScale}
-                      onChange={(e) => setNewPopup({...newPopup, imageScale: parseInt(e.target.value)})}
-                      style={{ width: '100%' }}
-                    />
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#999', marginTop: '2px' }}>
-                      <span>0% (hidden)</span>
-                      <span>100% (original)</span>
-                      <span>200% (zoom 2x)</span>
-                    </div>
-                    <p style={{ fontSize: '11px', color: '#666', marginTop: '5px' }}>
-                      {newPopup.imageScale < 100 ? '⬇️ Shrink image' : newPopup.imageScale === 100 ? '✓ Original size' : '🔍 Zoom in (crops to show detail)'}
-                    </p>
-                  </div>
-                </>
-              )}
-            </div>
-            <div style={{ border: '1px solid #ccc', borderRadius: '4px', padding: '15px', background: '#f8f9fa' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <input
-                  type="checkbox"
-                  checked={newPopup.includeFirstName}
-                  onChange={(e) => setNewPopup({...newPopup, includeFirstName: e.target.checked})}
-                />
-                <span>Include First Name field</span>
-              </label>
-              <small style={{ color: '#6c757d', display: 'block', marginTop: '5px' }}>
-                Uncheck for email-only capture
-              </small>
-            </div>
-            <button
-              onClick={handleCreatePopup}
-              style={{
-                padding: '12px',
-                background: '#007bff',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '16px',
-                fontWeight: 'bold'
-              }}
-            >
-              {editingPopup ? 'Save Changes' : 'Create Popup'}
-            </button>
-          </div>
-
-          {/* Right: Live Preview */}
-          <div>
-            <h3 style={{ marginTop: 0, marginBottom: '15px' }}>Live Preview</h3>
-            <div style={{
-              border: '2px solid #ddd',
-              borderRadius: '8px',
-              padding: '20px',
-              background: 'white',
-              minHeight: '400px'
-            }}>
-              {/* Popup Preview */}
-              <PopupPreview config={newPopup} />
-            </div>
-          </div>
-        </div>
-        </div>
-      )}
 
       {/* Popup Folders */}
       <FolderManager 

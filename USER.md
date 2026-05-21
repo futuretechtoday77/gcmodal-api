@@ -2,11 +2,13 @@
 
 _Learn about the person you're helping. Update this as you go._
 
-- **Name:**
-- **What to call them:**
+- **Name:** Joshua Parker
+- **What to call them:** Joshua
 - **Pronouns:** _(optional)_
 - **Timezone:**
 - **Notes:**
+  - **NO COMMAND LINE ACCESS** - User does not have terminal/CLI access. Do not ask them to run shell commands.
+  - Uses ClawLauncher system - I handle all technical/config changes directly
 
 ## Context
 
