@@ -246,8 +246,25 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
       <div style={{
         ...containerStyles,
         display: 'flex',
-        maxWidth: '700px'
+        maxWidth: '700px',
+        position: 'relative'
       }}>
+        {/* Close button */}
+        <button style={{
+          position: 'absolute',
+          top: '15px',
+          right: '15px',
+          background: 'rgba(255,255,255,0.9)',
+          border: 'none',
+          borderRadius: '50%',
+          width: '32px',
+          height: '32px',
+          fontSize: '20px',
+          cursor: 'pointer',
+          color: '#6b7280',
+          zIndex: 10
+        }}>×</button>
+        
         {/* Left: Image */}
         <div style={{
           width: '50%',
@@ -321,8 +338,24 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         padding: isMobile ? '20px 15px' : '30px',
         textAlign: 'center',
         maxWidth: isMobile ? '320px' : '400px',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        position: 'relative'
       }}>
+        {/* Close button */}
+        <button style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          background: 'rgba(0,0,0,0.05)',
+          border: 'none',
+          borderRadius: '50%',
+          width: '28px',
+          height: '28px',
+          fontSize: '18px',
+          cursor: 'pointer',
+          color: '#9ca3af'
+        }}>×</button>
+        
         <h2 style={{ 
           color: '#1f2937', 
           margin: '0 0 8px 0', 
@@ -386,8 +419,25 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         ...containerStyles,
         padding: isMobile ? '15px' : '20px',
         textAlign: 'center',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        position: 'relative'
       }}>
+        {/* Close button */}
+        <button style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          background: 'rgba(0,0,0,0.05)',
+          border: 'none',
+          borderRadius: '50%',
+          width: '28px',
+          height: '28px',
+          fontSize: '18px',
+          cursor: 'pointer',
+          color: '#9ca3af',
+          zIndex: 10
+        }}>×</button>
+        
         {/* Product Image */}
         {showImage && (
           <div style={{
@@ -487,9 +537,26 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           ...containerStyles,
           maxWidth: '320px',
           borderRadius: '16px',
+          position: 'relative',
           overflow: 'hidden',
           background: '#e8f4fc'
         }}>
+          {/* Close button */}
+          <button style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            background: 'rgba(255,255,255,0.9)',
+            border: 'none',
+            borderRadius: '50%',
+            width: '28px',
+            height: '28px',
+            fontSize: '18px',
+            cursor: 'pointer',
+            color: '#6b7280',
+            zIndex: 10
+          }}>×</button>
+          
           {/* Image Section */}
           <div style={{
             padding: '20px',
@@ -607,8 +674,25 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         display: 'flex',
         borderRadius: '16px',
         overflow: 'hidden',
-        minHeight: '400px'
+        minHeight: '400px',
+        position: 'relative'
       }}>
+        {/* Close button */}
+        <button style={{
+          position: 'absolute',
+          top: '15px',
+          right: '15px',
+          background: 'rgba(255,255,255,0.9)',
+          border: 'none',
+          borderRadius: '50%',
+          width: '32px',
+          height: '32px',
+          fontSize: '20px',
+          cursor: 'pointer',
+          color: '#6b7280',
+          zIndex: 10
+        }}>×</button>
+        
         {/* Left: Image with light blue background */}
         <div style={{
           width: '40%',
@@ -735,6 +819,22 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
     if (isMobile) {
       return (
         <div style={{ position: 'relative', width: '100%' }}>
+          {/* Close button */}
+          <button style={{
+            position: 'absolute',
+            top: '-10px',
+            right: '0',
+            background: 'rgba(255,255,255,0.9)',
+            border: 'none',
+            borderRadius: '50%',
+            width: '28px',
+            height: '28px',
+            fontSize: '18px',
+            cursor: 'pointer',
+            color: '#6b7280',
+            zIndex: 10
+          }}>×</button>
+          
           {/* Chat bubble from avatar */}
           <div style={{
             marginBottom: '10px',
@@ -830,6 +930,22 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
     // Desktop version
     return (
       <div style={{ position: 'relative' }}>
+        {/* Close button */}
+        <button style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          background: 'rgba(255,255,255,0.9)',
+          border: 'none',
+          borderRadius: '50%',
+          width: '32px',
+          height: '32px',
+          fontSize: '20px',
+          cursor: 'pointer',
+          color: '#6b7280',
+          zIndex: 10
+        }}>×</button>
+        
         <div style={{
           ...containerStyles,
           padding: 0,
@@ -979,6 +1095,22 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           minHeight: getMinHeight(),
           maxWidth: getMaxWidth()
         }}>
+          {/* Close button */}
+          <button style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            background: 'rgba(255,255,255,0.9)',
+            border: 'none',
+            borderRadius: '50%',
+            width: '28px',
+            height: '28px',
+            fontSize: '18px',
+            cursor: 'pointer',
+            color: '#6b7280',
+            zIndex: 10
+          }}>×</button>
+          
           {/* Background Image */}
           <div style={{
             position: 'absolute',
@@ -1083,6 +1215,22 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         borderRadius: '12px',
         overflow: 'hidden'
       }}>
+        {/* Close button */}
+        <button style={{
+          position: 'absolute',
+          top: '15px',
+          right: '15px',
+          background: 'rgba(255,255,255,0.9)',
+          border: 'none',
+          borderRadius: '50%',
+          width: '32px',
+          height: '32px',
+          fontSize: '20px',
+          cursor: 'pointer',
+          color: '#6b7280',
+          zIndex: 10
+        }}>×</button>
+        
         {/* Background Image */}
         <div style={{
           position: 'absolute',
