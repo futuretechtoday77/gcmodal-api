@@ -10,6 +10,9 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
   const showImage = !isMobile || templateConfig.showImageOnMobile
   const hasImage = popup.imageUrl && popup.imagePosition !== 'none' && showImage
   
+  // Button color - use custom or fall back to variant
+  const buttonColor = popup.buttonColor || variant.primary
+  
   // Base container styles
   const containerStyles = {
     background: variant.bg,
@@ -194,7 +197,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             style={{
               width: '100%',
               padding: isMobile ? '12px' : '14px',
-              background: variant.primary,
+              background: buttonColor,
               color: 'white',
               border: 'none',
               borderRadius: '6px',
@@ -278,7 +281,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               </div>
             )}
             <input type="email" placeholder="Email" disabled style={{ width: '100%', padding: '12px', marginBottom: '10px', border: '2px solid #e5e7eb', borderRadius: '6px', boxSizing: 'border-box' }} />
-            <button disabled style={{ width: '100%', padding: '14px', background: variant.primary, color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold', boxSizing: 'border-box' }}>
+            <button disabled style={{ width: '100%', padding: '14px', background: buttonColor, color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold', boxSizing: 'border-box' }}>
               {popup.buttonText || 'Submit'}
             </button>
           </div>
@@ -333,7 +336,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           style={{
             width: '100%',
             padding: isMobile ? '12px' : '14px',
-            background: variant.primary,
+            background: buttonColor,
             color: 'white',
             border: 'none',
             borderRadius: '6px',
@@ -409,7 +412,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           style={{
             width: '100%',
             padding: isMobile ? '12px' : '14px',
-            background: variant.primary,
+            background: buttonColor,
             color: 'white',
             border: 'none',
             borderRadius: '6px',
@@ -516,7 +519,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               style={{
                 width: '100%',
                 padding: '12px',
-                background: variant.primary,
+                background: buttonColor,
                 color: 'white',
                 border: 'none',
                 borderRadius: '6px',
@@ -599,7 +602,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               style={{
                 width: '100%',
                 padding: '14px',
-                background: variant.primary,
+                background: buttonColor,
                 color: 'white',
                 border: 'none',
                 borderRadius: '6px',
@@ -644,67 +647,104 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
   
   function renderFullBackground() {
     if (isMobile) {
-      // Mobile: Clean form without background image
+      // Mobile: Show image with overlay option
+      const showOverlayMobile = popup.showOverlay !== undefined ? popup.showOverlay : false
+      const overlayOpacityMobile = popup.overlayOpacity !== undefined ? popup.overlayOpacity : 50
+      const overlayColorMobile = popup.overlayColor || '#000000'
+      
       return (
         <div style={{
           ...containerStyles,
-          background: '#1f2937',
-          padding: '20px 15px',
-          textAlign: 'center',
-          boxSizing: 'border-box'
+          position: 'relative',
+          borderRadius: '12px',
+          overflow: 'hidden'
         }}>
-          <h2 style={{ 
-            color: 'white', 
-            margin: '0 0 10px 0', 
-            fontSize: '20px',
-            fontWeight: 'bold'
+          {/* Background Image */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: hasImage ? `url(${popup.imageUrl}) center center / cover no-repeat` : '#1f2937'
+          }} />
+          
+          {/* Overlay Layer - only show if enabled */}
+          {showOverlayMobile && (
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: overlayColorMobile,
+              opacity: overlayOpacityMobile / 100
+            }} />
+          )}
+          
+          {/* Form */}
+          <div style={{
+            position: 'relative',
+            zIndex: 1,
+            padding: '20px 15px',
+            background: 'transparent',
+            textAlign: 'center'
           }}>
-            {popup.headline || 'Your Headline'}
-          </h2>
-          
-          {popup.subheadline && (
-            <p style={{ color: 'rgba(255,255,255,0.8)', margin: '0 0 15px 0', fontSize: '14px' }}>
-              {popup.subheadline}
-            </p>
-          )}
-          
-          <input 
-            type="email" 
-            placeholder="your@email.com" 
-            disabled
-            style={{
-              width: '100%',
-              padding: '10px',
-              marginBottom: '10px',
-              border: 'none',
-              borderRadius: '6px',
-              fontSize: '14px',
-              boxSizing: 'border-box'
-            }}
-          />
-          
-          <button 
-            disabled
-            style={{
-              width: '100%',
-              padding: '12px',
-              background: variant.primary,
-              color: 'white',
-              border: 'none',
-              borderRadius: '6px',
-              fontSize: '14px',
+            <h2 style={{ 
+              color: 'white', 
+              margin: '0 0 10px 0', 
+              fontSize: '18px',
               fontWeight: 'bold',
-              boxSizing: 'border-box'
-            }}
-          >
-            {popup.buttonText || 'Get Started'}
-          </button>
-          
-          {popup.showTrustText && (
-            <p style={{ marginTop: '15px', fontSize: '11px', color: 'rgba(255,255,255,0.6)' }}>
-              {popup.trustText || 'We respect your email inbox and will never spam!'}
-            </p>
-          )}
+              wordWrap: 'break-word',
+              maxWidth: '100%'
+            }}>
+              {popup.headline || 'Your Headline'}
+            </h2>
+            
+            {popup.subheadline && (
+              <p style={{ color: 'rgba(255,255,255,0.9)', margin: '0 0 15px 0', fontSize: '13px' }}>
+                {popup.subheadline}
+              </p>
+            )}
+            
+            <input 
+              type="email" 
+              placeholder="your@email.com" 
+              disabled
+              style={{
+                width: '100%',
+                padding: '10px',
+                marginBottom: '10px',
+                border: 'none',
+                borderRadius: '6px',
+                fontSize: '14px',
+                boxSizing: 'border-box'
+              }}
+            />
+            
+            <button 
+              disabled
+              style={{
+                width: '100%',
+                padding: '12px',
+                background: buttonColor,
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                boxSizing: 'border-box'
+              }}
+            >
+              {popup.buttonText || 'Get Started'}
+            </button>
+            
+            {popup.showTrustText && (
+              <p style={{ marginTop: '15px', fontSize: '11px', color: 'rgba(255,255,255,0.7)' }}>
+                {popup.trustText || 'We respect your email inbox and will never spam!'}
+              </p>
+            )}
+          </div>
         </div>
       )
     }
@@ -718,7 +758,9 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
       <div style={{
         ...containerStyles,
         maxWidth: '500px',
-        position: 'relative'
+        position: 'relative',
+        borderRadius: '12px',
+        overflow: 'hidden'
       }}>
         {/* Background Image */}
         <div style={{
@@ -786,7 +828,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             style={{
               width: '100%',
               padding: '14px',
-              background: variant.primary,
+              background: buttonColor,
               color: 'white',
               border: 'none',
               borderRadius: '6px',

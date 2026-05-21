@@ -43,6 +43,7 @@ export default function PopupEditPage() {
     showOverlay: false,
     overlayColor: '#000000',
     overlayOpacity: 50,
+    buttonColor: '#3b82f6',
     triggerType: 'button',
     triggerDelay: 180,
     buttonAlign: 'center',
@@ -562,6 +563,38 @@ export default function PopupEditPage() {
                     style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
                   />
                 )}
+              </div>
+              
+              {/* Button Color */}
+              <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
+                <h3 style={{ marginTop: 0 }}>Button Color</h3>
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                  {[
+                    { name: 'Blue', value: '#3b82f6' },
+                    { name: 'Green', value: '#22c55e' },
+                    { name: 'Red', value: '#ef4444' },
+                    { name: 'Purple', value: '#8b5cf6' },
+                    { name: 'Orange', value: '#f97316' },
+                    { name: 'Pink', value: '#ec4899' },
+                    { name: 'Teal', value: '#14b8a6' },
+                    { name: 'Black', value: '#1f2937' }
+                  ].map(color => (
+                    <button
+                      key={color.value}
+                      onClick={() => setPopup({...popup, buttonColor: color.value})}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: '50%',
+                        background: color.value,
+                        border: popup.buttonColor === color.value ? '3px solid #000' : '2px solid transparent',
+                        cursor: 'pointer',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                      }}
+                      title={color.name}
+                    />
+                  ))}
+                </div>
               </div>
               
               {/* Full Background Overlay Settings */}
