@@ -37,6 +37,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
       return renderUltraMinimal()
     case 'lead-magnet':
       return renderLeadMagnet()
+    case 'split-lead-magnet':
+      return renderSplitLeadMagnet()
     case 'personal-consultation':
       return renderPersonalConsultation()
     case 'full-background':
@@ -473,6 +475,252 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             {popup.trustText || 'We respect your email inbox and will never spam!'}
           </p>
         )}
+      </div>
+    )
+  }
+  
+  function renderSplitLeadMagnet() {
+    // Mobile: Stack layout with image on top
+    if (isMobile) {
+      return (
+        <div style={{
+          ...containerStyles,
+          maxWidth: '320px',
+          borderRadius: '16px',
+          overflow: 'hidden',
+          background: '#e8f4fc'
+        }}>
+          {/* Image Section */}
+          <div style={{
+            padding: '20px',
+            background: '#e8f4fc',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '180px'
+          }}>
+            {popup.imageUrl ? (
+              <img 
+                src={popup.imageUrl} 
+                alt="" 
+                style={{ 
+                  maxWidth: '100%',
+                  maxHeight: '200px',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.15))'
+                }} 
+              />
+            ) : (
+              <div style={{
+                width: '120px',
+                height: '160px',
+                background: '#cbd5e1',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '12px',
+                color: '#64748b'
+              }}>Book/Mockup</div>
+            )}
+          </div>
+          
+          {/* Curved divider */}
+          <div style={{
+            height: '30px',
+            background: '#ffffff',
+            borderRadius: '50% 50% 0 0 / 100% 100% 0 0',
+            marginTop: '-15px',
+            position: 'relative',
+            zIndex: 1
+          }} />
+          
+          {/* Form Section */}
+          <div style={{
+            padding: '20px',
+            background: '#ffffff',
+            textAlign: 'center'
+          }}>
+            <h2 style={{ 
+              color: textColor, 
+              margin: '0 0 10px 0', 
+              fontSize: '18px',
+              fontWeight: 'bold',
+              lineHeight: '1.3'
+            }}>
+              {popup.headline || 'Discover How It Works'}
+            </h2>
+            
+            {popup.subheadline && (
+              <p style={{ color: textLightColor, margin: '0 0 15px 0', fontSize: '14px' }}>
+                {popup.subheadline}
+              </p>
+            )}
+            
+            <input 
+              type="email" 
+              placeholder="your@email.com" 
+              disabled
+              style={{
+                width: '100%',
+                padding: '12px',
+                marginBottom: '12px',
+                border: '2px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '14px',
+                boxSizing: 'border-box'
+              }}
+            />
+            
+            <button 
+              disabled
+              style={{
+                width: '100%',
+                padding: '14px',
+                background: buttonColor,
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '15px',
+                fontWeight: 'bold',
+                boxSizing: 'border-box'
+              }}
+            >
+              {popup.buttonText || 'Send Report To My Email!'}
+            </button>
+            
+            {popup.showTrustText && (
+              <p style={{ marginTop: '15px', fontSize: '11px', color: '#9ca3af' }}>
+                {popup.trustText || 'We respect your email inbox and will never spam!'}
+              </p>
+            )}
+          </div>
+        </div>
+      )
+    }
+    
+    // Desktop: Side by side with curved divider
+    return (
+      <div style={{
+        ...containerStyles,
+        maxWidth: '700px',
+        display: 'flex',
+        borderRadius: '16px',
+        overflow: 'hidden',
+        minHeight: '400px'
+      }}>
+        {/* Left: Image with light blue background */}
+        <div style={{
+          width: '40%',
+          background: '#e8f4fc',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '30px',
+          position: 'relative'
+        }}>
+          {popup.imageUrl ? (
+            <img 
+              src={popup.imageUrl} 
+              alt="" 
+              style={{ 
+                maxWidth: '100%',
+                maxHeight: '350px',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.2))'
+              }} 
+            />
+          ) : (
+            <div style={{
+              width: '150px',
+              height: '200px',
+              background: '#cbd5e1',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '14px',
+              color: '#64748b'
+            }}>Book/Mockup</div>
+          )}
+          
+          {/* Curved shape on right edge */}
+          <div style={{
+            position: 'absolute',
+            right: '-30px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: '60px',
+            height: '120px',
+            background: '#ffffff',
+            borderRadius: '50% 0 0 50% / 50% 0 0 50%'
+          }} />
+        </div>
+        
+        {/* Right: Form with white background */}
+        <div style={{
+          width: '60%',
+          background: '#ffffff',
+          padding: '40px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center'
+        }}>
+          <h2 style={{ 
+            color: textColor, 
+            margin: '0 0 12px 0', 
+            fontSize: '26px',
+            fontWeight: 'bold',
+            lineHeight: '1.3'
+          }}>
+            {popup.headline || 'Discover How It Works In Simple Terms'}
+          </h2>
+          
+          {popup.subheadline && (
+            <p style={{ color: textLightColor, margin: '0 0 20px 0', fontSize: '15px' }}>
+              {popup.subheadline}
+            </p>
+          )}
+          
+          <input 
+            type="email" 
+            placeholder="your@email.com" 
+            disabled
+            style={{
+              width: '100%',
+              padding: '14px',
+              marginBottom: '15px',
+              border: '2px solid #e5e7eb',
+              borderRadius: '8px',
+              fontSize: '15px',
+              boxSizing: 'border-box'
+            }}
+          />
+          
+          <button 
+            disabled
+            style={{
+              width: '100%',
+              padding: '16px',
+              background: buttonColor,
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              boxSizing: 'border-box',
+              cursor: 'pointer'
+            }}
+          >
+            {popup.buttonText || 'Send Report To My Email!'}
+          </button>
+          
+          {popup.showTrustText && (
+            <p style={{ marginTop: '20px', fontSize: '12px', color: '#9ca3af', textAlign: 'center' }}>
+              {popup.trustText || 'We respect your email inbox and will never spam!'}
+            </p>
+          )}
+        </div>
       </div>
     )
   }

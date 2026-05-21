@@ -179,6 +179,29 @@ export const templates = [
     }
   },
   {
+    id: 'split-lead-magnet',
+    name: 'Split Lead Magnet',
+    description: 'Product image with curved divider and form side-by-side',
+    category: 'product',
+    preview: '/templates/previews/split-lead-magnet.jpg',
+    config: {
+      type: 'split-product',
+      layout: 'side-by-side',
+      mobileBehavior: 'stack',
+      showImageOnMobile: true,
+      hasAvatar: false,
+      defaultVariant: 'blue',
+      fields: ['email'],
+      styling: {
+        borderRadius: '16px',
+        padding: '0',
+        maxWidth: '700px',
+        leftBg: '#e8f4fc',
+        rightBg: '#ffffff'
+      }
+    }
+  },
+  {
     id: 'full-background-compact',
     name: 'Full Background Compact',
     description: 'Minimal height, just the essentials',
