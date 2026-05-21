@@ -730,24 +730,17 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Curved point toward form using SVG */}
-          <svg
-            style={{
-              position: 'absolute',
-              right: '-1px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              width: '40px',
-              height: '100px'
-            }}
-            viewBox="0 0 40 100"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M 40,0 Q 0,25 40,50 Q 0,75 40,100 L 40,100 L 40,0 Z"
-              fill="#e8f4fc"
-            />
-          </svg>
+          {/* White form area with curved indentation pointing to image */}
+          <div style={{
+            position: 'absolute',
+            right: '0',
+            top: '0',
+            bottom: '0',
+            width: '60px',
+            background: '#ffffff',
+            borderRadius: '50% 0 0 50% / 50% 0 0 50%',
+            marginRight: '-30px'
+          }} />
         </div>
         
         {/* Right: Form with white background */}
