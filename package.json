@@ -9,7 +9,7 @@
   "dependencies": {
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
-    "@vercel/blob": "^2.3.3",
+    "@vercel/blob": "^2.4.0",
     "jose": "^6.2.3",
     "next": "^15.1.6",
     "react": "^19.0.0",
