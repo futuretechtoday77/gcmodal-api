@@ -16,7 +16,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
     borderRadius: templateConfig.styling?.borderRadius || '12px',
     overflow: 'hidden',
     fontFamily: 'system-ui, -apple-system, sans-serif',
-    maxWidth: isMobile ? '100%' : (templateConfig.styling?.maxWidth || '500px'),
+    maxWidth: isMobile ? '320px' : (templateConfig.styling?.maxWidth || '500px'),
+    width: isMobile ? '320px' : 'auto',
     margin: '0 auto',
     boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
   }
@@ -397,6 +398,104 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
   }
   
   function renderPersonalConsultation() {
+    // Avatar positioning
+    const avatarPosition = popup.avatarPosition || 'bottom-left'
+    const isAvatarLeft = avatarPosition.includes('left')
+    const isAvatarBottom = avatarPosition.includes('bottom')
+    
+    // Chat-style preview for consultation
+    if (isMobile) {
+      return (
+        <div style={{ position: 'relative', width: '100%' }}>
+          {/* Chat bubble from avatar */}
+          <div style={{
+            marginBottom: '10px',
+            marginLeft: isAvatarLeft ? '60px' : '0',
+            marginRight: isAvatarLeft ? '0' : '60px',
+            padding: '12px 16px',
+            background: '#f0f0f0',
+            borderRadius: '18px',
+            borderBottomLeftRadius: isAvatarLeft ? '4px' : '18px',
+            borderBottomRightRadius: isAvatarLeft ? '18px' : '4px',
+            fontSize: '14px',
+            color: '#333',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+          }}>
+            {popup.chatMessage || 'Want to have a free consultation with an expert?'}
+          </div>
+          
+          {/* Avatar */}
+          <div style={{
+            position: 'absolute',
+            bottom: '0',
+            left: isAvatarLeft ? '0' : 'auto',
+            right: isAvatarLeft ? 'auto' : '0',
+            width: '50px',
+            height: '50px',
+            borderRadius: '50%',
+            background: popup.avatarUrl ? `url(${popup.avatarUrl}) center center / cover no-repeat` : '#e5e7eb',
+            border: '3px solid white',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '20px'
+          }}>
+            {!popup.avatarUrl && '👤'}
+          </div>
+          
+          {/* Popup */}
+          <div style={{
+            ...containerStyles,
+            marginTop: '20px',
+            padding: '20px',
+            width: '280px'
+          }}>
+            <h2 style={{ 
+              color: variant.primary, 
+              margin: '0 0 10px 0', 
+              fontSize: '18px',
+              fontWeight: 'bold',
+              textAlign: 'center'
+            }}>
+              {popup.headline || 'Book a Consultation'}
+            </h2>
+            
+            <input 
+              type="email" 
+              placeholder="your@email.com" 
+              disabled
+              style={{
+                width: '100%',
+                padding: '10px',
+                marginBottom: '10px',
+                border: '2px solid #e5e7eb',
+                borderRadius: '6px',
+                fontSize: '13px'
+              }}
+            />
+            
+            <button 
+              disabled
+              style={{
+                width: '100%',
+                padding: '12px',
+                background: variant.primary,
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                fontSize: '14px',
+                fontWeight: 'bold'
+              }}
+            >
+              {popup.buttonText || 'Schedule Now'}
+            </button>
+          </div>
+        </div>
+      )
+    }
+    
+    // Desktop version
     return (
       <div style={{ position: 'relative' }}>
         <div style={{
@@ -407,7 +506,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           {/* Header Image */}
           {showImage && (
             <div style={{
-              height: isMobile ? '150px' : '200px',
+              height: '200px',
               background: hasImage ? `url(${popup.imageUrl}) center center / cover no-repeat` : variant.secondary,
               position: 'relative'
             }}>
@@ -427,11 +526,11 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           )}
           
           {/* Form Section */}
-          <div style={{ padding: isMobile ? '25px 20px' : '30px' }}>
+          <div style={{ padding: '30px' }}>
             <h2 style={{ 
               color: variant.primary, 
               margin: '0 0 10px 0', 
-              fontSize: isMobile ? '20px' : '22px',
+              fontSize: '22px',
               fontWeight: 'bold',
               textAlign: 'center'
             }}>
@@ -480,19 +579,20 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         <div style={{
           position: 'absolute',
           bottom: '-20px',
-          left: isMobile ? '10px' : '20px',
-          width: isMobile ? '50px' : '60px',
-          height: isMobile ? '50px' : '60px',
+          left: isAvatarLeft ? '20px' : 'auto',
+          right: isAvatarLeft ? 'auto' : '20px',
+          width: '60px',
+          height: '60px',
           borderRadius: '50%',
-          background: '#e5e7eb',
+          background: popup.avatarUrl ? `url(${popup.avatarUrl}) center center / cover no-repeat` : '#e5e7eb',
           border: '3px solid white',
           boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '20px'
+          fontSize: '24px'
         }}>
-          👤
+          {!popup.avatarUrl && '👤'}
         </div>
       </div>
     )

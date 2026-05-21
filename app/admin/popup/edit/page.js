@@ -35,6 +35,9 @@ export default function PopupEditPage() {
     imageScale: 100,
     includeFirstName: true,
     includePhone: false,
+    avatarUrl: '',
+    avatarPosition: 'bottom-left',
+    chatMessage: 'Want to have a free consultation with an expert?',
     triggerType: 'button',
     triggerDelay: 180,
     buttonAlign: 'center',
@@ -532,6 +535,72 @@ export default function PopupEditPage() {
                   </>
                 )}
               </div>
+              
+              {/* Avatar Settings - Only show for Personal Consultation template */}
+              {selectedTemplate.id === 'personal-consultation' && (
+                <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
+                  <h3 style={{ marginTop: 0 }}>Avatar Settings</h3>
+                  
+                  <div style={{ marginBottom: 15 }}>
+                    <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Avatar Image</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files[0]
+                        if (!file) return
+                        const formData = new FormData()
+                        formData.append('file', file)
+                        try {
+                          const token = localStorage.getItem('mv_popup_token')
+                          const res = await fetch('/api/upload', {
+                            method: 'POST',
+                            headers: { 'Authorization': `Bearer ${token}` },
+                            body: formData
+                          })
+                          const data = await res.json()
+                          if (data.success) {
+                            setPopup({...popup, avatarUrl: data.url})
+                            alert('Avatar uploaded!')
+                          }
+                        } catch (err) {
+                          alert('Upload error: ' + err.message)
+                        }
+                      }}
+                      style={{ marginBottom: 10 }}
+                    />
+                    <input
+                      placeholder="Or enter avatar image URL"
+                      value={popup.avatarUrl}
+                      onChange={(e) => setPopup({...popup, avatarUrl: e.target.value})}
+                      style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+                    />
+                  </div>
+                  
+                  <div style={{ marginBottom: 15 }}>
+                    <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Avatar Position</label>
+                    <select
+                      value={popup.avatarPosition}
+                      onChange={(e) => setPopup({...popup, avatarPosition: e.target.value})}
+                      style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+                    >
+                      <option value="bottom-left">Bottom Left</option>
+                      <option value="bottom-right">Bottom Right</option>
+                    </select>
+                  </div>
+                  
+                  <div style={{ marginBottom: 15 }}>
+                    <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Chat Message (Mobile)</label>
+                    <input
+                      value={popup.chatMessage}
+                      onChange={(e) => setPopup({...popup, chatMessage: e.target.value})}
+                      placeholder="Want to have a free consultation with an expert?"
+                      style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+                    />
+                    <small style={{ color: '#6c757d' }}>Appears as chat bubble before popup on mobile</small>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
