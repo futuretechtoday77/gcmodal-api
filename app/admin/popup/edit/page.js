@@ -38,6 +38,10 @@ export default function PopupEditPage() {
     avatarUrl: '',
     avatarPosition: 'bottom-left',
     chatMessage: 'Want to have a free consultation with an expert?',
+    trustText: 'We respect your email inbox and will never spam!',
+    showTrustText: true,
+    overlayColor: '#000000',
+    overlayOpacity: 70,
     triggerType: 'button',
     triggerDelay: 180,
     buttonAlign: 'center',
@@ -535,6 +539,61 @@ export default function PopupEditPage() {
                   </>
                 )}
               </div>
+              
+              {/* Trust Text Settings */}
+              <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
+                <h3 style={{ marginTop: 0 }}>Trust Text</h3>
+                
+                <label style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 15 }}>
+                  <input
+                    type="checkbox"
+                    checked={popup.showTrustText}
+                    onChange={(e) => setPopup({...popup, showTrustText: e.target.checked})}
+                  />
+                  <span>Show trust message</span>
+                </label>
+                
+                {popup.showTrustText && (
+                  <input
+                    value={popup.trustText}
+                    onChange={(e) => setPopup({...popup, trustText: e.target.value})}
+                    placeholder="We respect your email inbox..."
+                    style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+                  />
+                )}
+              </div>
+              
+              {/* Full Background Overlay Settings */}
+              {selectedTemplate.id === 'full-background' && (
+                <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
+                  <h3 style={{ marginTop: 0 }}>Overlay Settings</h3>
+                  
+                  <div style={{ marginBottom: 15 }}>
+                    <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Overlay Color</label>
+                    <input
+                      type="color"
+                      value={popup.overlayColor}
+                      onChange={(e) => setPopup({...popup, overlayColor: e.target.value})}
+                      style={{ width: '60px', height: '40px', border: 'none', borderRadius: 4, cursor: 'pointer' }}
+                    />
+                  </div>
+                  
+                  <div style={{ marginBottom: 15 }}>
+                    <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
+                      Overlay Opacity: {popup.overlayOpacity}%
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="90"
+                      value={popup.overlayOpacity}
+                      onChange={(e) => setPopup({...popup, overlayOpacity: parseInt(e.target.value)})}
+                      style={{ width: '100%' }}
+                    />
+                    <small style={{ color: '#6c757d' }}>0% = no overlay, 90% = nearly solid</small>
+                  </div>
+                </div>
+              )}
               
               {/* Avatar Settings - Only show for Personal Consultation template */}
               {selectedTemplate.id === 'personal-consultation' && (

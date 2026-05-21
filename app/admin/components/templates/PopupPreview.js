@@ -206,6 +206,18 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           >
             {popup.buttonText || 'Submit'}
           </button>
+          
+          {/* Trust Text */}
+          {popup.showTrustText && (
+            <p style={{ 
+              marginTop: '15px', 
+              fontSize: isMobile ? '11px' : '12px', 
+              color: '#9ca3af',
+              fontStyle: 'italic'
+            }}>
+              {popup.trustText || 'We respect your email inbox and will never spam!'}
+            </p>
+          )}
         </div>
       </div>
     )
@@ -333,9 +345,11 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           {popup.buttonText || 'Download'}
         </button>
         
-        <p style={{ marginTop: '15px', fontSize: '12px', color: '#9ca3af' }}>
-          We respect your email inbox
-        </p>
+        {popup.showTrustText && (
+          <p style={{ marginTop: '15px', fontSize: isMobile ? '11px' : '12px', color: '#9ca3af' }}>
+            {popup.trustText || 'We respect your email inbox and will never spam!'}
+          </p>
+        )}
       </div>
     )
   }
@@ -406,6 +420,12 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         >
           {popup.buttonText || 'Download Now'}
         </button>
+        
+        {popup.showTrustText && (
+          <p style={{ marginTop: '15px', fontSize: isMobile ? '11px' : '12px', color: '#9ca3af' }}>
+            {popup.trustText || 'We respect your email inbox and will never spam!'}
+          </p>
+        )}
       </div>
     )
   }
@@ -584,11 +604,18 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
                 border: 'none',
                 borderRadius: '6px',
                 fontSize: '15px',
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                boxSizing: 'border-box'
               }}
             >
               {popup.buttonText || 'Schedule Now'}
             </button>
+            
+            {popup.showTrustText && (
+              <p style={{ marginTop: '15px', fontSize: '12px', color: '#9ca3af', textAlign: 'center' }}>
+                {popup.trustText || 'We respect your email inbox and will never spam!'}
+              </p>
+            )}
           </div>
         </div>
         
@@ -672,11 +699,21 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           >
             {popup.buttonText || 'Get Started'}
           </button>
+          
+          {popup.showTrustText && (
+            <p style={{ marginTop: '15px', fontSize: '11px', color: 'rgba(255,255,255,0.6)' }}>
+              {popup.trustText || 'We respect your email inbox and will never spam!'}
+            </p>
+          )}
         </div>
       )
     }
     
-    // Desktop: Full background with overlay
+    // Desktop: Full background with configurable overlay
+    const overlayOpacity = popup.overlayOpacity !== undefined ? popup.overlayOpacity : 70
+    const overlayColor = popup.overlayColor || '#000000'
+    const overlayRgb = hexToRgb(overlayColor)
+    
     return (
       <div style={{
         ...containerStyles,
@@ -690,16 +727,28 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           left: 0,
           right: 0,
           bottom: 0,
-          background: hasImage ? `url(${popup.imageUrl}) center center / cover no-repeat` : '#1f2937',
-          opacity: hasImage ? 0.8 : 1
+          background: hasImage ? `url(${popup.imageUrl}) center center / cover no-repeat` : '#1f2937'
         }} />
+        
+        {/* Overlay Layer - configurable */}
+        {overlayOpacity > 0 && (
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: overlayColor,
+            opacity: overlayOpacity / 100
+          }} />
+        )}
         
         {/* Overlay Form */}
         <div style={{
           position: 'relative',
           zIndex: 1,
           padding: '40px',
-          background: 'rgba(0,0,0,0.7)',
+          background: overlayOpacity > 0 ? 'transparent' : 'rgba(0,0,0,0.7)',
           color: 'white'
         }}>
           <h2 style={{ 
@@ -748,8 +797,24 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           >
             {popup.buttonText || 'Get Started'}
           </button>
+          
+          {popup.showTrustText && (
+            <p style={{ marginTop: '15px', fontSize: '12px', color: 'rgba(255,255,255,0.6)' }}>
+              {popup.trustText || 'We respect your email inbox and will never spam!'}
+            </p>
+          )}
         </div>
       </div>
     )
   }
+}
+
+// Helper function to convert hex to rgb
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : { r: 0, g: 0, b: 0 }
 }
