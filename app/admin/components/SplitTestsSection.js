@@ -2,6 +2,376 @@
 
 import { useState, useEffect } from 'react'
 
+// Code Implementation Modal Component for Split Tests
+function CodeImplementationModal({ test, onClose }) {
+  const [buttonStyle, setButtonStyle] = useState({
+    text: 'Get Free Report',
+    bgColor: '#6B46C1',
+    textColor: '#ffffff',
+    fontSize: '16px',
+    fontFamily: 'system-ui, sans-serif',
+    borderRadius: '6px',
+    padding: '12px 24px',
+    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+    fontWeight: 'bold',
+    align: 'center'
+  });
+
+  const alignStyles = {
+    left: 'text-align: left;',
+    center: 'text-align: center;',
+    right: 'text-align: right;'
+  };
+
+  // Generate base code
+  const baseCode = `<!-- GC Modal: Universal Script (add ONCE to theme.liquid before </body>) -->
+<script src="https://gcmodal.vercel.app/gc-modal.js"></script>
+<script>
+  GCModal.initUniversal({
+    apiUrl: 'https://gcmodal-api77.vercel.app'
+  });
+</script>`;
+
+  // Generate trigger code based on type
+  let triggerCode = '';
+  if (test.triggerType === 'button') {
+    triggerCode = `
+<!-- Button HTML (paste in HTML block where you want the button) -->
+<div style="${alignStyles[buttonStyle.align]}">
+  <button 
+    id="${test.testId}"
+    style="
+      background: ${buttonStyle.bgColor};
+      color: ${buttonStyle.textColor};
+      font-size: ${buttonStyle.fontSize};
+      font-family: ${buttonStyle.fontFamily};
+      font-weight: ${buttonStyle.fontWeight};
+      padding: ${buttonStyle.padding};
+      border: none;
+      border-radius: ${buttonStyle.borderRadius};
+      box-shadow: ${buttonStyle.boxShadow};
+      cursor: pointer;
+    "
+  >
+    ${buttonStyle.text}
+  </button>
+</div>`;
+  } else if (test.triggerType === 'exit') {
+    triggerCode = `
+<!-- Exit Intent Trigger (no button needed) -->
+<!-- Popup will show automatically when user moves mouse to leave page -->`;
+  } else if (test.triggerType === 'delay') {
+    const delaySeconds = test.triggerDelay || 180;
+    const delayMinutes = Math.floor(delaySeconds / 60);
+    triggerCode = `
+<!-- Delay Trigger (${delaySeconds}s = ${delayMinutes}m ${delaySeconds % 60}s) -->
+<!-- Popup will show automatically after ${delaySeconds} seconds on page -->`;
+  }
+
+  const fullCode = `${baseCode}\n${triggerCode}`;
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: 'rgba(0,0,0,0.7)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 9999,
+      padding: '20px'
+    }}>
+      <div style={{
+        background: 'white',
+        borderRadius: '8px',
+        maxWidth: '900px',
+        width: '100%',
+        maxHeight: '90vh',
+        overflow: 'auto',
+        display: 'grid',
+        gridTemplateColumns: test.triggerType === 'button' ? '1fr 1fr' : '1fr',
+        gap: '0'
+      }}>
+        {/* Left: Implementation Code */}
+        <div style={{ padding: '30px', borderRight: test.triggerType === 'button' ? '1px solid #e5e7eb' : 'none' }}>
+          <h2 style={{ marginTop: 0, marginBottom: '20px' }}>Implementation Code</h2>
+          <p style={{ color: '#666', marginBottom: '20px', fontSize: '14px' }}>
+            Test: <strong>{test.name}</strong>
+            <br />
+            <small style={{ fontFamily: 'monospace' }}>{test.testId}</small>
+          </p>
+
+          {/* Universal script */}
+          <div style={{ marginBottom: '20px' }}>
+            <p style={{ fontSize: '12px', fontWeight: '600', marginBottom: '5px' }}>Step 1: Universal Script (add ONCE before &lt;/body&gt;)</p>
+            <pre style={{
+              background: '#f5f5f5',
+              padding: '12px',
+              borderRadius: '4px',
+              overflow: 'auto',
+              fontSize: '11px',
+              fontFamily: 'monospace',
+              border: '1px solid #ddd',
+              lineHeight: '1.4'
+            }}>{baseCode}</pre>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(baseCode);
+                alert('Universal script copied!');
+              }}
+              style={{
+                marginTop: '8px',
+                padding: '6px 12px',
+                background: '#28a745',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '12px'
+              }}
+            >
+              📋 Copy Script
+            </button>
+          </div>
+
+          {/* Trigger code */}
+          <div>
+            <p style={{ fontSize: '12px', fontWeight: '600', marginBottom: '5px' }}>
+              Step 2: {test.triggerType === 'button' ? 'Button HTML' : 'Trigger Code'}
+            </p>
+            <pre style={{
+              background: '#f5f5f5',
+              padding: '12px',
+              borderRadius: '4px',
+              overflow: 'auto',
+              fontSize: '11px',
+              fontFamily: 'monospace',
+              border: '1px solid #ddd',
+              lineHeight: '1.4'
+            }}>{triggerCode}</pre>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(triggerCode);
+                alert('Code copied!');
+              }}
+              style={{
+                marginTop: '8px',
+                padding: '6px 12px',
+                background: '#28a745',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '12px'
+              }}
+            >
+              📋 Copy {test.triggerType === 'button' ? 'Button HTML' : 'Code'}
+            </button>
+          </div>
+
+          {/* Copy all */}
+          <div style={{ marginTop: '20px', padding: '15px', background: '#e7f3ff', borderRadius: '8px' }}>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(fullCode);
+                alert('Full implementation code copied!');
+              }}
+              style={{
+                width: '100%',
+                padding: '10px',
+                background: '#0066cc',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: 'bold'
+              }}
+            >
+              📋 Copy All Code
+            </button>
+          </div>
+        </div>
+
+        {/* Right: Button Customizer (only for button triggers) */}
+        {test.triggerType === 'button' && (
+          <div style={{ padding: '30px', background: '#f9fafb' }}>
+            <h2 style={{ marginTop: 0, marginBottom: '20px' }}>Button Customizer</h2>
+            <p style={{ fontSize: '13px', color: '#666', marginBottom: '20px' }}>
+              Customize the trigger button for this placement:
+            </p>
+
+            <div style={{ display: 'grid', gap: '15px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Button Text</label>
+                <input
+                  type="text"
+                  value={buttonStyle.text}
+                  onChange={(e) => setButtonStyle({...buttonStyle, text: e.target.value})}
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Background</label>
+                  <input
+                    type="color"
+                    value={buttonStyle.bgColor}
+                    onChange={(e) => setButtonStyle({...buttonStyle, bgColor: e.target.value})}
+                    style={{ width: '100%', height: '36px', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Text Color</label>
+                  <input
+                    type="color"
+                    value={buttonStyle.textColor}
+                    onChange={(e) => setButtonStyle({...buttonStyle, textColor: e.target.value})}
+                    style={{ width: '100%', height: '36px', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Font Family</label>
+                <select
+                  value={buttonStyle.fontFamily}
+                  onChange={(e) => setButtonStyle({...buttonStyle, fontFamily: e.target.value})}
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                >
+                  <option value="system-ui, sans-serif">System (Default)</option>
+                  <option value="Arial, sans-serif">Arial</option>
+                  <option value="Helvetica, sans-serif">Helvetica</option>
+                  <option value="Georgia, serif">Georgia</option>
+                  <option value="'Times New Roman', serif">Times New Roman</option>
+                  <option value="'Courier New', monospace">Courier New</option>
+                </select>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Font Size</label>
+                  <input
+                    type="text"
+                    value={buttonStyle.fontSize}
+                    onChange={(e) => setButtonStyle({...buttonStyle, fontSize: e.target.value})}
+                    placeholder="16px"
+                    style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Corner Radius</label>
+                  <input
+                    type="text"
+                    value={buttonStyle.borderRadius}
+                    onChange={(e) => setButtonStyle({...buttonStyle, borderRadius: e.target.value})}
+                    placeholder="6px"
+                    style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Padding</label>
+                <input
+                  type="text"
+                  value={buttonStyle.padding}
+                  onChange={(e) => setButtonStyle({...buttonStyle, padding: e.target.value})}
+                  placeholder="12px 24px"
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Box Shadow</label>
+                <select
+                  value={buttonStyle.boxShadow}
+                  onChange={(e) => setButtonStyle({...buttonStyle, boxShadow: e.target.value})}
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                >
+                  <option value="none">None</option>
+                  <option value="0 2px 4px rgba(0,0,0,0.1)">Small</option>
+                  <option value="0 4px 6px rgba(0,0,0,0.1)">Medium</option>
+                  <option value="0 10px 15px rgba(0,0,0,0.1)">Large</option>
+                  <option value="0 20px 25px rgba(0,0,0,0.15)">X-Large</option>
+                </select>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Alignment</label>
+                <select
+                  value={buttonStyle.align}
+                  onChange={(e) => setButtonStyle({...buttonStyle, align: e.target.value})}
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                >
+                  <option value="left">Left</option>
+                  <option value="center">Center</option>
+                  <option value="right">Right</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Button Preview */}
+            <div style={{ marginTop: '25px' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '10px' }}>Preview:</label>
+              <div style={{ background: 'white', padding: '20px', borderRadius: '8px', border: '1px solid #e5e7eb', textAlign: buttonStyle.align }}>
+                <button
+                  style={{
+                    background: buttonStyle.bgColor,
+                    color: buttonStyle.textColor,
+                    fontSize: buttonStyle.fontSize,
+                    fontFamily: buttonStyle.fontFamily,
+                    fontWeight: buttonStyle.fontWeight,
+                    padding: buttonStyle.padding,
+                    border: 'none',
+                    borderRadius: buttonStyle.borderRadius,
+                    boxShadow: buttonStyle.boxShadow,
+                    cursor: 'pointer'
+                  }}
+                >
+                  {buttonStyle.text}
+                </button>
+              </div>
+              <p style={{ fontSize: '12px', color: '#999', marginTop: '8px', textAlign: 'center' }}>Alignment: {buttonStyle.align}</p>
+            </div>
+
+            <p style={{ fontSize: '11px', color: '#999', marginTop: '15px', fontStyle: 'italic' }}>
+              💡 Customize the button style for each placement on your site. The test tracks popup conversions, not button clicks.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Close Button */}
+      <button
+        onClick={onClose}
+        style={{
+          position: 'absolute',
+          top: '20px',
+          right: '20px',
+          background: '#6c757d',
+          color: 'white',
+          border: 'none',
+          borderRadius: '50%',
+          width: '36px',
+          height: '36px',
+          fontSize: '20px',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        ×
+      </button>
+    </div>
+  );
+}
+
 export default function SplitTestsSection({ popups }) {
   const [splitTests, setSplitTests] = useState([])
   const [loading, setLoading] = useState(true)
@@ -18,19 +388,7 @@ export default function SplitTestsSection({ popups }) {
     buttonId: ''
   })
 
-  // Button style customization (for button trigger type)
-  const [buttonStyle, setButtonStyle] = useState({
-    text: 'Get Free Report',
-    bgColor: '#6B46C1',
-    textColor: '#ffffff',
-    fontSize: '16px',
-    fontFamily: 'system-ui, sans-serif',
-    borderRadius: '6px',
-    padding: '12px 24px',
-    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-    fontWeight: 'bold',
-    align: 'center'
-  })
+
 
   useEffect(() => {
     loadSplitTests()
@@ -64,22 +422,13 @@ export default function SplitTestsSection({ popups }) {
     try {
       const token = localStorage.getItem('mv_popup_token')
       
-      // Build request body with button styles if button trigger
-      const requestBody = {
-        ...newTest
-      }
-      
-      if (newTest.triggerType === 'button') {
-        requestBody.buttonStyle = buttonStyle
-      }
-      
       const response = await fetch('/api/admin/split-tests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(newTest)
       })
 
       const data = await response.json()
@@ -92,19 +441,6 @@ export default function SplitTestsSection({ popups }) {
           triggerType: 'delay',
           triggerDelay: 180,
           buttonId: ''
-        })
-        // Reset button style to default
-        setButtonStyle({
-          text: 'Get Free Report',
-          bgColor: '#6B46C1',
-          textColor: '#ffffff',
-          fontSize: '16px',
-          fontFamily: 'system-ui, sans-serif',
-          borderRadius: '6px',
-          padding: '12px 24px',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-          fontWeight: 'bold',
-          align: 'center'
         })
         loadSplitTests()
         setShowCodeModal({
@@ -364,158 +700,6 @@ export default function SplitTestsSection({ popups }) {
               </div>
             )}
 
-            {/* Button Customizer - only show for button trigger */}
-            {newTest.triggerType === 'button' && (
-              <div style={{ 
-                background: 'white', 
-                padding: '20px', 
-                borderRadius: '8px', 
-                border: '2px solid #6B46C1',
-                marginTop: '10px'
-              }}>
-                <h4 style={{ marginTop: 0, marginBottom: '15px', color: '#6B46C1' }}>🎨 Button Customizer</h4>
-                
-                <div style={{ display: 'grid', gap: '12px' }}>
-                  {/* Button Text */}
-                  <div>
-                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Button Text</label>
-                    <input
-                      type="text"
-                      value={buttonStyle.text}
-                      onChange={(e) => setButtonStyle({...buttonStyle, text: e.target.value})}
-                      style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
-                    />
-                  </div>
-
-                  {/* Colors */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                    <div>
-                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Background</label>
-                      <input
-                        type="color"
-                        value={buttonStyle.bgColor}
-                        onChange={(e) => setButtonStyle({...buttonStyle, bgColor: e.target.value})}
-                        style={{ width: '100%', height: '36px', border: '1px solid #d1d5db', borderRadius: '4px' }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Text Color</label>
-                      <input
-                        type="color"
-                        value={buttonStyle.textColor}
-                        onChange={(e) => setButtonStyle({...buttonStyle, textColor: e.target.value})}
-                        style={{ width: '100%', height: '36px', border: '1px solid #d1d5db', borderRadius: '4px' }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Font Family */}
-                  <div>
-                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Font Family</label>
-                    <select
-                      value={buttonStyle.fontFamily}
-                      onChange={(e) => setButtonStyle({...buttonStyle, fontFamily: e.target.value})}
-                      style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
-                    >
-                      <option value="system-ui, sans-serif">System (Default)</option>
-                      <option value="Arial, sans-serif">Arial</option>
-                      <option value="Helvetica, sans-serif">Helvetica</option>
-                      <option value="Georgia, serif">Georgia</option>
-                      <option value="'Times New Roman', serif">Times New Roman</option>
-                      <option value="'Courier New', monospace">Courier New</option>
-                    </select>
-                  </div>
-
-                  {/* Font Size & Border Radius */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                    <div>
-                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Font Size</label>
-                      <input
-                        type="text"
-                        value={buttonStyle.fontSize}
-                        onChange={(e) => setButtonStyle({...buttonStyle, fontSize: e.target.value})}
-                        placeholder="16px"
-                        style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Corner Radius</label>
-                      <input
-                        type="text"
-                        value={buttonStyle.borderRadius}
-                        onChange={(e) => setButtonStyle({...buttonStyle, borderRadius: e.target.value})}
-                        placeholder="6px"
-                        style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Padding */}
-                  <div>
-                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Padding</label>
-                    <input
-                      type="text"
-                      value={buttonStyle.padding}
-                      onChange={(e) => setButtonStyle({...buttonStyle, padding: e.target.value})}
-                      placeholder="12px 24px"
-                      style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
-                    />
-                  </div>
-
-                  {/* Box Shadow */}
-                  <div>
-                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Shadow</label>
-                    <select
-                      value={buttonStyle.boxShadow}
-                      onChange={(e) => setButtonStyle({...buttonStyle, boxShadow: e.target.value})}
-                      style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
-                    >
-                      <option value="none">None</option>
-                      <option value="0 2px 4px rgba(0,0,0,0.1)">Small</option>
-                      <option value="0 4px 6px rgba(0,0,0,0.1)">Medium</option>
-                      <option value="0 10px 15px rgba(0,0,0,0.1)">Large</option>
-                      <option value="0 20px 25px rgba(0,0,0,0.15)">X-Large</option>
-                    </select>
-                  </div>
-
-                  {/* Alignment */}
-                  <div>
-                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>Alignment</label>
-                    <select
-                      value={buttonStyle.align}
-                      onChange={(e) => setButtonStyle({...buttonStyle, align: e.target.value})}
-                      style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
-                    >
-                      <option value="left">Left</option>
-                      <option value="center">Center</option>
-                      <option value="right">Right</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Preview */}
-                <div style={{ marginTop: '20px', padding: '15px', background: '#f3f4f6', borderRadius: '6px', textAlign: buttonStyle.align }}>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '8px', textAlign: 'left' }}>Preview:</label>
-                  <button
-                    style={{
-                      background: buttonStyle.bgColor,
-                      color: buttonStyle.textColor,
-                      fontSize: buttonStyle.fontSize,
-                      fontFamily: buttonStyle.fontFamily,
-                      fontWeight: buttonStyle.fontWeight,
-                      padding: buttonStyle.padding,
-                      border: 'none',
-                      borderRadius: buttonStyle.borderRadius,
-                      boxShadow: buttonStyle.boxShadow,
-                      cursor: 'pointer'
-                    }}
-                  >
-                    {buttonStyle.text}
-                  </button>
-                </div>
-              </div>
-            )}
-
             <button
               onClick={handleCreateTest}
               style={{
@@ -764,66 +948,10 @@ export default function SplitTestsSection({ popups }) {
 
       {/* Code Modal */}
       {showCodeModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0,0,0,0.7)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 9999
-        }}>
-          <div style={{
-            background: 'white',
-            padding: '30px',
-            borderRadius: '8px',
-            maxWidth: '600px',
-            width: '90%',
-            maxHeight: '80vh',
-            overflow: 'auto'
-          }}>
-            <h3>Implementation Code</h3>
-            <p><strong>Test:</strong> {showCodeModal.test?.name}</p>
-            <p><strong>ID:</strong> {showCodeModal.test?.testId}</p>
-            
-            <pre style={{
-              background: '#f4f4f4',
-              padding: '15px',
-              borderRadius: '4px',
-              overflow: 'auto',
-              fontSize: '13px',
-              margin: '15px 0'
-            }}>
-              {showCodeModal.code || `<script src="https://gcmodal.vercel.app/gc-modal.js"></script>
-<script>
-  GCModal.initUniversal({
-    apiUrl: 'https://gcmodal-api77.vercel.app'
-  });
-</script>`}
-            </pre>
-
-            {showCodeModal.test?.triggerType === 'button' && (
-              <p><strong>Button HTML:</strong></p>
-            )}
-            
-            <button
-              onClick={() => setShowCodeModal(null)}
-              style={{
-                padding: '10px 20px',
-                background: '#6c757d',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <CodeImplementationModal 
+          test={showCodeModal.test} 
+          onClose={() => setShowCodeModal(null)} 
+        />
       )}
 
       {/* Challenger Modal */}
