@@ -730,38 +730,24 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Right half of curves, flipped 180° - curves point toward form */}
-          <div style={{
-            position: 'absolute',
-            right: '0',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            width: '40px',
-            height: '100px',
-            overflow: 'hidden'
-          }}>
-            {/* Top half - concave curve facing left, point to right */}
-            <div style={{
+          {/* Curved point toward form using SVG */}
+          <svg
+            style={{
               position: 'absolute',
-              top: '0',
-              right: '0',
-              width: '80px',
-              height: '50px',
-              background: '#e8f4fc',
-              borderRadius: '50% 0 0 50% / 100% 0 0 100%'
-            }} />
-            {/* Bottom half - concave curve facing left, point to right */}
-            <div style={{
-              position: 'absolute',
-              bottom: '0',
-              right: '0',
-              width: '80px',
-              height: '50px',
-              background: '#e8f4fc',
-              borderRadius: '50% 0 0 50% / 100% 0 0 100%',
-              transform: 'scaleY(-1)'
-            }} />
-          </div>
+              right: '-1px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: '40px',
+              height: '100px'
+            }}
+            viewBox="0 0 40 100"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M 40,0 Q 0,25 40,50 Q 0,75 40,100 L 40,100 L 40,0 Z"
+              fill="#e8f4fc"
+            />
+          </svg>
         </div>
         
         {/* Right: Form with white background */}
