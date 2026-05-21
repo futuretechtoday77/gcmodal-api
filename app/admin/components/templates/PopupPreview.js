@@ -461,8 +461,10 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           <div style={{
             ...containerStyles,
             marginTop: '20px',
-            padding: '20px',
-            width: '280px'
+            padding: '15px',
+            width: '100%',
+            maxWidth: '290px',
+            boxSizing: 'border-box'
           }}>
             <h2 style={{ 
               color: variant.primary, 
@@ -484,7 +486,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
                 marginBottom: '10px',
                 border: '2px solid #e5e7eb',
                 borderRadius: '6px',
-                fontSize: '13px'
+                fontSize: '13px',
+                boxSizing: 'border-box'
               }}
             />
             
@@ -498,7 +501,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
                 border: 'none',
                 borderRadius: '6px',
                 fontSize: '14px',
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                boxSizing: 'border-box'
               }}
             >
               {popup.buttonText || 'Schedule Now'}
