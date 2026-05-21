@@ -162,7 +162,9 @@ git push origin v2.5.0
 
 | Version | Tag | Commit | Date | Status |
 |---------|-----|--------|------|--------|
-| v2.4.0 | `v2.4.0` | `97779ad` | 2026-05-20 | ✅ Current |
+| v2.5.1 | `v2.5.1` | `3975fc2` | 2026-05-21 | ✅ Current |
+| v2.5.0 | `v2.5.0` | `288e720` | 2026-05-21 | ⚠️ Superseded |
+| v2.4.0 | `v2.4.0` | `97779ad` | 2026-05-20 | ⚠️ Pre-split-testing |
 | v2.3.3 | `v2.3.3` | `454bb53` | 2026-05-19 | ⚠️ Backup |
 | v2.3.2 | `v2.3.2` | `75a0aac` | 2026-05-19 | ❌ Deprecated |
 
@@ -186,22 +188,34 @@ git push origin v2.5.0
 
 ---
 
-**Last Updated:** 2026-05-20  
-**Version:** v2.4.0  
-**Next Planned:** v2.5.0 (Split Testing / A-B Testing)
+**Last Updated:** 2026-05-21  
+**Version:** v2.5.1  
+**Next Planned:** v2.5.2 (pending)
 
 ## Current Version
 
-### v2.5.0 - PRODUCTION (Split Testing / A/B Testing)
+### v2.5.1 - PRODUCTION (Split Testing with Button Customizer)
 **Release Date:** 2026-05-21
-**Commit:** `288e720`
+**Commit:** `3975fc2`
 **Status:** ✅ Production Ready
 
-**Feature:** A/B Split Testing - Complete implementation allowing users to test two popup variations with real-time conversion tracking.
+**Feature:** A/B Split Testing with full button customization
 
-**What's in v2.5.0:**
+**What's New in v2.5.1:**
+- **Button Customizer** - Full styling options for button-triggered tests:
+  - Button text customization
+  - Background and text color pickers
+  - Font family selection (System, Arial, Helvetica, Georgia, etc.)
+  - Font size control
+  - Corner radius (rounded corners)
+  - Padding adjustment
+  - Shadow options (None, Small, Medium, Large, X-Large)
+  - Alignment (Left, Center, Right)
+  - Live preview of styled button
+- Button styles preserved in Champion vs Challenger tests
+- Styled button HTML included in implementation code
 
-**Split Testing Features:**
+**Complete Split Testing Features:**
 - Create A/B tests between any two popups
 - Fixed 50/50 traffic split (random on each page load)
 - Conversion tracking on successful form submissions
@@ -215,38 +229,22 @@ git push origin v2.5.0
 
 **Admin Dashboard:**
 - New "Split Tests (A/B Testing)" section
-- Create test form with popup selection
+- Create test form with popup selection and button customizer
 - Test list showing all statuses (running/completed/archived)
 - Conversion counts for each variant
 - Complete test modal with winner selection
-- Implementation code display
+- Implementation code display with styled button
 - Champion vs Challenger creation flow
 
-**Frontend Library (v2.5.0):**
+**Frontend Library (v2.5.1):**
 - Automatic split test detection
 - Built-in conversion tracking
 - Backward compatible with existing popups
 - No code changes needed on client sites
 
-**API Endpoints:**
-- `POST /api/admin/split-tests` - Create test
-- `GET /api/admin/split-tests` - List all tests
-- `GET/PUT/DELETE /api/admin/split-tests/[testId]` - Manage tests
-- `POST /api/admin/split-tests/from-winner` - Champion vs Challenger
-- `POST /api/split-tests/[testId]/convert` - Record conversions
-- `GET /api/popups/[popupId]` - Modified to handle split-* IDs
-
-**Files Added/Modified:**
-- `/app/api/admin/split-tests/route.js` - Create, list tests
-- `/app/api/admin/split-tests/[testId]/route.js` - Manage individual tests
-- `/app/api/admin/split-tests/from-winner/route.js` - Champion vs Challenger
-- `/app/api/split-tests/[testId]/convert/route.js` - Record conversions
-- `/app/api/popups/route.js` - Modified for single popup lookup
-- `/app/admin/components/SplitTestsSection.js` - NEW: Admin UI
-- `/app/admin/page.js` - Added SplitTestsSection
-- `/gc-modal-library/public/gc-modal.js` - v2.5.0 with split testing
-
 **Breaking Changes:** None - fully backward compatible
+
+**Rollback:** To v2.5.0 (commit 288e720) or v2.4.0 (commit 97779ad) if needed
 
 **Rollback:** To v2.4.0 (commit 97779ad) if needed
 
@@ -254,9 +252,16 @@ git push origin v2.5.0
 
 ## Previous Versions
 
+### v2.5.0 - SUPERSEDED
+**Release Date:** 2026-05-21  
+**Commit:** `288e720`  
+**Status:** ⚠️ Superseded by v2.5.1
+
+Initial split testing release without button customizer. Use v2.5.1 for full button styling support.
+
 ### v2.4.0 - STABLE (Baseline)
 **Release Date:** 2026-05-20  
 **Commit:** `97779ad`  
 **Status:** ⚠️ Previous stable (before split testing)
 
-Use this if v2.5.0 has critical issues.
+Use this if v2.5.x has critical issues.
