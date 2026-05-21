@@ -45,6 +45,9 @@ export default function PopupEditPage() {
     overlayOpacity: 50,
     buttonColor: '#3b82f6',
     popupHeight: 'standard',
+    useCustomTextColors: false,
+    headlineColor: '#000000',
+    subheadlineColor: '#666666',
     triggerType: 'button',
     triggerDelay: 180,
     buttonAlign: 'center',
@@ -610,6 +613,46 @@ export default function PopupEditPage() {
                   <option value="standard">Standard</option>
                   <option value="tall">Tall (more content space)</option>
                 </select>
+              </div>
+              
+              {/* Custom Text Colors */}
+              <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
+                <h3 style={{ marginTop: 0 }}>Custom Text Colors</h3>
+                
+                <div style={{ marginBottom: 15 }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                    <input
+                      type="checkbox"
+                      checked={popup.useCustomTextColors}
+                      onChange={(e) => setPopup({...popup, useCustomTextColors: e.target.checked})}
+                    />
+                    <span>Use custom text colors</span>
+                  </label>
+                </div>
+                
+                {popup.useCustomTextColors && (
+                  <>
+                    <div style={{ marginBottom: 15 }}>
+                      <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Headline Color</label>
+                      <input
+                        type="color"
+                        value={popup.headlineColor || '#000000'}
+                        onChange={(e) => setPopup({...popup, headlineColor: e.target.value})}
+                        style={{ width: '60px', height: '40px', border: 'none', borderRadius: 4, cursor: 'pointer' }}
+                      />
+                    </div>
+                    
+                    <div style={{ marginBottom: 15 }}>
+                      <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Subheadline Color</label>
+                      <input
+                        type="color"
+                        value={popup.subheadlineColor || '#666666'}
+                        onChange={(e) => setPopup({...popup, subheadlineColor: e.target.value})}
+                        style={{ width: '60px', height: '40px', border: 'none', borderRadius: 4, cursor: 'pointer' }}
+                      />
+                    </div>
+                  </>
+                )}
               </div>
               
               {/* Full Background Overlay Settings */}

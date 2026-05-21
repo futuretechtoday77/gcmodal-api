@@ -13,9 +13,9 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
   // Button color - use custom or fall back to variant
   const buttonColor = popup.buttonColor || variant.primary
   
-  // Text colors from theme
-  const textColor = variant.text || '#1f2937'
-  const textLightColor = variant.textLight || '#6b7280'
+  // Text colors from theme or custom
+  const textColor = popup.useCustomTextColors ? popup.headlineColor : (variant.text || '#1f2937')
+  const textLightColor = popup.useCustomTextColors ? popup.subheadlineColor : (variant.textLight || '#6b7280')
   
   // Base container styles
   const containerStyles = {
@@ -249,13 +249,13 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         {/* Left: Image */}
         <div style={{
           width: '45%',
-          background: hasImage ? `url(${popup.imageUrl}) center center / cover no-repeat` : variant.secondary,
+          background: popup.imageUrl ? `url(${popup.imageUrl}) center center / cover no-repeat` : variant.secondary,
           minHeight: '400px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-          {!hasImage && <span style={{ color: 'white', fontSize: '14px' }}>Image Placeholder</span>}
+          {!popup.imageUrl && <span style={{ color: 'white', fontSize: '14px' }}>Image Placeholder</span>}
         </div>
         
         {/* Right: Form */}
@@ -368,17 +368,17 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
     return (
       <div style={{
         ...containerStyles,
-        padding: isMobile ? '20px 15px' : '30px',
+        padding: isMobile ? '15px' : '20px',
         textAlign: 'center',
         boxSizing: 'border-box'
       }}>
         {/* Product Image */}
         {showImage && (
           <div style={{
-            width: isMobile ? '100px' : '150px',
-            height: isMobile ? '130px' : '200px',
+            width: isMobile ? '80px' : '120px',
+            height: isMobile ? '100px' : '160px',
             background: '#e5e7eb',
-            margin: '0 auto 15px',
+            margin: '0 auto 10px',
             borderRadius: '8px',
             display: 'flex',
             alignItems: 'center',
@@ -391,8 +391,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         )}
         
         <h2 style={{ 
-          color: variant.primary, 
-          margin: '0 0 10px 0', 
+          color: textColor, 
+          margin: '0 0 8px 0', 
           fontSize: isMobile ? '18px' : '22px',
           fontWeight: 'bold'
         }}>
