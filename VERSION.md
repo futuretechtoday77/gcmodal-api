@@ -162,7 +162,8 @@ git push origin v2.5.0
 
 | Version | Tag | Commit | Date | Status |
 |---------|-----|--------|------|--------|
-| v2.5.3 | `v2.5.3` | `TBD` | 2026-05-21 | ✅ Current |
+| v2.6.0 | `v2.6.0` | `cdade2e` | 2026-05-21 | ✅ Current |
+| v2.5.3 | `v2.5.3` | `TBD` | 2026-05-21 | ⚠️ Superseded (folders decorative only) |
 | v2.5.2 | `v2.5.2` | `3325261` | 2026-05-21 | ⚠️ Superseded |
 | v2.5.1 | `v2.5.1` | `3975fc2` | 2026-05-21 | ⚠️ Superseded |
 | v2.5.0 | `v2.5.0` | `288e720` | 2026-05-21 | ⚠️ Superseded |
@@ -191,32 +192,36 @@ git push origin v2.5.0
 ---
 
 **Last Updated:** 2026-05-21  
-**Version:** v2.5.1  
-**Next Planned:** v2.5.2 (pending)
+**Version:** v2.6.0  
+**Next Planned:** TBD
 
 ## Current Version
 
-### v2.5.3 - PRODUCTION (Folder Organization)
+### v2.6.0 - PRODUCTION (Functional Folder Navigation)
 **Release Date:** 2026-05-21
-**Commit:** `TBD`
+**Commit:** `cdade2e`
 **Status:** ✅ Production Ready
 
-**Feature:** Folder organization for popups and split tests
+**Feature:** Functional folder navigation system - folders now actually organize and hide content
 
-**What's New in v2.5.3:**
-- **Folder Management** - Organize popups and split tests into folders:
-  - Create folders for popups and split tests separately
-  - Drag and drop items into folders
-  - Expand/collapse folder views
-  - Rename folders
-  - Delete folders (items remain, just unorganized)
-  - "Unorganized" section for items not in any folder
-  - Visual indicators for item counts
-- Popup folders in main admin dashboard
-- Split test folders in split tests section
-- Persistent storage in Control Board
+**What's New in v2.6.0:**
+- **Functional Folder System** - Folders now truly organize the interface:
+  - Popups in folders are ONLY visible inside their folder (not duplicated in main table)
+  - Main table renamed to "Unorganized Popups" (only shows items not in folders)
+  - Dramatically shorter page - much easier to navigate
+  - Full popup details in folder views (stats, Edit, Clone, View Code, Delete buttons)
+  - Expandable folder tables with complete functionality
+  - "Remove from folder" vs "Delete popup" clearly distinguished (yellow vs red)
+  - Drag items between folders and unorganized section
+  - Real organization instead of just decorative folders
+- Applies to both popup and split test folders
+- Makes long lists manageable by hiding organized items
 
-**Previous Features (from v2.5.2):**
+**Previous Features (from v2.5.3):**
+- **Folder Management** - Create, rename, delete folders with drag-and-drop organization
+- **Folder Storage** - Persistent folder data in Control Board
+
+**From v2.5.2:**
 - **Button Customizer** - Full styling options for button-triggered tests (now in code modal)
   - Button text, colors, font, size, padding, shadow, alignment
   - Live preview
@@ -251,9 +256,7 @@ git push origin v2.5.0
 
 **Breaking Changes:** None - fully backward compatible
 
-**Rollback:** To v2.5.0 (commit 288e720) or v2.4.0 (commit 97779ad) if needed
-
-**Rollback:** To v2.4.0 (commit 97779ad) if needed
+**Rollback:** To v2.5.3 (if tagged) or v2.4.0 (commit 97779ad) if needed
 
 ---
 

@@ -2,7 +2,7 @@
 
 **Purpose:** Create, modify, and manage lead capture popups for HealthHarmonic.com using the MV Popup Manager system, including A/B split testing.
 
-**Version:** 2.5.0  
+**Version:** 2.6.0  
 **Status:** Production  
 **Last Updated:** 2026-05-21
 
@@ -55,7 +55,70 @@ Use this skill when the user asks to:
 
 ---
 
-## Split Testing (A/B Testing) - NEW in v2.5.0
+## Folder Organization - NEW in v2.6.0
+
+### Overview
+
+The admin dashboard now supports organizing popups and split tests into folders for easier navigation.
+
+**Key Features:**
+- Create folders to group related popups/tests
+- Drag and drop items between folders
+- Expand folders to see full details (stats, action buttons)
+- Items in folders are hidden from main "Unorganized" table
+- Much shorter, more navigable page
+
+### How Folder Organization Works
+
+1. **Folders display at top of page** → Collapsible sections with item counts
+2. **Drag popup into folder** → It disappears from "Unorganized Popups" table
+3. **Expand folder** → See full table with stats and all action buttons (Edit, Clone, View Code, Delete)
+4. **Main table becomes short** → Only shows unorganized items
+
+### Managing Folders
+
+**Create Folder:**
+1. Click "+ New Folder" button
+2. Enter folder name
+3. Click "Create"
+
+**Organize Items:**
+1. Drag any popup from main table
+2. Drop onto folder header
+3. Popup moves into folder
+
+**View Folder Contents:**
+1. Click folder header to expand
+2. See full table with stats and buttons
+3. Click again to collapse
+
+**Remove from Folder:**
+1. Expand folder
+2. Click yellow "Remove" button
+3. Item returns to "Unorganized" table
+
+**Delete Folder:**
+1. Click trash icon on folder header
+2. Confirm deletion
+3. Items inside move back to unorganized (not deleted)
+
+### Folder Best Practices
+
+**Suggested Organization:**
+- By product/offer ("RedLight Popups", "Forbidden Food Popups")
+- By status ("Active Campaigns", "Archived", "Testing")
+- By season ("Black Friday", "New Year")
+- By performance ("High Converters", "Needs Testing")
+
+**Benefits:**
+- Dramatically shorter admin page
+- Easy to find specific campaigns
+- Group related tests together
+- Hide inactive/archived items
+
+---
+
+## Split Testing (A/B Testing)
 
 ### Overview
 
@@ -1083,8 +1146,8 @@ git push -f origin master
 
 ---
 
-**Version:** 2.5.0  
+**Version:** 2.6.0  
 **Last Updated:** 2026-05-21  
-**Status:** Production-ready with Split Testing
+**Status:** Production-ready with Split Testing and Folder Organization
 
 **END OF SKILL**
