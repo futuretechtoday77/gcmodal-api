@@ -219,12 +219,51 @@ export const fieldOptions = [
 ]
 
 export const colorVariants = {
-  purple: { name: 'Purple', primary: '#7c3aed', secondary: '#a78bfa', bg: '#faf5ff' },
-  blue: { name: 'Blue', primary: '#2563eb', secondary: '#60a5fa', bg: '#eff6ff' },
-  green: { name: 'Green', primary: '#059669', secondary: '#34d399', bg: '#ecfdf5' },
-  red: { name: 'Red', primary: '#dc2626', secondary: '#f87171', bg: '#fef2f2' },
-  orange: { name: 'Orange', primary: '#ea580c', secondary: '#fb923c', bg: '#fff7ed' },
-  pink: { name: 'Pink', primary: '#db2777', secondary: '#f472b6', bg: '#fdf2f8' },
-  dark: { name: 'Dark', primary: '#1f2937', secondary: '#4b5563', bg: '#111827', text: 'white' },
-  white: { name: 'White', primary: '#2563eb', secondary: '#60a5fa', bg: '#ffffff', text: '#1f2937' }
+  // High contrast professional themes
+  professional: { 
+    name: 'Professional (White/Dark)', 
+    primary: '#1f2937', 
+    secondary: '#4b5563', 
+    bg: '#ffffff',
+    text: '#111827',
+    textLight: '#6b7280',
+    accent: '#2563eb'
+  },
+  professionalBlue: { 
+    name: 'Professional Blue', 
+    primary: '#1e40af', 
+    secondary: '#3b82f6', 
+    bg: '#ffffff',
+    text: '#1e3a8a',
+    textLight: '#64748b',
+    accent: '#2563eb'
+  },
+  darkMode: { 
+    name: 'Dark Mode', 
+    primary: '#ffffff', 
+    secondary: '#e5e7eb', 
+    bg: '#111827',
+    text: '#ffffff',
+    textLight: '#9ca3af',
+    accent: '#3b82f6'
+  },
+  // Clean minimal
+  clean: { 
+    name: 'Clean Minimal', 
+    primary: '#000000', 
+    secondary: '#374151', 
+    bg: '#ffffff',
+    text: '#111827',
+    textLight: '#6b7280',
+    accent: '#000000'
+  },
+  // Original pastel themes (kept for compatibility)
+  purple: { name: 'Purple', primary: '#7c3aed', secondary: '#a78bfa', bg: '#faf5ff', text: '#7c3aed', textLight: '#a78bfa' },
+  blue: { name: 'Blue', primary: '#2563eb', secondary: '#60a5fa', bg: '#eff6ff', text: '#2563eb', textLight: '#60a5fa' },
+  green: { name: 'Green', primary: '#059669', secondary: '#34d399', bg: '#ecfdf5', text: '#059669', textLight: '#34d399' },
+  red: { name: 'Red', primary: '#dc2626', secondary: '#f87171', bg: '#fef2f2', text: '#dc2626', textLight: '#f87171' },
+  orange: { name: 'Orange', primary: '#ea580c', secondary: '#fb923c', bg: '#fff7ed', text: '#ea580c', textLight: '#fb923c' },
+  pink: { name: 'Pink', primary: '#db2777', secondary: '#f472b6', bg: '#fdf2f8', text: '#db2777', textLight: '#f472b6' },
+  dark: { name: 'Dark', primary: '#1f2937', secondary: '#4b5563', bg: '#111827', text: '#ffffff', textLight: '#9ca3af' },
+  white: { name: 'White', primary: '#2563eb', secondary: '#60a5fa', bg: '#ffffff', text: '#1f2937', textLight: '#6b7280' }
 }

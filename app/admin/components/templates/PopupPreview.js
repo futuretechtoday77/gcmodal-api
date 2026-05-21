@@ -13,6 +13,10 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
   // Button color - use custom or fall back to variant
   const buttonColor = popup.buttonColor || variant.primary
   
+  // Text colors from theme
+  const textColor = variant.text || '#1f2937'
+  const textLightColor = variant.textLight || '#6b7280'
+  
   // Base container styles
   const containerStyles = {
     background: variant.bg,
@@ -722,7 +726,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             textAlign: 'center'
           }}>
             <h2 style={{ 
-              color: 'white', 
+              color: textColor, 
               margin: '0 0 10px 0', 
               fontSize: '18px',
               fontWeight: 'bold',
@@ -733,7 +737,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             </h2>
             
             {popup.subheadline && (
-              <p style={{ color: 'rgba(255,255,255,0.9)', margin: '0 0 15px 0', fontSize: '13px' }}>
+              <p style={{ color: textLightColor, margin: '0 0 15px 0', fontSize: '13px' }}>
                 {popup.subheadline}
               </p>
             )}
@@ -771,7 +775,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             </button>
             
             {popup.showTrustText && (
-              <p style={{ marginTop: '15px', fontSize: '11px', color: 'rgba(255,255,255,0.7)' }}>
+              <p style={{ marginTop: '15px', fontSize: '11px', color: textLightColor }}>
                 {popup.trustText || 'We respect your email inbox and will never spam!'}
               </p>
             )}
@@ -823,10 +827,10 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           zIndex: 1,
           padding: getPadding(),
           background: 'transparent',
-          color: 'white'
+          color: textColor
         }}>
           <h2 style={{ 
-            color: 'white', 
+            color: textColor, 
             margin: '0 0 10px 0', 
             fontSize: '24px',
             fontWeight: 'bold'
@@ -835,7 +839,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           </h2>
           
           {popup.subheadline && (
-            <p style={{ color: 'rgba(255,255,255,0.8)', margin: '0 0 20px 0', fontSize: '15px' }}>
+            <p style={{ color: textLightColor, margin: '0 0 20px 0', fontSize: '15px' }}>
               {popup.subheadline}
             </p>
           )}
@@ -873,7 +877,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           </button>
           
           {popup.showTrustText && (
-            <p style={{ marginTop: '15px', fontSize: '12px', color: 'rgba(255,255,255,0.6)' }}>
+            <p style={{ marginTop: '15px', fontSize: '12px', color: textLightColor }}>
               {popup.trustText || 'We respect your email inbox and will never spam!'}
             </p>
           )}
