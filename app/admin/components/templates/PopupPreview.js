@@ -76,17 +76,19 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         
         {/* Image (if any) */}
         {hasImage && (
-          <img 
-            src={popup.imageUrl} 
-            alt="" 
-            style={{
-              width: '100%',
-              maxHeight: '180px',
-              objectFit: 'cover',
-              borderRadius: '8px',
-              marginBottom: '20px'
-            }}
-          />
+          <div style={{ overflow: 'hidden', borderRadius: '8px', marginBottom: '20px' }}>
+            <img 
+              src={popup.imageUrl} 
+              alt="" 
+              style={{
+                width: '100%',
+                maxHeight: '180px',
+                objectFit: 'cover',
+                transform: `scale(${popup.imageScale / 100})`,
+                transformOrigin: 'center center'
+              }}
+            />
+          </div>
         )}
         
         {/* Content */}
@@ -728,16 +730,17 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Curved shape on right edge */}
+          {/* Curved shape pointing left toward image */}
           <div style={{
             position: 'absolute',
-            right: '-30px',
+            right: '0',
             top: '50%',
             transform: 'translateY(-50%)',
-            width: '60px',
-            height: '120px',
+            width: '40px',
+            height: '150px',
             background: '#ffffff',
-            borderRadius: '50% 0 0 50% / 50% 0 0 50%'
+            borderRadius: '100% 0 0 100% / 50% 0 0 50%',
+            marginRight: '-20px'
           }} />
         </div>
         

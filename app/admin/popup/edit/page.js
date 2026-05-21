@@ -170,7 +170,22 @@ export default function PopupEditPage() {
           triggerType: existing.triggerType || 'button',
           triggerDelay: existing.triggerDelay || 180,
           buttonAlign: existing.buttonAlign || 'center',
-          template: templateId
+          template: templateId,
+          // New v2.8.x fields
+          buttonColor: existing.buttonColor || '#3b82f6',
+          popupHeight: existing.popupHeight || 'standard',
+          trustText: existing.trustText || 'We respect your email inbox and will never spam!',
+          showTrustText: existing.showTrustText !== undefined ? existing.showTrustText : true,
+          showOverlay: existing.showOverlay !== undefined ? existing.showOverlay : false,
+          overlayColor: existing.overlayColor || '#000000',
+          overlayOpacity: existing.overlayOpacity || 50,
+          useCustomTextColors: existing.useCustomTextColors || false,
+          headlineColor: existing.headlineColor || '#000000',
+          subheadlineColor: existing.subheadlineColor || '#666666',
+          // Personal Consultation fields
+          avatarUrl: existing.avatarUrl || '',
+          avatarPosition: existing.avatarPosition || 'bottom-left',
+          chatMessage: existing.chatMessage || 'Want to have a free consultation with an expert?'
         })
         
         setLoading(false)
@@ -237,7 +252,21 @@ export default function PopupEditPage() {
               }
             },
             fields,
-            template: selectedTemplate.id
+            template: selectedTemplate.id,
+            // Include all new v2.8.x fields
+            buttonColor: popup.buttonColor,
+            popupHeight: popup.popupHeight,
+            trustText: popup.trustText,
+            showTrustText: popup.showTrustText,
+            showOverlay: popup.showOverlay,
+            overlayColor: popup.overlayColor,
+            overlayOpacity: popup.overlayOpacity,
+            useCustomTextColors: popup.useCustomTextColors,
+            headlineColor: popup.headlineColor,
+            subheadlineColor: popup.subheadlineColor,
+            avatarUrl: popup.avatarUrl,
+            avatarPosition: popup.avatarPosition,
+            chatMessage: popup.chatMessage
           },
           isNew
         })
