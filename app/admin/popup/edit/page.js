@@ -174,11 +174,22 @@ function PopupEditForm() {
           const existingPopup = data.popups.find(p => p.id === popupId)
           if (existingPopup) {
             setPopup({
-              ...popup,
-              ...existingPopup,
-              imagePosition: existingPopup.image?.position || 'none',
-              imageUrl: existingPopup.image?.url || '',
-              imageScale: existingPopup.image?.scale || 100
+              id: existingPopup.id || '',
+              name: existingPopup.name || '',
+              tagId: existingPopup.tagId || '',
+              variant: existingPopup.design?.variant || 'purple',
+              layout: existingPopup.design?.layout || 'centered',
+              headline: existingPopup.design?.headline || '',
+              subheadline: existingPopup.design?.subheadline || '',
+              bodyCopy: existingPopup.design?.bodyCopy || '',
+              buttonText: existingPopup.design?.buttonText || '',
+              imageUrl: existingPopup.design?.image?.url || '',
+              imagePosition: existingPopup.design?.image?.position || 'none',
+              imageScale: existingPopup.design?.image?.scale || 100,
+              includeFirstName: existingPopup.fields?.includes('firstName') || false,
+              triggerType: existingPopup.triggerType || 'button',
+              triggerDelay: existingPopup.triggerDelay || 180,
+              buttonAlign: existingPopup.buttonAlign || 'center'
             })
           } else {
             setError('Popup not found')
@@ -254,6 +265,14 @@ function PopupEditForm() {
     if (confirm('Discard changes and return to admin?')) {
       router.push('/admin')
     }
+  }
+
+  if (loading) {
+    return (
+      <div style={{ padding: '40px', textAlign: 'center' }}>
+        <p>Loading...</p>
+      </div>
+    )
   }
 
   if (loading) {
