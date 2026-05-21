@@ -16,10 +16,11 @@ export async function POST(request) {
       throw new Error('Control Board token not configured');
     }
 
-    // Build popup config
+    // Build popup config with ALL v2.8.x fields
     const popupConfig = {
       name: popup.name,
       tagId: popup.tagId,
+      template: popup.template || 'clean-gradient',
       design: {
         variant: popup.variant,
         layout: popup.layout,
@@ -33,7 +34,22 @@ export async function POST(request) {
           scale: popup.imageScale || 100
         }
       },
-      fields: popup.includeFirstName ? ['firstName', 'email'] : ['email']
+      fields: popup.includeFirstName ? ['firstName', 'email'] : ['email'],
+      // New v2.8.x fields
+      buttonColor: popup.buttonColor,
+      popupHeight: popup.popupHeight,
+      trustText: popup.trustText,
+      showTrustText: popup.showTrustText,
+      showOverlay: popup.showOverlay,
+      overlayColor: popup.overlayColor,
+      overlayOpacity: popup.overlayOpacity,
+      useCustomTextColors: popup.useCustomTextColors,
+      headlineColor: popup.headlineColor,
+      subheadlineColor: popup.subheadlineColor,
+      // Personal Consultation fields
+      avatarUrl: popup.avatarUrl,
+      avatarPosition: popup.avatarPosition,
+      chatMessage: popup.chatMessage
     };
 
     // Save to Control Board settings as persistent storage
