@@ -2,7 +2,7 @@
 
 **Purpose:** Create, modify, and manage lead capture popups for HealthHarmonic.com using the MV Popup Manager system, including A/B split testing.
 
-**Version:** 2.7.1  
+**Version:** 2.8.0  
 **Status:** Production  
 **Last Updated:** 2026-05-21
 
@@ -106,10 +106,86 @@ Popup creation and editing now happens on dedicated pages instead of inline on t
 - Real-time preview of how popup will look
 - Updates as you type
 - Shows actual layout, colors, and content
+- Mobile/Desktop toggle for responsive preview
 
 **Navigation:**
 - "Back to Admin" button returns to dashboard
 - Cancel button confirms before discarding changes
+
+---
+
+## Template System (NEW in v2.8.0)
+
+### Overview
+
+The popup system now includes a comprehensive template system with 9 pre-designed layouts, mobile-first responsive design, and extensive customization options.
+
+### Available Templates
+
+**Minimal Templates:**
+- **Clean Gradient** - Simple gradient background with centered form
+- **Ultra Minimal** - Text only, single field. Maximum conversion focus
+
+**Image Templates:**
+- **Split Screen** - Image on left, form on right. Full image display
+- **Full Background** - Full-bleed background image with overlay form
+- **Full Background Tall** - Taller version with more vertical space
+- **Full Background Wide** - Wider desktop view for more impact
+- **Full Background Compact** - Minimal height, just the essentials
+
+**Product Templates:**
+- **Lead Magnet** - Product image (book/mockup) with download form
+
+**Personal Templates:**
+- **Personal Consultation** - Professional photo with floating avatar icon, chat-style mobile view
+
+### Template Features
+
+**Mobile-First Design:**
+- All templates default to mobile preview
+- Responsive breakpoints at 320px (mobile) and desktop
+- Images adapt or hide based on template configuration
+- Touch-friendly button and input sizes
+
+**Customization Options (All Templates):**
+- **Color Theme** - 12 themes including high-contrast professional options
+- **Button Color** - 8 preset colors (Blue, Green, Red, Purple, Orange, Pink, Teal, Black)
+- **Popup Height** - Compact, Standard, or Tall
+- **Custom Text Colors** - Override headline and subheadline colors
+- **Trust Text** - Customizable privacy message with on/off toggle
+
+**Full Background Specific:**
+- **Overlay Toggle** - Show/hide color overlay on image
+- **Overlay Color** - Any color with color picker
+- **Overlay Opacity** - 10-90% adjustable
+
+**Personal Consultation Specific:**
+- **Avatar Image** - Upload or URL
+- **Avatar Position** - Bottom-left or Bottom-right
+- **Chat Message** - Customizable chat bubble text for mobile
+
+**Image Handling:**
+- All images use `object-fit: contain` to show full image without cropping
+- Mobile images display at appropriate sizes per template
+- Background images cover the full container
+
+### Color Themes
+
+**High-Contrast Professional Themes:**
+- **Professional (White/Dark)** - White bg, dark text, blue accent
+- **Professional Blue** - White bg, navy text, blue accent
+- **Dark Mode** - Dark bg, white text, blue accent
+- **Clean Minimal** - White bg, black text
+
+**Original Pastel Themes:**
+- Purple, Blue, Green, Red, Orange, Pink, Dark, White
+
+### Template Selection
+
+1. In popup edit page, click "Template" tab
+2. Browse templates by category (All, Minimal, With Image, Product, Personal)
+3. Click any template to preview
+4. Template applies immediately to live preview
 
 ---
 
@@ -380,6 +456,10 @@ Add IDENTICAL popup config to `staticPopups` object. Must match File 1 exactly.
 
 ### Step 3: Deploy Changes
 
+**⚠️ IMPORTANT:** Currently, saving a popup in the admin dashboard only saves to the database. To make it LIVE on your website, you must also add it to the configuration files and deploy.
+
+**Current Manual Process:**
+
 ```bash
 cd ~/.openclaw/workspace
 git add app/api/popups/route.js app/api/admin/popups/route.js
@@ -388,6 +468,8 @@ git push origin master
 ```
 
 Vercel auto-deploys in ~30-60 seconds.
+
+**Coming in v2.9.0:** Auto-deploy feature - saving in admin will automatically update config files and deploy.
 
 ### Step 4: Upload Images
 
@@ -1204,8 +1286,8 @@ git push -f origin master
 
 ---
 
-**Version:** 2.6.0  
+**Version:** 2.8.0  
 **Last Updated:** 2026-05-21  
-**Status:** Production-ready with Split Testing and Folder Organization
+**Status:** Production-ready with Template System, Split Testing and Folder Organization
 
 **END OF SKILL**

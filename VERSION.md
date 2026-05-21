@@ -12,37 +12,39 @@ We use **Semantic Versioning** (SemVer) with the format: `MAJOR.MINOR.PATCH`
 
 ## Current Version
 
-### v2.7.1 - PRODUCTION (Complete Edit Page)
+### v2.8.0 - PRODUCTION (Template System)
 **Release Date:** 2026-05-21  
-**Commit:** `cebb74d`  
+**Commit:** `ecd0913`  
 **Status:** ✅ Production Ready
 
-**Feature:** Fully functional dedicated edit page with all features restored
+**Feature:** Comprehensive template system with 9 pre-designed layouts and extensive customization
 
-**What's New in v2.7.1:**
-- **Complete Edit Page** - Full-featured `/admin/popup/edit` page:
-  - All form fields: ID, Name, Tag ID, Design, Content, Image, Fields
-  - Image upload with file picker or URL input
-  - Image position selection (none, full-width, top-right, left-side)
-  - Image scale slider (0-200%)
-  - Color variants: Purple, Blue, Green, Red, Orange
-  - Layout options: Centered, Side-by-Side, Compact, Overlay
-  - First name field toggle
-  - Full live preview with actual layout rendering
-  - Proper error handling and loading states
-  - Handles API data format (object to array conversion)
-  - Clone functionality with URL parameter passing
-- **Bug Fixes:**
-  - Fixed data format handling (popups as object, not array)
-  - Fixed missing ID field extraction from object keys
-  - Fixed useSearchParams Suspense issue (using window.location)
-  - Added comprehensive error messages
+**What's New in v2.8.0:**
+- **Template System** - 9 professionally designed popup templates:
+  - Clean Gradient, Ultra Minimal (Minimal category)
+  - Split Screen, Full Background, Full Background Tall, Full Background Wide, Full Background Compact (Image category)
+  - Lead Magnet (Product category)
+  - Personal Consultation (Personal category)
+- **Mobile-First Design** - Default preview is mobile (320px), desktop toggle available
+- **High-Contrast Color Themes** - 4 new professional themes (Professional, Professional Blue, Dark Mode, Clean Minimal) plus 8 original pastel themes
+- **Button Color Picker** - 8 preset colors for all templates
+- **Popup Height Options** - Compact, Standard, Tall for all templates
+- **Custom Text Colors** - Override headline and subheadline colors per popup
+- **Trust Text** - Customizable privacy message with on/off toggle for all templates
+- **Full Background Overlay** - Toggle on/off, color picker, opacity slider (10-90%)
+- **Personal Consultation Features** - Custom avatar image, position (left/right), chat message
+- **Improved Image Display** - All images use `object-fit: contain` (no cropping)
+- **Template Selector UI** - Browse by category with live preview
+- **Design Tab** - All customization options in one place
 
-**Previous Features (from v2.7.0):**
-- **Dedicated Edit Page** - Moved edit/create to separate page
-- **Cleaner Admin Dashboard** - No inline forms
+**Previous Features (from v2.7.1):**
+- Complete Edit Page with all form fields
+- Image upload, position, scale
+- Clone functionality
 
-**Rollback:** To v2.7.0 (commit `b7e3a3b`) or v2.6.0 (commit `f4ee310`) if needed
+**Deployment Note:** Currently manual deployment required after saving. Auto-deploy coming in v2.9.0.
+
+**Rollback:** To v2.7.1 (commit `cebb74d`) or v2.7.0 (commit `b7e3a3b`) if needed
 
 ---
 
@@ -246,8 +248,8 @@ git push origin v2.5.0
 ---
 
 **Last Updated:** 2026-05-21  
-**Version:** v2.6.0  
-**Next Planned:** TBD
+**Version:** v2.8.0  
+**Next Planned:** v2.9.0 (Auto-deploy feature)
 
 ## Current Version
 
