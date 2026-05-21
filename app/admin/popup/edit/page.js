@@ -87,7 +87,8 @@ export default function PopupEditPage() {
         
         const existing = popupsArray.find(p => p.id === popupId)
         if (!existing) {
-          setError('Popup not found')
+          const availableIds = popupsArray.slice(0, 5).map(p => p.id).join(', ')
+          setError(`Popup '${popupId}' not found. Available: ${availableIds}... (${popupsArray.length} total)`)
           setLoading(false)
           return
         }
