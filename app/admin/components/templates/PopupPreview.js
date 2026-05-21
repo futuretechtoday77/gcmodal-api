@@ -730,25 +730,17 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Curved speech bubble tail pointing left toward image */}
+          {/* Curved speech bubble tail pointing right toward form */}
           <div style={{
             position: 'absolute',
-            right: '0',
+            right: '-30px',
             top: '50%',
             transform: 'translateY(-50%)',
-            width: '50px',
-            height: '80px',
-            overflow: 'hidden'
-          }}>
-            <div style={{
-              width: '100px',
-              height: '100px',
-              background: '#ffffff',
-              borderRadius: '50%',
-              marginLeft: '-60px',
-              marginTop: '-10px'
-            }} />
-          </div>
+            width: '60px',
+            height: '100px',
+            background: '#e8f4fc',
+            borderRadius: '0 50% 50% 0 / 0 50% 50% 0'
+          }} />
         </div>
         
         {/* Right: Form with white background */}
