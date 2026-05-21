@@ -748,7 +748,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           position: 'relative',
           zIndex: 1,
           padding: '40px',
-          background: showOverlay ? 'transparent' : 'rgba(0,0,0,0.3)',
+          background: 'transparent',
           color: 'white'
         }}>
           <h2 style={{ 
