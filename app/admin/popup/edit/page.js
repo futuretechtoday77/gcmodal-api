@@ -72,14 +72,20 @@ export default function PopupEditPage() {
           return
         }
         
-        // Check if popups is an array
-        if (!Array.isArray(data.popups)) {
-          setError('Invalid data format: popups is not an array. Type: ' + typeof data.popups)
+        // Handle both array and object formats
+        let popupsArray
+        if (Array.isArray(data.popups)) {
+          popupsArray = data.popups
+        } else if (typeof data.popups === 'object' && data.popups !== null) {
+          // Convert object to array
+          popupsArray = Object.values(data.popups)
+        } else {
+          setError('Invalid data format: popups is not array or object')
           setLoading(false)
           return
         }
         
-        const existing = data.popups.find(p => p.id === popupId)
+        const existing = popupsArray.find(p => p.id === popupId)
         if (!existing) {
           setError('Popup not found')
           setLoading(false)
