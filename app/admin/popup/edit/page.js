@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 // Popup Preview Component
 function PopupPreview({ config }) {
@@ -117,9 +117,18 @@ function PopupPreview({ config }) {
 
 function PopupEditForm() {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const popupId = searchParams.get('id')
-  const isNew = !popupId
+  const [popupId, setPopupId] = useState(null)
+  const [isNew, setIsNew] = useState(true)
+  
+  // Get URL params on client side only
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const id = params.get('id')
+      setPopupId(id)
+      setIsNew(!id)
+    }
+  }, [])
 
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -145,6 +154,11 @@ function PopupEditForm() {
 
   // Load existing popup data if editing
   useEffect(() => {
+    // Wait until we have determined if this is new or edit
+    if (popupId === null) {
+      return
+    }
+    
     if (isNew) {
       setLoading(false)
       return
@@ -205,7 +219,7 @@ function PopupEditForm() {
     }
 
     loadPopup()
-  }, [popupId])
+  }, [popupId, isNew])
 
   async function handleSave() {
     if (!popup.id || !popup.name || !popup.tagId || !popup.headline || !popup.buttonText) {
@@ -606,15 +620,6 @@ function PopupEditForm() {
   )
 }
 
-// Wrapper with Suspense for useSearchParams
 export default function PopupEditPage() {
-  return (
-    <Suspense fallback={
-      <div style={{ padding: '40px', textAlign: 'center' }}>
-        <p>Loading...</p>
-      </div>
-    }>
-      <PopupEditForm />
-    </Suspense>
-  )
+  return <PopupEditForm />
 }
