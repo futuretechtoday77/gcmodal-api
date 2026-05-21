@@ -40,8 +40,9 @@ export default function PopupEditPage() {
     chatMessage: 'Want to have a free consultation with an expert?',
     trustText: 'We respect your email inbox and will never spam!',
     showTrustText: true,
+    showOverlay: false,
     overlayColor: '#000000',
-    overlayOpacity: 70,
+    overlayOpacity: 50,
     triggerType: 'button',
     triggerDelay: 180,
     buttonAlign: 'center',
@@ -568,30 +569,43 @@ export default function PopupEditPage() {
                 <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
                   <h3 style={{ marginTop: 0 }}>Overlay Settings</h3>
                   
-                  <div style={{ marginBottom: 15 }}>
-                    <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Overlay Color</label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 15 }}>
                     <input
-                      type="color"
-                      value={popup.overlayColor}
-                      onChange={(e) => setPopup({...popup, overlayColor: e.target.value})}
-                      style={{ width: '60px', height: '40px', border: 'none', borderRadius: 4, cursor: 'pointer' }}
+                      type="checkbox"
+                      checked={popup.showOverlay}
+                      onChange={(e) => setPopup({...popup, showOverlay: e.target.checked})}
                     />
-                  </div>
+                    <span>Show color overlay on image</span>
+                  </label>
                   
-                  <div style={{ marginBottom: 15 }}>
-                    <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
-                      Overlay Opacity: {popup.overlayOpacity}%
-                    </label>
-                    <input
-                      type="range"
-                      min="0"
-                      max="90"
-                      value={popup.overlayOpacity}
-                      onChange={(e) => setPopup({...popup, overlayOpacity: parseInt(e.target.value)})}
-                      style={{ width: '100%' }}
-                    />
-                    <small style={{ color: '#6c757d' }}>0% = no overlay, 90% = nearly solid</small>
-                  </div>
+                  {popup.showOverlay && (
+                    <>
+                      <div style={{ marginBottom: 15 }}>
+                        <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Overlay Color</label>
+                        <input
+                          type="color"
+                          value={popup.overlayColor}
+                          onChange={(e) => setPopup({...popup, overlayColor: e.target.value})}
+                          style={{ width: '60px', height: '40px', border: 'none', borderRadius: 4, cursor: 'pointer' }}
+                        />
+                      </div>
+                      
+                      <div style={{ marginBottom: 15 }}>
+                        <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
+                          Overlay Opacity: {popup.overlayOpacity}%
+                        </label>
+                        <input
+                          type="range"
+                          min="10"
+                          max="90"
+                          value={popup.overlayOpacity}
+                          onChange={(e) => setPopup({...popup, overlayOpacity: parseInt(e.target.value)})}
+                          style={{ width: '100%' }}
+                        />
+                        <small style={{ color: '#6c757d' }}>10% = subtle tint, 90% = nearly solid</small>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
               

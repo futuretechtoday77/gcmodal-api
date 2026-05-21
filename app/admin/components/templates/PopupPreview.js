@@ -710,9 +710,9 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
     }
     
     // Desktop: Full background with configurable overlay
-    const overlayOpacity = popup.overlayOpacity !== undefined ? popup.overlayOpacity : 70
+    const showOverlay = popup.showOverlay !== undefined ? popup.showOverlay : false
+    const overlayOpacity = popup.overlayOpacity !== undefined ? popup.overlayOpacity : 50
     const overlayColor = popup.overlayColor || '#000000'
-    const overlayRgb = hexToRgb(overlayColor)
     
     return (
       <div style={{
@@ -730,8 +730,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           background: hasImage ? `url(${popup.imageUrl}) center center / cover no-repeat` : '#1f2937'
         }} />
         
-        {/* Overlay Layer - configurable */}
-        {overlayOpacity > 0 && (
+        {/* Overlay Layer - only show if enabled */}
+        {showOverlay && (
           <div style={{
             position: 'absolute',
             top: 0,
@@ -748,7 +748,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           position: 'relative',
           zIndex: 1,
           padding: '40px',
-          background: overlayOpacity > 0 ? 'transparent' : 'rgba(0,0,0,0.7)',
+          background: showOverlay ? 'transparent' : 'rgba(0,0,0,0.3)',
           color: 'white'
         }}>
           <h2 style={{ 
