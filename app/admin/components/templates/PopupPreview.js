@@ -730,20 +730,20 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Curved shape like } character pointing toward form */}
+          {/* Shape like } character - curves meeting at point on right */}
           <svg
             style={{
               position: 'absolute',
-              right: '-10px',
+              right: '0',
               top: '50%',
               transform: 'translateY(-50%)',
-              width: '50px',
-              height: '140px'
+              width: '40px',
+              height: '120px'
             }}
-            viewBox="0 0 50 140"
+            viewBox="0 0 40 120"
           >
             <path
-              d="M 10,0 Q 50,35 10,70 Q 50,105 10,140 L 0,140 L 0,0 Z"
+              d="M 0,0 Q 40,30 40,60 Q 40,90 0,120 L 0,120 L 0,0 Z"
               fill="#ffffff"
             />
           </svg>
