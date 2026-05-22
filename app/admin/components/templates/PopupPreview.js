@@ -340,6 +340,9 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               </div>
             )}
             <input type="email" placeholder="Email" disabled style={{ width: '100%', padding: '12px', marginBottom: '10px', border: '2px solid #e5e7eb', borderRadius: '6px', boxSizing: 'border-box' }} />
+            {popup.includePhone && (
+              <input type="tel" placeholder="Phone" disabled style={{ width: '100%', padding: '12px', marginBottom: '10px', border: '2px solid #e5e7eb', borderRadius: '6px', boxSizing: 'border-box' }} />
+            )}
             <button disabled style={{ width: '100%', padding: '14px', background: buttonColor, color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold', boxSizing: 'border-box' }}>
               {popup.buttonText || 'Submit'}
             </button>
