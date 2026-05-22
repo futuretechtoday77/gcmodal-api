@@ -681,6 +681,23 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               </p>
             )}
             
+            {popup.includeFirstName && (
+              <input 
+                type="text" 
+                placeholder="Name" 
+                disabled
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  marginBottom: '12px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  boxSizing: 'border-box'
+                }}
+              />
+            )}
+            
             <input 
               type="email" 
               placeholder="your@email.com" 
@@ -844,6 +861,23 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             <p style={{ color: textLightColor, margin: '0 0 20px 0', fontSize: '15px' }}>
               {popup.subheadline}
             </p>
+          )}
+          
+          {popup.includeFirstName && (
+            <input 
+              type="text" 
+              placeholder="Name" 
+              disabled
+              style={{
+                width: '100%',
+                padding: '14px',
+                marginBottom: '15px',
+                border: '2px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '15px',
+                boxSizing: 'border-box'
+              }}
+            />
           )}
           
           <input 
