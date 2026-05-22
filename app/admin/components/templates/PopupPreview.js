@@ -286,10 +286,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           {/* Form fields */}
           <div style={{ marginTop: '20px', width: '100%', boxSizing: 'border-box' }}>
             {popup.includeFirstName && (
-              <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-                <input type="text" placeholder="First Name" disabled style={{ flex: 1, padding: '12px', border: '2px solid #e5e7eb', borderRadius: '6px', boxSizing: 'border-box' }} />
-                <input type="text" placeholder="Last Name" disabled style={{ flex: 1, padding: '12px', border: '2px solid #e5e7eb', borderRadius: '6px', boxSizing: 'border-box' }} />
-              </div>
+              <input type="text" placeholder="Name" disabled style={{ width: '100%', padding: '12px', marginBottom: '10px', border: '2px solid #e5e7eb', borderRadius: '6px', boxSizing: 'border-box' }} />
             )}
             <input type="email" placeholder="Email" disabled style={{ width: '100%', padding: '12px', marginBottom: '10px', border: '2px solid #e5e7eb', borderRadius: '6px', boxSizing: 'border-box' }} />
             {popup.includePhone && (
@@ -1356,6 +1353,23 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               </p>
             )}
             
+            {popup.includeFirstName && (
+              <input 
+                type="text" 
+                placeholder="Name" 
+                disabled
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  marginBottom: '10px',
+                  border: 'none',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  boxSizing: 'border-box'
+                }}
+              />
+            )}
+            
             <input 
               type="email" 
               placeholder="your@email.com" 
@@ -1489,6 +1503,23 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             <p style={{ color: textLightColor, margin: '0 0 20px 0', fontSize: '15px' }}>
               {popup.subheadline}
             </p>
+          )}
+          
+          {popup.includeFirstName && (
+            <input 
+              type="text" 
+              placeholder="Name" 
+              disabled
+              style={{
+                width: '100%',
+                padding: '12px',
+                marginBottom: '12px',
+                border: 'none',
+                borderRadius: '6px',
+                fontSize: '14px',
+                boxSizing: 'border-box'
+              }}
+            />
           )}
           
           <input 
