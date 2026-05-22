@@ -1,6 +1,6 @@
 /**
  * GC Modal - Popup Manager
- * Version: 2.8.5-beta.6
+ * Version: 2.8.5-beta.7
  * Supports: All Templates, Split Testing, Phone Field
  */
 
@@ -131,6 +131,15 @@
 
         console.log('Fetching popup:', popupId);
         const response = await fetch(`${this.config.apiUrl}/api/popups?id=${encodeURIComponent(popupId)}`);
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          console.error('API returned non-JSON response:', text.substring(0, 200));
+          return;
+        }
+        
         const data = await response.json();
         console.log('API response:', data);
 
