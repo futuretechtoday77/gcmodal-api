@@ -730,7 +730,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Two ) curves reversed pointing other way */}
+          {/* Two ( curves pointing left toward image */}
           <svg
             style={{
               position: 'absolute',
@@ -743,7 +743,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             preserveAspectRatio="none"
           >
             <path
-              d="M 40,0 Q 10,25 40,50 Q 10,75 40,100 L 0,100 L 0,0 Z"
+              d="M 10,0 Q 40,25 10,50 Q 40,75 10,100 L 50,100 L 50,0 Z"
               fill="#ffffff"
             />
           </svg>
