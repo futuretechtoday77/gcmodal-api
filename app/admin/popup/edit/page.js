@@ -33,6 +33,8 @@ export default function PopupEditPage() {
     imageUrl: '',
     imagePosition: 'none',
     imageScale: 100,
+    imageOffsetX: 0,
+    imageOffsetY: 0,
     includeFirstName: true,
     includePhone: false,
     avatarUrl: '',
@@ -566,12 +568,43 @@ export default function PopupEditPage() {
                       </label>
                       <input
                         type="range"
-                        min="0"
-                        max="200"
+                        min="10"
+                        max="400"
                         value={popup.imageScale}
                         onChange={(e) => setPopup({...popup, imageScale: parseInt(e.target.value)})}
                         style={{ width: '100%' }}
                       />
+                      <small style={{ color: '#6c757d' }}>10% to 400%</small>
+                    </div>
+                    
+                    <div style={{ marginBottom: 15 }}>
+                      <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
+                        Horizontal Position: {popup.imageOffsetX || 0}%
+                      </label>
+                      <input
+                        type="range"
+                        min="-50"
+                        max="50"
+                        value={popup.imageOffsetX || 0}
+                        onChange={(e) => setPopup({...popup, imageOffsetX: parseInt(e.target.value)})}
+                        style={{ width: '100%' }}
+                      />
+                      <small style={{ color: '#6c757d' }}>Move image left/right</small>
+                    </div>
+                    
+                    <div style={{ marginBottom: 15 }}>
+                      <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
+                        Vertical Position: {popup.imageOffsetY || 0}%
+                      </label>
+                      <input
+                        type="range"
+                        min="-50"
+                        max="50"
+                        value={popup.imageOffsetY || 0}
+                        onChange={(e) => setPopup({...popup, imageOffsetY: parseInt(e.target.value)})}
+                        style={{ width: '100%' }}
+                      />
+                      <small style={{ color: '#6c757d' }}>Move image up/down</small>
                     </div>
                   </>
                 )}

@@ -76,15 +76,14 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         
         {/* Image (if any) */}
         {hasImage && (
-          <div style={{ overflow: 'hidden', borderRadius: '8px', marginBottom: '20px' }}>
+          <div style={{ overflow: 'hidden', borderRadius: '8px', marginBottom: '20px', maxHeight: '180px' }}>
             <img 
               src={popup.imageUrl} 
               alt="" 
               style={{
                 width: '100%',
-                maxHeight: '180px',
-                objectFit: 'cover',
-                transform: `scale(${popup.imageScale / 100})`,
+                height: 'auto',
+                transform: `scale(${popup.imageScale / 100}) translate(${(popup.imageOffsetX || 0)}%, ${(popup.imageOffsetY || 0)}%)`,
                 transformOrigin: 'center center'
               }}
             />
