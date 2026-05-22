@@ -730,36 +730,23 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Two convex curves meeting at needle point toward form */}
-          <div style={{
-            position: 'absolute',
-            right: '0',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            width: '40px',
-            height: '100px'
-          }}>
-            {/* Top convex curve - bulging left */}
-            <div style={{
+          {/* Curved shape like } character pointing toward form */}
+          <svg
+            style={{
               position: 'absolute',
-              top: '0',
-              left: '0',
-              width: '100%',
-              height: '50%',
-              background: '#ffffff',
-              borderRadius: '50% 0 0 0 / 100% 0 0 0'
-            }} />
-            {/* Bottom convex curve - bulging left */}
-            <div style={{
-              position: 'absolute',
-              bottom: '0',
-              left: '0',
-              width: '100%',
-              height: '50%',
-              background: '#ffffff',
-              borderRadius: '0 0 0 50% / 0 0 0 100%'
-            }} />
-          </div>
+              right: '-10px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: '50px',
+              height: '140px'
+            }}
+            viewBox="0 0 50 140"
+          >
+            <path
+              d="M 10,0 Q 50,35 10,70 Q 50,105 10,140 L 0,140 L 0,0 Z"
+              fill="#ffffff"
+            />
+          </svg>
         </div>
         
         {/* Right: Form with white background */}
