@@ -730,20 +730,20 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Shape like } character - pushed right, smooth top and bottom */}
+          {/* Shape like } character - pushed left to connect to divider */}
           <svg
             style={{
               position: 'absolute',
-              right: '-25px',
+              right: '0',
               top: '50%',
               transform: 'translateY(-50%)',
-              width: '50px',
+              width: '40px',
               height: '100px'
             }}
-            viewBox="0 0 50 100"
+            viewBox="0 0 40 100"
           >
             <path
-              d="M 25,0 Q 5,25 25,50 Q 5,75 25,100 L 50,100 L 50,0 Z"
+              d="M 0,0 Q 20,25 0,50 Q 20,75 0,100 L 40,100 L 40,0 Z"
               fill="#ffffff"
             />
           </svg>
