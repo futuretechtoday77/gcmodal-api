@@ -484,6 +484,8 @@ export async function GET(req) {
         const CONTROLBOARD_TOKEN = process.env.CONTROLBOARD_API_TOKEN;
         const WORKSPACE_ID = process.env.WORKSPACE_ID || '674e44e4a85f45d1b44c1a40';
         
+        console.log('Split test lookup:', popupId, 'Token exists:', !!CONTROLBOARD_TOKEN);
+        
         if (CONTROLBOARD_TOKEN) {
           const response = await fetch('https://control.clawlauncher.io/api/settings', {
             headers: {
