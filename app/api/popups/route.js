@@ -561,8 +561,22 @@ export async function GET(req) {
   Object.entries(allPopups).forEach(([id, popup]) => {
     publicPopups[id] = {
       name: popup.name,
+      template: popup.template,
       design: popup.design,
       fields: popup.fields,
+      buttonColor: popup.buttonColor,
+      popupHeight: popup.popupHeight,
+      trustText: popup.trustText,
+      showTrustText: popup.showTrustText,
+      showOverlay: popup.showOverlay,
+      overlayColor: popup.overlayColor,
+      overlayOpacity: popup.overlayOpacity,
+      useCustomTextColors: popup.useCustomTextColors,
+      headlineColor: popup.headlineColor,
+      subheadlineColor: popup.subheadlineColor,
+      avatarUrl: popup.avatarUrl,
+      avatarPosition: popup.avatarPosition,
+      chatMessage: popup.chatMessage
       // tagId: popup.tagId,  // ❌ DON'T EXPOSE - validated server-side only
     };
   });

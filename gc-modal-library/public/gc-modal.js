@@ -10,7 +10,7 @@
   const GCModal = {
     version: '2.8.3',
     config: {
-      apiUrl: 'https://gcmodal-api77.vercel.app',
+      apiUrl: 'https://gcmodal-api.vercel.app',
       cookieExpiry: 30
     },
     currentPopup: null,
