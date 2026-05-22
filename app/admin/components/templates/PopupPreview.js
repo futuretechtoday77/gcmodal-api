@@ -730,21 +730,20 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* v2.8.1 - Divider: Shape like } character - pushed left to connect */}
+          {/* Two ( curves like } extending full height */}
           <svg
             style={{
               position: 'absolute',
               right: '0',
-              top: '50%',
-              transform: 'translateY(-50%)',
+              top: '0',
               width: '40px',
-              height: '100px',
-              border: '1px solid red' /* DEBUG - remove after testing */
+              height: '100%'
             }}
             viewBox="0 0 40 100"
+            preserveAspectRatio="none"
           >
             <path
-              d="M 0,0 Q 20,25 0,50 Q 20,75 0,100 L 40,100 L 40,0 Z"
+              d="M 0,0 Q 30,25 0,50 Q 30,75 0,100 L 40,100 L 40,0 Z"
               fill="#ffffff"
             />
           </svg>
