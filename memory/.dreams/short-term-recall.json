@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-22T04:05:41.059Z",
+  "entries": {
+    "memory:memory/2026-05-21.md:122:163": {
+      "key": "memory:memory/2026-05-21.md:122:163",
+      "path": "memory/2026-05-21.md",
+      "startLine": 122,
+      "endLine": 163,
+      "source": "memory",
+      "snippet": "- Loads existing popup data from API when editing - Saves via `/api/popups/save` endpoint - Redirects back to admin after save 2. **Updated Admin Page (`app/admin/page.js`):** - Removed inline edit form (hundreds of lines deleted) - Removed PopupPreview component (moved to edit page) - \"Create Popup\" button now navigates to `/admin/popup/edit` - \"Edit\" buttons navigate to `/admin/popup/edit?id=POPUP_ID` - \"Clone\" buttons pass pre-filled data via URL params - Much cleaner, shorter page 3. **Next.js 15 Compatibility:** - Fixed `useSearchParams()` by wrapping in Suspense boundary - Build was failing without this **Files Modified:** - `app/admin/popup/edit/pag",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.3690191060304642,
+      "maxScore": 0.3690191060304642,
+      "firstRecalledAt": "2026-05-22T04:05:41.059Z",
+      "lastRecalledAt": "2026-05-22T04:05:41.059Z",
+      "queryHashes": [
+        "361d069cf5c5"
+      ],
+      "recallDays": [
+        "2026-05-22"
+      ],
+      "conceptTags": [
+        "api/popups/save",
+        "app/admin/page.js",
+        "admin/popup/edit",
+        "popup-id",
+        "pre-filled",
+        "next.js",
+        "app/admin/popup/edit/pag",
+        "loads"
+      ]
+    }
+  }
+}

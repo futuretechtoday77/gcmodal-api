@@ -12,6 +12,14 @@ We use **Semantic Versioning** (SemVer) with the format: `MAJOR.MINOR.PATCH`
 
 ## Current Version
 
+### v2.8.4 - PRODUCTION (Frontend Library Update)
+**Release Date:** 2026-05-22  
+**Commit:** `TBD`  
+**Status:** ✅ Production Ready
+
+**Changes in v2.8.4:**
+- **Updated Frontend Library** - gc-modal.js library updated to latest version
+
 ### v2.8.3 - PRODUCTION (Template System Bug Fixes)
 **Release Date:** 2026-05-22  
 **Commit:** `c2d97b8`  
