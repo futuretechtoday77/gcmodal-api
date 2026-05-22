@@ -1,6 +1,6 @@
 /**
  * GC Modal - Popup Manager
- * Version: 2.8.7
+ * Version: 2.8.8-dev
  * Supports: All Templates, Split Testing, Phone Field
  */
 
@@ -88,8 +88,8 @@
       document.addEventListener('click', (e) => {
         const button = e.target.closest('button[id^="split-"]');
         if (button && button.id) {
-          // The button ID is the split test ID - show it directly
-          this.showPopup(button.id, true);
+          // Handle split test
+          this.handleSplitTest(button.id);
         }
       });
 
@@ -168,6 +168,29 @@
         this.setPopupSeen(popupId);
       } catch (err) {
         console.error('Error showing popup:', err);
+      }
+    },
+
+    handleSplitTest: async function(testId) {
+      try {
+        console.log('Handling split test:', testId);
+        
+        // Call split test API
+        const response = await fetch(`${this.config.apiUrl}/api/split-test?id=${encodeURIComponent(testId)}`);
+        const data = await response.json();
+        
+        if (!data.success) {
+          console.error('Split test error:', data.error);
+          return;
+        }
+        
+        console.log('Split test assigned:', data.variant, 'Popup:', data.popupId);
+        
+        // Show the assigned popup
+        this.showPopup(data.popupId, true);
+        
+      } catch (err) {
+        console.error('Error handling split test:', err);
       }
     },
 
