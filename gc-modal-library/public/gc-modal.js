@@ -71,6 +71,15 @@
         }
       });
 
+      // Split test button clicks (buttons with IDs starting with 'split-')
+      document.addEventListener('click', (e) => {
+        const button = e.target.closest('button[id^="split-"]');
+        if (button && button.id) {
+          // The button ID is the split test ID - show it directly
+          this.showPopup(button.id, true);
+        }
+      });
+
       // Exit intent via data attributes
       document.addEventListener('mouseout', (e) => {
         if (e.clientY < 10) {
