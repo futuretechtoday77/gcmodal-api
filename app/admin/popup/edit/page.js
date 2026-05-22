@@ -323,14 +323,13 @@ export default function PopupEditPage() {
 
   function handleTemplateSelect(template) {
     setSelectedTemplate(template)
-    // Update popup fields based on template defaults
+    // Update popup template, layout, and variant only
+    // Keep field checkboxes (includeFirstName, includePhone) persistent
     setPopup(prev => ({
       ...prev,
       template: template.id,
       layout: template.config.layout,
-      variant: template.config.defaultVariant,
-      includeFirstName: template.config.fields.includes('firstName'),
-      includePhone: template.config.fields.includes('phone')
+      variant: template.config.defaultVariant
     }))
   }
 
