@@ -1,6 +1,7 @@
 /**
  * Split Test API
  * Handles A/B testing for popups
+ * v2.8.8 - Rebuilt from ground up
  */
 
 import { getSecurityHeaders, mergeHeaders } from '@/lib/security-headers';
