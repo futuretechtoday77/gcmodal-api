@@ -51,7 +51,9 @@ export default function PopupEditPage() {
     triggerType: 'button',
     triggerDelay: 180,
     buttonAlign: 'center',
-    template: 'clean-gradient'
+    template: 'clean-gradient',
+    includeFirstName: true,
+    includePhone: false
   })
 
   // Mount detection and URL parsing
