@@ -730,7 +730,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Two stacked popup window left edges creating pointed divider */}
+          {/* Two stacked popup window RIGHT edges creating pointed divider toward form */}
           <div style={{
             position: 'absolute',
             right: '0',
@@ -741,18 +741,18 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             display: 'flex',
             flexDirection: 'column'
           }}>
-            {/* Top window left edge - curved */}
+            {/* Top window right edge - curved pointing right */}
             <div style={{
               flex: 1,
-              background: '#ffffff',
-              borderRadius: '50% 0 0 0 / 100% 0 0 0',
+              background: '#e8f4fc',
+              borderRadius: '0 50% 0 0 / 0 100% 0 0',
               marginBottom: '-20px'
             }} />
-            {/* Bottom window left edge - curved */}
+            {/* Bottom window right edge - curved pointing right */}
             <div style={{
               flex: 1,
-              background: '#ffffff',
-              borderRadius: '0 0 0 50% / 0 0 0 100%',
+              background: '#e8f4fc',
+              borderRadius: '0 0 50% 0 / 0 0 100% 0',
               marginTop: '-20px'
             }} />
           </div>
