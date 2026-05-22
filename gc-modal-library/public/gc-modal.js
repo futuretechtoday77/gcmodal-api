@@ -112,8 +112,10 @@
           return;
         }
 
+        console.log('Fetching popup:', popupId);
         const response = await fetch(`${this.config.apiUrl}/api/popups?id=${encodeURIComponent(popupId)}`);
         const data = await response.json();
+        console.log('API response:', data);
 
         if (!data.success) {
           console.error('Failed to load popup:', data.error);
@@ -123,9 +125,11 @@
         // Handle both single popup (popup) and all popups (popups) responses
         const popup = data.popup || data.popups?.[popupId];
         if (!popup) {
-          console.error('Popup not found in response:', popupId);
+          console.error('Popup not found in response:', popupId, 'data:', data);
           return;
         }
+        
+        console.log('Showing popup:', popup.name || popupId);
         this.currentPopup = popup;
         this.renderPopup(popup);
         this.setPopupSeen(popupId);
