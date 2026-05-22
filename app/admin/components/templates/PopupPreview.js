@@ -730,7 +730,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Mirrored curve - grey on left, white on right */}
+          {/* Mirrored curve - no gap, just the shape */}
           <svg
             style={{
               position: 'absolute',
@@ -742,9 +742,6 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             viewBox="0 0 40 100"
             preserveAspectRatio="none"
           >
-            {/* Grey background on left */}
-            <rect x="0" y="0" width="40" height="100" fill="#e8f4fc" />
-            {/* Mirrored white curve */}
             <path
               d="M 40,0 Q 10,25 40,50 Q 10,75 40,100 L 0,100 L 0,0 Z"
               fill="#ffffff"
