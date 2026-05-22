@@ -744,7 +744,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           >
             <path
               d="M 10,0 Q 40,25 10,50 Q 40,75 10,100 L 50,100 L 50,0 Z"
-              fill="#ffffff"
+              fill="#ff0000"
             />
           </svg>
         </div>
