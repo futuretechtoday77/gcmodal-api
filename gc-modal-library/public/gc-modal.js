@@ -1,6 +1,6 @@
 /**
  * GC Modal - Popup Manager
- * Version: 2.8.6
+ * Version: 2.8.6-hotfix
  * Supports: All Templates, Split Testing, Phone Field
  */
 
@@ -123,10 +123,15 @@
           this.closePopup();
         }
 
-        // Only check cookie for exit intent and delay triggers, NOT button clicks
+        // CRITICAL: Button popups (skipCookieCheck=true) should NEVER be blocked
+        // Only check cookie for exit intent and delay triggers
         if (!skipCookieCheck && this.hasSeenPopup(popupId)) {
-          console.log('Popup already shown:', popupId);
+          console.log('Popup already shown (exit/delay only):', popupId);
           return;
+        }
+        
+        if (skipCookieCheck) {
+          console.log('Button popup - ignoring cookie:', popupId);
         }
 
         console.log('Fetching popup:', popupId);
