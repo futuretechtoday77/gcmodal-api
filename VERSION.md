@@ -12,6 +12,21 @@ We use **Semantic Versioning** (SemVer) with the format: `MAJOR.MINOR.PATCH`
 
 ## Current Version
 
+### v2.8.7 - PRODUCTION (Stable Cookie Restrictions)
+**Release Date:** 2026-05-22  
+**Commit:** `TBD`  
+**Status:** ✅ Production Ready
+
+**What's Working:**
+- **Button Popups** - No cookie restriction (always show)
+- **Exit Intent** - 7-day cookie, triggers within 50px of top
+- **Time Delay** - 7-day cookie, default 3 minute delay
+- **CORS** - Properly configured for all API endpoints
+
+**Known Issues:**
+- **Split Testing** - Not working (API returns "not found")
+- **Image Resizer** - Admin controls don't affect preview
+
 ### v2.8.5 - PRODUCTION (Cookie-Based Popup Restrictions)
 **Release Date:** 2026-05-22  
 **Commit:** `af94b9f`  
