@@ -398,6 +398,11 @@
       const expiry = new Date();
       expiry.setDate(expiry.getDate() + this.config.cookieExpiry);
       document.cookie = `gc_popup_${popupId}=1; expires=${expiry.toUTCString()}; path=/`;
+    },
+
+    // Backward compatibility alias
+    initUniversal: function(options) {
+      return this.init(options);
     }
   };
 
