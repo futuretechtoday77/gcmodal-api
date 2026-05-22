@@ -730,20 +730,20 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Two ( curves like } extending full height */}
+          {/* Two ( curves pushed right, smooth inline top */}
           <svg
             style={{
               position: 'absolute',
-              right: '0',
+              right: '-10px',
               top: '0',
-              width: '40px',
+              width: '50px',
               height: '100%'
             }}
-            viewBox="0 0 40 100"
+            viewBox="0 0 50 100"
             preserveAspectRatio="none"
           >
             <path
-              d="M 0,0 Q 30,25 0,50 Q 30,75 0,100 L 40,100 L 40,0 Z"
+              d="M 10,0 Q 40,25 10,50 Q 40,75 10,100 L 50,100 L 50,0 Z"
               fill="#ffffff"
             />
           </svg>
