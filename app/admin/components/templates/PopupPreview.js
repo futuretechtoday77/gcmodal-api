@@ -695,6 +695,23 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               }}
             />
             
+            {popup.includePhone && (
+              <input 
+                type="tel" 
+                placeholder="Phone Number" 
+                disabled
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  marginBottom: '12px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  boxSizing: 'border-box'
+                }}
+              />
+            )}
+            
             <button 
               disabled
               style={{
@@ -842,6 +859,23 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               boxSizing: 'border-box'
             }}
           />
+          
+          {popup.includePhone && (
+            <input 
+              type="tel" 
+              placeholder="Phone Number" 
+              disabled
+              style={{
+                width: '100%',
+                padding: '14px',
+                marginBottom: '15px',
+                border: '2px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '15px',
+                boxSizing: 'border-box'
+              }}
+            />
+          )}
           
           <button 
             disabled
