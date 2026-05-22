@@ -567,13 +567,21 @@ export async function GET(req) {
       const { tagId, ...publicPopup } = popup;
       return Response.json(
         { success: true, popup: publicPopup },
-        { headers: getSecurityHeaders() }
+        { headers: mergeHeaders({
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type'
+        }, getSecurityHeaders()) }
       );
     }
-    
+
     return Response.json(
       { success: false, error: 'Popup not found' },
-      { status: 404, headers: getSecurityHeaders() }
+      { status: 404, headers: mergeHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      }, getSecurityHeaders()) }
     );
   }
   
