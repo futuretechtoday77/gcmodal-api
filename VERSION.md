@@ -12,6 +12,23 @@ We use **Semantic Versioning** (SemVer) with the format: `MAJOR.MINOR.PATCH`
 
 ## Current Version
 
+### v2.8.8-beta.1 - BETA (Split Testing Rebuilt)
+**Release Date:** 2026-05-22  
+**Status:** 🧪 Beta Testing
+
+**New Features:**
+- **Split Testing** - Working! Random 50/50 on every click
+- **No Assignment Persistence** - Visitor may see different variant each time
+- **Dedicated `/api/split-test` endpoint** - Clean API separation
+
+**From v2.8.7:**
+- Button popups - No cookie
+- Exit intent - 7-day cookie  
+- Time delay - 7-day cookie
+
+**Known Issues:**
+- Image resizer/positioner - Still broken
+
 ### v2.8.7 - PRODUCTION (Stable Cookie Restrictions)
 **Release Date:** 2026-05-22  
 **Commit:** `TBD`  

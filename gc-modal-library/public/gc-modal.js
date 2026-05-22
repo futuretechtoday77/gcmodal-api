@@ -1,6 +1,6 @@
 /**
  * GC Modal - Popup Manager
- * Version: 2.8.8-dev
+ * Version: 2.8.8-beta.1
  * Supports: All Templates, Split Testing, Phone Field
  */
 

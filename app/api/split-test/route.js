@@ -97,32 +97,11 @@ export async function GET(req) {
       }, getSecurityHeaders()) });
     }
     
-    // Check if user already has an assignment (by email or session)
-    const assignmentKey = email ? `${testId}:${email}` : `${testId}:${req.headers.get('x-forwarded-for') || 'unknown'}`;
-    
-    if (splitTestAssignments.has(assignmentKey)) {
-      const assignedVariant = splitTestAssignments.get(assignmentKey);
-      const variantData = assignedVariant === 'A' ? test.variantA : test.variantB;
-      
-      return Response.json({
-        success: true,
-        variant: assignedVariant,
-        popupId: variantData.popupId,
-        isCompleted: false,
-        testId: test.testId
-      }, { headers: mergeHeaders({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
-      }, getSecurityHeaders()) });
-    }
-    
-    // Random 50/50 assignment
+    // Random 50/50 assignment on EVERY request
+    // This allows visitors to see different variants on subsequent visits
+    // Winner is determined by conversion tracking, not by assignment persistence
     const variant = Math.random() < 0.5 ? 'A' : 'B';
     const variantData = variant === 'A' ? test.variantA : test.variantB;
-    
-    // Store assignment
-    splitTestAssignments.set(assignmentKey, variant);
     
     return Response.json({
       success: true,
