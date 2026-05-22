@@ -39,6 +39,23 @@
             } catch(e) {
                 document.getElementById('errors').innerHTML += '<p style="color:red">initUniversal error: ' + e.message + '</p>';
             }
+            
+            // Test exit intent trigger
+            document.getElementById('status').innerHTML += '<h2>Exit Intent Test</h2>';
+            document.getElementById('status').innerHTML += '<p>Move your mouse to the TOP of the browser window to trigger exit intent popup.</p>';
+            document.getElementById('status').innerHTML += '<p>Popup ID: frequency-generator-report</p>';
+            
+            // Set up exit intent using the admin code format
+            try {
+                GCModal.init({
+                    popupId: 'frequency-generator-report',
+                    apiUrl: 'https://gcmodal-api.vercel.app',
+                    trigger: 'exit'
+                });
+                document.getElementById('status').innerHTML += '<p style="color:green">Exit intent trigger set up successfully!</p>';
+            } catch(e) {
+                document.getElementById('errors').innerHTML += '<p style="color:red">Exit intent setup error: ' + e.message + '</p>';
+            }
         } else {
             document.getElementById('errors').innerHTML += '<p style="color:red">GCModal object not found!</p>';
         }
