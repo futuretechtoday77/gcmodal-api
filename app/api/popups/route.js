@@ -511,7 +511,11 @@ export async function GET(req) {
                     success: true,
                     popup: publicPopup,
                     _splitTest: { testId: test.testId, isCompleted: true, winner: test.winnerPopupId }
-                  }, { headers: getSecurityHeaders() });
+                  }, { headers: mergeHeaders({
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                    'Access-Control-Allow-Headers': 'Content-Type'
+                  }, getSecurityHeaders()) });
                 }
               }
               
@@ -526,7 +530,11 @@ export async function GET(req) {
                   success: true,
                   popup: publicPopup,
                   _splitTest: { testId: test.testId, variant, isCompleted: false }
-                }, { headers: getSecurityHeaders() });
+                }, { headers: mergeHeaders({
+                  'Access-Control-Allow-Origin': '*',
+                  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                  'Access-Control-Allow-Headers': 'Content-Type'
+                  }, getSecurityHeaders()) });
               }
             }
           }
