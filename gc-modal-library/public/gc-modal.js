@@ -49,7 +49,7 @@
         console.log('Setting up exit intent listener for:', popupId);
         document.addEventListener('mouseout', function exitHandler(e) {
           console.log('Mouseout event, clientY:', e.clientY);
-          if (e.clientY < 10) {
+          if (e.clientY < 50) {
             console.log('Exit intent detected for:', popupId);
             self.showPopup(popupId, false);
             // Remove listener after triggering once
