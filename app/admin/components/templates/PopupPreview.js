@@ -730,33 +730,23 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Curved divider - grey left, white right */}
-          <div style={{
-            position: 'absolute',
-            right: '0',
-            top: '0',
-            bottom: '0',
-            width: '40px',
-            overflow: 'hidden'
-          }}>
-            <svg
-              style={{
-                position: 'absolute',
-                right: '0',
-                top: '0',
-                width: '100%',
-                height: '100%'
-              }}
-              viewBox="0 0 40 100"
-              preserveAspectRatio="none"
-            >
-              {/* Grey area on left of curve */}
-              <path
-                d="M 0,0 Q 30,25 0,50 Q 30,75 0,100 L 0,100 L 0,0 Z"
-                fill="#e8f4fc"
-              />
-            </svg>
-          </div>
+          {/* Two ( curves like } extending full height */}
+          <svg
+            style={{
+              position: 'absolute',
+              right: '0',
+              top: '0',
+              width: '40px',
+              height: '100%'
+            }}
+            viewBox="0 0 40 100"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M 0,0 Q 30,25 0,50 Q 30,75 0,100 L 40,100 L 40,0 Z"
+              fill="#ffffff"
+            />
+          </svg>
         </div>
         
         {/* Right: Form with white background */}
