@@ -730,7 +730,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Mirrored curve - no gap, just the shape */}
+          {/* Two ( curves like } extending full height */}
           <svg
             style={{
               position: 'absolute',
@@ -743,7 +743,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             preserveAspectRatio="none"
           >
             <path
-              d="M 40,0 Q 10,25 40,50 Q 10,75 40,100 L 0,100 L 0,0 Z"
+              d="M 0,0 Q 30,25 0,50 Q 30,75 0,100 L 40,100 L 40,0 Z"
               fill="#ffffff"
             />
           </svg>
