@@ -21,26 +21,35 @@
       // Support direct init with popupId and trigger (admin-generated code)
       if (options.popupId && options.trigger) {
         this.setupDirectTrigger(options);
+      } else {
+        // Standard initialization - look for data attributes
+        this.attachEventListeners();
       }
       
-      this.attachEventListeners();
       console.log('GC Modal v2.8.5-beta initialized');
     },
 
     setupDirectTrigger: function(options) {
       const popupId = options.popupId;
       const trigger = options.trigger;
+      const self = this;
       
       if (trigger === 'exit') {
-        document.addEventListener('mouseout', (e) => {
+        document.addEventListener('mouseout', function exitHandler(e) {
           if (e.clientY < 10) {
-            this.showPopup(popupId, false);
+            console.log('Exit intent detected for:', popupId);
+            self.showPopup(popupId, false);
+            // Remove listener after triggering once
+            document.removeEventListener('mouseout', exitHandler);
           }
         });
+        console.log('Exit intent trigger set up for:', popupId);
       } else if (trigger === 'delay') {
         const delay = options.triggerDelay || 180000; // Default 3 minutes in ms
+        console.log('Delay trigger set up for:', popupId, 'delay:', delay, 'ms');
         setTimeout(() => {
-          this.showPopup(popupId, false);
+          console.log('Delay triggered for:', popupId);
+          self.showPopup(popupId, false);
         }, delay);
       } else if (trigger === 'button') {
         // Button trigger with direct config - show immediately
