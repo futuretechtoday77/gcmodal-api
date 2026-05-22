@@ -12,6 +12,18 @@ We use **Semantic Versioning** (SemVer) with the format: `MAJOR.MINOR.PATCH`
 
 ## Current Version
 
+### v2.8.3 - PRODUCTION (Template System Bug Fixes)
+**Release Date:** 2026-05-22  
+**Commit:** `c2d97b8`  
+**Status:** ✅ Production Ready
+
+**Bug Fixes in v2.8.3:**
+- **Field Checkboxes Persistent** - Name and Phone checkboxes now stay checked when switching templates
+- **Fixed Save API** - Phone field now properly saves and loads from database
+- **Ultra Minimal Fixed** - Removed duplicate email field that was appearing
+- **Single Name Field** - All templates now use single "Name" field (not First/Last split)
+- **Phone Field on All Templates** - Every template now supports the phone number field
+
 ### v2.8.0 - PRODUCTION (Template System)
 **Release Date:** 2026-05-21  
 **Commit:** `ecd0913`  

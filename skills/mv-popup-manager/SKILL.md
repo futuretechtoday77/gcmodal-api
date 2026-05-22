@@ -2,9 +2,9 @@
 
 **Purpose:** Create, modify, and manage lead capture popups for HealthHarmonic.com using the MV Popup Manager system, including A/B split testing.
 
-**Version:** 2.8.0  
+**Version:** 2.8.3  
 **Status:** Production  
-**Last Updated:** 2026-05-21
+**Last Updated:** 2026-05-22
 
 ---
 
