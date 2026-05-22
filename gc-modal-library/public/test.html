@@ -34,7 +34,7 @@
             
             // Try to initialize
             try {
-                GCModal.initUniversal({ apiUrl: 'https://gcmodal-api.vercel.app' });
+                GCModal.initUniversal({ apiUrl: 'https://gcmodal-api77.vercel.app' });
                 document.getElementById('status').innerHTML += '<p style="color:green">initUniversal() called successfully!</p>';
             } catch(e) {
                 document.getElementById('errors').innerHTML += '<p style="color:red">initUniversal error: ' + e.message + '</p>';
@@ -49,7 +49,7 @@
             try {
                 GCModal.init({
                     popupId: 'frequency-generator-report',
-                    apiUrl: 'https://gcmodal-api.vercel.app',
+                    apiUrl: 'https://gcmodal-api77.vercel.app',
                     trigger: 'exit'
                 });
                 document.getElementById('status').innerHTML += '<p style="color:green">Exit intent trigger set up successfully!</p>';
