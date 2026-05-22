@@ -623,4 +623,4 @@ export async function OPTIONS() {
     }
   });
 }
-// Deployment trigger: Fri May 22 08:20:00 UTC 2026 - Force rebuild
+// Deployment trigger: Fri May 22 08:20:00 UTC 2026 - v2.8.5-beta.3
