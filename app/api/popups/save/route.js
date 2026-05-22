@@ -34,7 +34,11 @@ export async function POST(request) {
           scale: popup.imageScale || 100
         }
       },
-      fields: popup.includeFirstName ? ['firstName', 'email'] : ['email'],
+      fields: [
+        ...(popup.includeFirstName ? ['firstName'] : []),
+        'email',
+        ...(popup.includePhone ? ['phone'] : [])
+      ],
       // New v2.8.x fields
       buttonColor: popup.buttonColor,
       popupHeight: popup.popupHeight,
