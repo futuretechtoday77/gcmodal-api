@@ -730,17 +730,32 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* White form area with curved indentation pointing to image */}
+          {/* Two stacked popup window left edges creating pointed divider */}
           <div style={{
             position: 'absolute',
             right: '0',
-            top: '0',
-            bottom: '0',
-            width: '60px',
-            background: '#ffffff',
-            borderRadius: '50% 0 0 50% / 50% 0 0 50%',
-            marginRight: '-30px'
-          }} />
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: '50px',
+            height: '120px',
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            {/* Top window left edge - curved */}
+            <div style={{
+              flex: 1,
+              background: '#ffffff',
+              borderRadius: '50% 0 0 0 / 100% 0 0 0',
+              marginBottom: '-20px'
+            }} />
+            {/* Bottom window left edge - curved */}
+            <div style={{
+              flex: 1,
+              background: '#ffffff',
+              borderRadius: '0 0 0 50% / 0 0 0 100%',
+              marginTop: '-20px'
+            }} />
+          </div>
         </div>
         
         {/* Right: Form with white background */}
