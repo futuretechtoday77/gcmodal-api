@@ -17,11 +17,39 @@
 
     init: function(options) {
       this.config = { ...this.config, ...options };
+      
+      // Support direct init with popupId and trigger (admin-generated code)
+      if (options.popupId && options.trigger) {
+        this.setupDirectTrigger(options);
+      }
+      
       this.attachEventListeners();
-      console.log('GC Modal v2.8.3 initialized');
+      console.log('GC Modal v2.8.5-beta initialized');
+    },
+
+    setupDirectTrigger: function(options) {
+      const popupId = options.popupId;
+      const trigger = options.trigger;
+      
+      if (trigger === 'exit') {
+        document.addEventListener('mouseout', (e) => {
+          if (e.clientY < 10) {
+            this.showPopup(popupId, false);
+          }
+        });
+      } else if (trigger === 'delay') {
+        const delay = options.triggerDelay || 180000; // Default 3 minutes in ms
+        setTimeout(() => {
+          this.showPopup(popupId, false);
+        }, delay);
+      } else if (trigger === 'button') {
+        // Button trigger with direct config - show immediately
+        this.showPopup(popupId, true);
+      }
     },
 
     attachEventListeners: function() {
+      // Button clicks via data attributes
       document.addEventListener('click', (e) => {
         const button = e.target.closest('[data-popup-id]');
         if (button) {
@@ -34,23 +62,23 @@
         }
       });
 
+      // Exit intent via data attributes
       document.addEventListener('mouseout', (e) => {
         if (e.clientY < 10) {
           const exitButtons = document.querySelectorAll('[data-popup-id][data-trigger="exit"]');
           exitButtons.forEach(btn => {
             const popupId = btn.getAttribute('data-popup-id');
-            // Exit intent checks cookie (false = check cookie)
             this.showPopup(popupId, false);
           });
         }
       });
 
+      // Delay via data attributes
       window.addEventListener('load', () => {
         const delayButtons = document.querySelectorAll('[data-popup-id][data-trigger="delay"]');
         delayButtons.forEach(btn => {
           const popupId = btn.getAttribute('data-popup-id');
           const delay = parseInt(btn.getAttribute('data-delay')) || 180;
-          // Delay trigger checks cookie (false = check cookie)
           setTimeout(() => {
             this.showPopup(popupId, false);
           }, delay * 1000);
