@@ -531,6 +531,14 @@ export async function GET(req) {
         }
       } catch (error) {
         console.error('Error fetching split test:', error);
+        return Response.json(
+          { success: false, error: 'Error fetching split test: ' + error.message },
+          { status: 500, headers: mergeHeaders({
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
+          }, getSecurityHeaders()) }
+        );
       }
       
       return Response.json(
