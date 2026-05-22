@@ -514,7 +514,7 @@ export default function PopupEditPage() {
                     checked={popup.includeFirstName}
                     onChange={(e) => setPopup({...popup, includeFirstName: e.target.checked})}
                   />
-                  <span>Include First Name field</span>
+                  <span>Include Name field</span>
                 </label>
                 
                 <label style={{ display: 'flex', alignItems: 'center', gap: 10 }}>

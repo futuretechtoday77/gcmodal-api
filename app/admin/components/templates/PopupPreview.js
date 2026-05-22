@@ -123,68 +123,21 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         
         {/* Form */}
         <div style={{ marginTop: '20px', width: '100%', boxSizing: 'border-box' }}>
-          {popup.includeFirstName && !isMobile && (
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '12px' }}>
-              <input 
-                type="text" 
-                placeholder="First Name" 
-                disabled
-                style={{
-                  flex: 1,
-                  padding: '12px',
-                  border: '2px solid #e5e7eb',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  boxSizing: 'border-box'
-                }}
-              />
-              <input 
-                type="text" 
-                placeholder="Last Name" 
-                disabled
-                style={{
-                  flex: 1,
-                  padding: '12px',
-                  border: '2px solid #e5e7eb',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  boxSizing: 'border-box'
-                }}
-              />
-            </div>
-          )}
-          
-          {popup.includeFirstName && isMobile && (
-            <>
-              <input 
-                type="text" 
-                placeholder="First Name" 
-                disabled
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  marginBottom: '8px',
-                  border: '2px solid #e5e7eb',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  boxSizing: 'border-box'
-                }}
-              />
-              <input 
-                type="text" 
-                placeholder="Last Name" 
-                disabled
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  marginBottom: '8px',
-                  border: '2px solid #e5e7eb',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  boxSizing: 'border-box'
-                }}
-              />
-            </>
+          {popup.includeFirstName && (
+            <input 
+              type="text" 
+              placeholder="Name" 
+              disabled
+              style={{
+                width: '100%',
+                padding: isMobile ? '10px' : '12px',
+                marginBottom: isMobile ? '8px' : '12px',
+                border: '2px solid #e5e7eb',
+                borderRadius: '6px',
+                fontSize: '14px',
+                boxSizing: 'border-box'
+              }}
+            />
           )}
           
           <input 
@@ -408,6 +361,38 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
           }}
         />
         
+        {popup.includeFirstName && (
+          <input 
+            type="text" 
+            placeholder="Name" 
+            disabled
+            style={{
+              width: '100%',
+              padding: isMobile ? '10px' : '12px',
+              marginBottom: isMobile ? '10px' : '12px',
+              border: '2px solid #e5e7eb',
+              borderRadius: '6px',
+              fontSize: '14px',
+              boxSizing: 'border-box'
+            }}
+          />
+        )}
+        
+        <input 
+          type="email" 
+          placeholder="your@email.com" 
+          disabled
+          style={{
+            width: '100%',
+            padding: isMobile ? '10px' : '12px',
+            marginBottom: isMobile ? '10px' : '12px',
+            border: '2px solid #e5e7eb',
+            borderRadius: '6px',
+            fontSize: '14px',
+            boxSizing: 'border-box'
+          }}
+        />
+        
         {popup.includePhone && (
           <input 
             type="tel" 
@@ -525,6 +510,23 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
         }}>
           {popup.headline || 'Free Guide'}
         </h2>
+        
+        {popup.includeFirstName && (
+          <input 
+            type="text" 
+            placeholder="Name" 
+            disabled
+            style={{
+              width: '100%',
+              padding: isMobile ? '10px' : '12px',
+              marginBottom: isMobile ? '10px' : '12px',
+              border: '2px solid #e5e7eb',
+              borderRadius: '6px',
+              fontSize: '14px',
+              boxSizing: 'border-box'
+            }}
+          />
+        )}
         
         <input 
           type="email" 
