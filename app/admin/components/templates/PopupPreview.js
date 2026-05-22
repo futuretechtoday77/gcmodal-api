@@ -730,7 +730,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Shape like } character - pushed left to connect to divider */}
+          {/* v2.8.1 - Divider: Shape like } character - pushed left to connect */}
           <svg
             style={{
               position: 'absolute',
@@ -738,7 +738,8 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               top: '50%',
               transform: 'translateY(-50%)',
               width: '40px',
-              height: '100px'
+              height: '100px',
+              border: '1px solid red' /* DEBUG - remove after testing */
             }}
             viewBox="0 0 40 100"
           >
