@@ -1101,6 +1101,22 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               }}
             />
             
+            {popup.includePhone && (
+              <input 
+                type="tel" 
+                placeholder="Phone Number" 
+                disabled
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  marginBottom: '12px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '14px'
+                }}
+              />
+            )}
+            
             <button 
               disabled
               style={{
