@@ -1,6 +1,6 @@
 /**
  * GC Modal - Popup Manager
- * Version: 2.8.5-beta.4
+ * Version: 2.8.5-beta.5
  * Supports: All Templates, Split Testing, Phone Field
  */
 
@@ -106,6 +106,12 @@
 
     showPopup: async function(popupId, skipCookieCheck = false) {
       try {
+        // Prevent showing multiple popups at once
+        if (this.currentPopup) {
+          console.log('Popup already open, closing first');
+          this.closePopup();
+        }
+
         // Only check cookie for exit intent and delay triggers, NOT button clicks
         if (!skipCookieCheck && this.hasSeenPopup(popupId)) {
           console.log('Popup already shown:', popupId);
