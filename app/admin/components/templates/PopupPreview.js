@@ -730,7 +730,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Shape like } character - pushed left to connect to divider line */}
+          {/* Shape like } character - pushed left to connect to divider */}
           <svg
             style={{
               position: 'absolute',
