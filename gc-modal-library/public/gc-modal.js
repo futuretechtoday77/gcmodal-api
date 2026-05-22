@@ -18,12 +18,12 @@
     init: function(options) {
       this.config = { ...this.config, ...options };
       
+      // ALWAYS set up button click listeners (for data attributes)
+      this.attachEventListeners();
+      
       // Support direct init with popupId and trigger (admin-generated code)
       if (options.popupId && options.trigger) {
         this.setupDirectTrigger(options);
-      } else {
-        // Standard initialization - look for data attributes
-        this.attachEventListeners();
       }
       
       console.log('GC Modal v2.8.5-beta initialized');
