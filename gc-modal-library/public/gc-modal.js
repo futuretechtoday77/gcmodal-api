@@ -1,6 +1,6 @@
 /**
  * GC Modal - Popup Manager
- * Version: 2.8.5-beta.5
+ * Version: 2.8.5-beta.6
  * Supports: All Templates, Split Testing, Phone Field
  */
 
@@ -16,7 +16,18 @@
     currentPopup: null,
 
     init: function(options) {
+      // Prevent multiple initializations
+      if (this._initialized) {
+        console.log('GC Modal already initialized, skipping');
+        // Still set up direct trigger if provided
+        if (options.popupId && options.trigger) {
+          this.setupDirectTrigger(options);
+        }
+        return;
+      }
+      
       this.config = { ...this.config, ...options };
+      this._initialized = true;
       
       // ALWAYS set up button click listeners (for data attributes)
       this.attachEventListeners();
@@ -26,7 +37,7 @@
         this.setupDirectTrigger(options);
       }
       
-      console.log('GC Modal v2.8.5-beta initialized');
+      console.log('GC Modal v2.8.5-beta.6 initialized');
     },
 
     setupDirectTrigger: function(options) {
