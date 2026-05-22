@@ -1002,6 +1002,23 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               }}
             />
             
+            {popup.includePhone && (
+              <input 
+                type="tel" 
+                placeholder="Phone Number" 
+                disabled
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  marginBottom: '10px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '13px',
+                  boxSizing: 'border-box'
+                }}
+              />
+            )}
+            
             <button 
               disabled
               style={{
@@ -1286,6 +1303,23 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               }}
             />
             
+            {popup.includePhone && (
+              <input 
+                type="tel" 
+                placeholder="Phone Number" 
+                disabled
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  marginBottom: '10px',
+                  border: 'none',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  boxSizing: 'border-box'
+                }}
+              />
+            )}
+            
             <button 
               disabled
               style={{
@@ -1403,6 +1437,23 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               boxSizing: 'border-box'
             }}
           />
+          
+          {popup.includePhone && (
+            <input 
+              type="tel" 
+              placeholder="Phone Number" 
+              disabled
+              style={{
+                width: '100%',
+                padding: '12px',
+                marginBottom: '12px',
+                border: 'none',
+                borderRadius: '6px',
+                fontSize: '14px',
+                boxSizing: 'border-box'
+              }}
+            />
+          )}
           
           <button 
             disabled
