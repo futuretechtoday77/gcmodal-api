@@ -535,7 +535,11 @@ export async function GET(req) {
       
       return Response.json(
         { success: false, error: 'Split test not found' },
-        { status: 404, headers: getSecurityHeaders() }
+        { status: 404, headers: mergeHeaders({
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type'
+        }, getSecurityHeaders()) }
       );
     }
     
