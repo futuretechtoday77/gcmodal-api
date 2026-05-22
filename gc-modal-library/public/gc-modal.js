@@ -8,7 +8,7 @@
   'use strict';
 
   const GCModal = {
-    version: '2.8.3',
+    version: '2.8.5-beta',
     config: {
       apiUrl: 'https://gcmodal-api.vercel.app',
       cookieExpiry: 7  // 1 week - allows seeing different popups across the network
