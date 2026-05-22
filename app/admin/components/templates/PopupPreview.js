@@ -1022,6 +1022,23 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               {popup.headline || 'Book a Consultation'}
             </h2>
             
+            {popup.includeFirstName && (
+              <input 
+                type="text" 
+                placeholder="Name" 
+                disabled
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  marginBottom: '10px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '13px',
+                  boxSizing: 'border-box'
+                }}
+              />
+            )}
+            
             <input 
               type="email" 
               placeholder="your@email.com" 
@@ -1137,6 +1154,22 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               <p style={{ color: '#4b5563', margin: '0 0 20px 0', fontSize: '14px', textAlign: 'center' }}>
                 {popup.subheadline}
               </p>
+            )}
+            
+            {popup.includeFirstName && (
+              <input 
+                type="text" 
+                placeholder="Name" 
+                disabled
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  marginBottom: '12px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '14px'
+                }}
+              />
             )}
             
             <input 
