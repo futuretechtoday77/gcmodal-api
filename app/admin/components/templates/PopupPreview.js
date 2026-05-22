@@ -730,30 +730,34 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Two stacked popup window RIGHT edges creating pointed divider toward form */}
+          {/* Two convex curves meeting at needle point toward form */}
           <div style={{
             position: 'absolute',
             right: '0',
             top: '50%',
             transform: 'translateY(-50%)',
-            width: '50px',
-            height: '120px',
-            display: 'flex',
-            flexDirection: 'column'
+            width: '40px',
+            height: '100px'
           }}>
-            {/* Top window right edge - curved pointing right */}
+            {/* Top convex curve - bulging left */}
             <div style={{
-              flex: 1,
-              background: '#e8f4fc',
-              borderRadius: '0 50% 0 0 / 0 100% 0 0',
-              marginBottom: '-20px'
+              position: 'absolute',
+              top: '0',
+              left: '0',
+              width: '100%',
+              height: '50%',
+              background: '#ffffff',
+              borderRadius: '50% 0 0 0 / 100% 0 0 0'
             }} />
-            {/* Bottom window right edge - curved pointing right */}
+            {/* Bottom convex curve - bulging left */}
             <div style={{
-              flex: 1,
-              background: '#e8f4fc',
-              borderRadius: '0 0 50% 0 / 0 0 100% 0',
-              marginTop: '-20px'
+              position: 'absolute',
+              bottom: '0',
+              left: '0',
+              width: '100%',
+              height: '50%',
+              background: '#ffffff',
+              borderRadius: '0 0 0 50% / 0 0 0 100%'
             }} />
           </div>
         </div>
