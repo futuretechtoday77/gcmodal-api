@@ -11,7 +11,7 @@
     version: '2.8.3',
     config: {
       apiUrl: 'https://gcmodal-api.vercel.app',
-      cookieExpiry: 30
+      cookieExpiry: 7  // 1 week - allows seeing different popups across the network
     },
     currentPopup: null,
 
@@ -28,7 +28,8 @@
           const popupId = button.getAttribute('data-popup-id');
           const trigger = button.getAttribute('data-trigger') || 'button';
           if (trigger === 'button') {
-            this.showPopup(popupId);
+            // Button popups ALWAYS show - no cookie check
+            this.showPopup(popupId, true);
           }
         }
       });
@@ -38,9 +39,8 @@
           const exitButtons = document.querySelectorAll('[data-popup-id][data-trigger="exit"]');
           exitButtons.forEach(btn => {
             const popupId = btn.getAttribute('data-popup-id');
-            if (!this.hasSeenPopup(popupId)) {
-              this.showPopup(popupId);
-            }
+            // Exit intent checks cookie (false = check cookie)
+            this.showPopup(popupId, false);
           });
         }
       });
@@ -50,18 +50,18 @@
         delayButtons.forEach(btn => {
           const popupId = btn.getAttribute('data-popup-id');
           const delay = parseInt(btn.getAttribute('data-delay')) || 180;
-          if (!this.hasSeenPopup(popupId)) {
-            setTimeout(() => {
-              this.showPopup(popupId);
-            }, delay * 1000);
-          }
+          // Delay trigger checks cookie (false = check cookie)
+          setTimeout(() => {
+            this.showPopup(popupId, false);
+          }, delay * 1000);
         });
       });
     },
 
-    showPopup: async function(popupId) {
+    showPopup: async function(popupId, skipCookieCheck = false) {
       try {
-        if (this.hasSeenPopup(popupId)) {
+        // Only check cookie for exit intent and delay triggers, NOT button clicks
+        if (!skipCookieCheck && this.hasSeenPopup(popupId)) {
           console.log('Popup already shown:', popupId);
           return;
         }
@@ -74,7 +74,12 @@
           return;
         }
 
-        const popup = data.popup;
+        // Handle both single popup (popup) and all popups (popups) responses
+        const popup = data.popup || data.popups?.[popupId];
+        if (!popup) {
+          console.error('Popup not found in response:', popupId);
+          return;
+        }
         this.currentPopup = popup;
         this.renderPopup(popup);
         this.setPopupSeen(popupId);
