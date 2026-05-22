@@ -12,13 +12,18 @@ We use **Semantic Versioning** (SemVer) with the format: `MAJOR.MINOR.PATCH`
 
 ## Current Version
 
-### v2.8.4 - PRODUCTION (Frontend Library Update)
+### v2.8.5 - PRODUCTION (Cookie-Based Popup Restrictions)
 **Release Date:** 2026-05-22  
-**Commit:** `TBD`  
+**Commit:** `af94b9f`  
 **Status:** ✅ Production Ready
 
-**Changes in v2.8.4:**
-- **Updated Frontend Library** - gc-modal.js library updated to latest version
+**Features in v2.8.5:**
+- **Cookie-Based Restrictions** - Exit intent and time delay popups respect 7-day cookie
+  - Button popups: NO restriction (always show)
+  - Exit intent: 7 day cookie (once per week)
+  - Time delay: 7 day cookie (once per week)
+- **initUniversal() Support** - Backward compatibility for existing code
+- **Direct Trigger Support** - Admin-generated code with popupId/trigger works
 
 ### v2.8.3 - PRODUCTION (Template System Bug Fixes)
 **Release Date:** 2026-05-22  
