@@ -730,24 +730,15 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             }}>Book/Mockup</div>
           )}
           
-          {/* Two ( curves pointing left toward image - flipped horizontally */}
-          <svg
-            style={{
-              position: 'absolute',
-              right: '-10px',
-              top: '0',
-              width: '50px',
-              height: '100%',
-              transform: 'scaleX(-1)'
-            }}
-            viewBox="0 0 50 100"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M 10,0 Q 40,25 10,50 Q 40,75 10,100 L 50,100 L 50,0 Z"
-              fill="#ffffff"
-            />
-          </svg>
+          {/* Clean vertical divider between image and form */}
+          <div style={{
+            position: 'absolute',
+            right: '0',
+            top: '0',
+            bottom: '0',
+            width: '2px',
+            background: 'rgba(0,0,0,0.1)'
+          }} />
         </div>
         
         {/* Right: Form with white background */}
