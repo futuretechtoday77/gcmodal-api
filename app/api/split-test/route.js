@@ -35,8 +35,35 @@ const staticPopups = {
       image: { url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/CAFG-book-cover-Lh2xaPIH7sJdphdusZIbLNi3lGBiEM.png', position: 'left-side', scale: 145 }
     },
     fields: ['email']
+  },
+  'forbiddenfood-nitriloside': {
+    name: 'ForbiddenFood Course Nitriloside',
+    tagId: '69a02963430175cb1007f09d',
+    design: {
+      variant: 'purple',
+      layout: 'centered',
+      headline: 'Get Instant Access',
+      subheadline: 'Enter your details below',
+      bodyCopy: '',
+      buttonText: 'Send My Login Info Now',
+      image: { url: '', position: 'none' }
+    },
+    fields: ['firstName', 'email']
+  },
+  'nitriloside-course': {
+    name: 'Nitriloside Course',
+    tagId: '69a02963430175cb1007f09d',
+    design: {
+      variant: 'purple',
+      layout: 'centered',
+      headline: 'Get Instant Access',
+      subheadline: 'Enter your details below',
+      bodyCopy: '',
+      buttonText: 'Send My Login Info Now',
+      image: { url: '', position: 'none' }
+    },
+    fields: ['firstName', 'email']
   }
-  // Add more popups as needed
 };
 
 // In-memory store for split test assignments (session-based)
