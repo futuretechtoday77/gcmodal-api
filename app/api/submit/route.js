@@ -38,6 +38,10 @@ const ALLOWED_ORIGINS = [
   'https://apricotseeds.com',
   'https://www.healthharmonic.com',
   'https://healthharmonic.com',
+  'https://www.futurefrequency.com',
+  'https://futurefrequency.com',
+  'https://www.homehealthwellness.com',
+  'https://homehealthwellness.com',
 ];
 
 function getCorsHeaders(request) {
