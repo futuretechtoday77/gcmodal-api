@@ -20,51 +20,41 @@ let ratelimit;
 try {
   ratelimit = new Ratelimit({
     redis: Redis.fromEnv(),
-    limiter: Ratelimit.slidingWindow(5, "60 s"),
-    analytics: true,
+    limiter: Ratelimit.slidingWindow(5, "1 m"),
   });
-} catch (e) {
-  console.warn('⚠️ Rate limiting disabled - Upstash not configured');
+} catch (error) {
+  console.warn('⚠️ Rate limiting not configured (Redis env vars missing)');
 }
 
-// Email validation (RFC 5322 compliant)
-function isValidEmail(email) {
-  const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-  return regex.test(email) && email.length <= 254;
-}
+// CORS whitelist - only these domains can submit forms
+const ALLOWED_ORIGINS = [
+  'https://gcmodal.vercel.app',
+  'https://gcmodal-api77.vercel.app',
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'https://www.healthydirections.com',
+  'https://healthydirections.com',
+  'https://www.apricotseeds.com',
+  'https://apricotseeds.com',
+];
 
-// CORS helper for whitelisted domains
 function getCorsHeaders(request) {
-  const ALLOWED_ORIGINS = [
-    'https://healthharmonic.com',
-    'https://www.healthharmonic.com',
-    'http://localhost:3000',
-    'https://gcmodal.vercel.app', // Test page
-  ];
+  const origin = request.headers.get('origin') || '';
+  const isAllowed = ALLOWED_ORIGINS.includes(origin) || 
+                    ALLOWED_ORIGINS.some(allowed => origin.includes(allowed.replace(/^https?:\/\//, '')));
   
-  const origin = request.headers.get('origin');
-  
-  // SECURITY FIX: Strict whitelist only (no wildcard fallback)
-  // If origin is not whitelisted, use first allowed origin as default
-  const allowOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
-  
-  return mergeHeaders(
-    {
-      'Access-Control-Allow-Origin': allowOrigin,
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Credentials': 'true',
-    },
-    getSecurityHeaders()
-  );
+  return {
+    'Access-Control-Allow-Origin': isAllowed ? origin : ALLOWED_ORIGINS[0],
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
 }
 
-// Handle CORS preflight
-export async function OPTIONS(request) {
-  return new Response(null, {
-    status: 200,
-    headers: getCorsHeaders(request),
-  });
+// RFC 5322 compliant email regex
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+function isValidEmail(email) {
+  return EMAIL_REGEX.test(email) && email.length <= 254;
 }
 
 export async function POST(request) {
@@ -87,14 +77,12 @@ export async function POST(request) {
           }
         );
       }
-      
-      console.log(`✅ Rate limit OK: ${remaining}/${limit} remaining for ${ip}`);
     }
 
     const body = await request.json();
-    const { popupId, firstName, email } = body;
+    const { popupId, firstName, email, phone } = body;
     
-    console.log('📧 Form submission:', { popupId, firstName, email });
+    console.log('📧 Form submission:', { popupId, firstName, email, phone });
 
     // SECURITY FIX #2: Email validation
     if (!email || !isValidEmail(email)) {
@@ -110,7 +98,12 @@ export async function POST(request) {
     
     // SECURITY FIX: Sanitize firstName (remove HTML, limit length)
     const cleanFirstName = firstName ? 
-      firstName.trim().replace(/[<>\"']/g, '').substring(0, 50) : 
+      firstName.trim().replace(/[<>"']/g, '').substring(0, 50) : 
+      undefined;
+    
+    // SECURITY FIX: Sanitize phone (basic validation)
+    const cleanPhone = phone ? 
+      phone.trim().replace(/[^0-9+\-\s\(\)]/g, '').substring(0, 20) : 
       undefined;
 
     // SECURITY FIX: Load popup config server-side (includes tagId)
@@ -138,11 +131,15 @@ export async function POST(request) {
       );
     }
 
-    // Step 1: Create contact (use sanitized firstName)
+    // Step 1: Create contact (use sanitized firstName and phone)
     const contactPayload = { email: email };
     
     if (cleanFirstName) {
       contactPayload.firstName = cleanFirstName;
+    }
+    
+    if (cleanPhone) {
+      contactPayload.phone = cleanPhone;
     }
     
     console.log('👤 Creating contact with payload:', JSON.stringify(contactPayload));
@@ -160,8 +157,15 @@ export async function POST(request) {
     console.log('👤 Contact created:', contactData);
 
     if (!contactResponse.ok) {
+      // Contact might already exist, continue to tag
+      console.log('⚠️ Contact creation issue:', contactData.message || 'Unknown error');
+    }
+
+    const contactId = contactData.contact?._id || contactData.contact?.id;
+    
+    if (!contactId) {
       return Response.json(
-        { success: false, error: 'Failed to create contact' },
+        { success: false, error: 'Failed to create or find contact' },
         { 
           status: 500,
           headers: getCorsHeaders(request),
@@ -169,52 +173,50 @@ export async function POST(request) {
       );
     }
 
-    // Step 2: Fire tag (include sanitized firstName to prevent data loss)
-    console.log('🏷️ Firing tag:', config.tagId);
+    // Step 2: Apply tag
+    console.log('🏷️ Applying tag:', config.tagId, 'to contact:', contactId);
     
-    const tagPayload = { email: email };
-    if (cleanFirstName) {
-      tagPayload.firstName = cleanFirstName;
-    }
-    
-    const tagResponse = await fetch(
-      `https://api.globalcontrol.io/api/ai/tags/fire-tag/${config.tagId}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-KEY': GC_API_KEY
-        },
-        body: JSON.stringify(tagPayload)
-      }
-    );
+    const tagResponse = await fetch(`https://api.globalcontrol.io/api/ai/contacts/${contactId}/tags`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-KEY': GC_API_KEY
+      },
+      body: JSON.stringify({ tagId: config.tagId })
+    });
 
     const tagData = await tagResponse.json();
-    console.log('🏷️ Tag fired:', tagData);
+    console.log('🏷️ Tag applied:', tagData);
 
-    console.log('✅ Complete!');
-    
-    // SECURITY FIX: No debug payload in production
-    const response = {
-      success: true,
-      message: 'Thank you! Check your email for access details.',
-    };
-    
+    if (!tagResponse.ok) {
+      console.error('❌ Failed to apply tag:', tagData);
+      // Don't fail the submission if tagging fails, but log it
+    }
+
     return Response.json(
-      response,
-      {
-        headers: getCorsHeaders(request),
-      }
+      { 
+        success: true, 
+        message: 'Thank you for your submission!',
+        contactId: contactId
+      },
+      { headers: getCorsHeaders(request) }
     );
 
   } catch (error) {
-    console.error('❌ Error:', error);
+    console.error('❌ Form submission error:', error);
     return Response.json(
-      { success: false, error: 'Server error' },
+      { success: false, error: 'An error occurred. Please try again.' },
       { 
         status: 500,
         headers: getCorsHeaders(request),
       }
     );
   }
+}
+
+export async function OPTIONS(request) {
+  return new Response(null, {
+    status: 204,
+    headers: getCorsHeaders(request),
+  });
 }
