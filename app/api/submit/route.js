@@ -65,12 +65,13 @@ function isValidEmail(email) {
 
 export async function POST(request) {
   try {
+    // Get IP address early for use throughout the function
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 
+               request.headers.get('x-real-ip') || 
+               'unknown';
+    
     // SECURITY FIX #1: Rate limiting (5 submissions per minute per IP)
     if (ratelimit) {
-      const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 
-                 request.headers.get('x-real-ip') || 
-                 'unknown';
-      
       const { success, limit, remaining } = await ratelimit.limit(`submit:${ip}`);
       
       if (!success) {
