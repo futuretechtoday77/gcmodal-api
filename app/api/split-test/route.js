@@ -6,8 +6,40 @@
 
 import { getSecurityHeaders, mergeHeaders } from '@/lib/security-headers';
 
+// Static popup configurations (copied from /api/popups for direct access)
+const staticPopups = {
+  'nitrilosides-optin': {
+    name: 'Nitrilosides Free Access',
+    tagId: '69a02963430175cb1007f09d',
+    design: {
+      variant: 'purple',
+      layout: 'centered',
+      headline: 'Get Instant Access',
+      subheadline: 'Enter your details below',
+      bodyCopy: '',
+      buttonText: 'Send My Login Info Now',
+      image: { url: '', position: 'none' }
+    },
+    fields: ['firstName', 'email']
+  },
+  'frequency-generator-report': {
+    name: 'Frequency Generator Report',
+    tagId: '68cb4cbb97f1fa5d35ebf6f3',
+    design: {
+      variant: 'blue',
+      layout: 'side-by-side',
+      headline: 'Cuts Thru The BS And Show & Get The Truth About So Called "Rife Machines"',
+      subheadline: 'Where should I send your free Rife Reports?',
+      bodyCopy: 'Enter your email below and I\'ll send you this and my most popular Rife Reports published over the last 20 years..',
+      buttonText: 'Send Reports To My Email!',
+      image: { url: 'https://wtlu1vtxxipjqznc.public.blob.vercel-storage.com/CAFG-book-cover-Lh2xaPIH7sJdphdusZIbLNi3lGBiEM.png', position: 'left-side', scale: 145 }
+    },
+    fields: ['email']
+  }
+  // Add more popups as needed
+};
+
 // In-memory store for split test assignments (session-based)
-// In production, this should use Redis or similar
 const splitTestAssignments = new Map();
 
 export async function GET(req) {
@@ -103,13 +135,12 @@ export async function GET(req) {
     const variant = Math.random() < 0.5 ? 'A' : 'B';
     const variantData = variant === 'A' ? test.variantA : test.variantB;
     
-    // Fetch the full popup configuration
-    const popupResponse = await fetch(`https://gcmodal-api77.vercel.app/api/popups?id=${encodeURIComponent(variantData.popupId)}`);
-    const popupData = await popupResponse.json();
+    // Get the full popup configuration (including tagId) from static data
+    const popupConfig = staticPopups[variantData.popupId];
     
-    if (!popupData.success || !popupData.popup) {
+    if (!popupConfig) {
       return Response.json(
-        { success: false, error: 'Failed to fetch popup configuration' },
+        { success: false, error: 'Popup configuration not found for: ' + variantData.popupId },
         { status: 500, headers: mergeHeaders({
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET, OPTIONS',
@@ -122,7 +153,7 @@ export async function GET(req) {
       success: true,
       variant,
       popupId: variantData.popupId,
-      popup: popupData.popup,
+      popup: popupConfig,
       isCompleted: false,
       testId: test.testId
     }, { headers: mergeHeaders({
