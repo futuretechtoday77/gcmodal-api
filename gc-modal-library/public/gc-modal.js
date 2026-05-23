@@ -1,6 +1,6 @@
 /**
  * GC Modal - Popup Manager
- * Version: 2.8.8-beta.6
+ * Version: 2.8.8-beta.7
  * Supports: All Templates, Split Testing, Phone Field
  */
 
@@ -472,6 +472,12 @@
       const data = Object.fromEntries(formData.entries());
 
       try {
+        console.log('Submitting form, currentPopup:', this.currentPopup);
+        if (!this.currentPopup || !this.currentPopup.tagId) {
+          console.error('Missing currentPopup or tagId:', this.currentPopup);
+          alert('Error: Popup configuration incomplete');
+          return;
+        }
         const response = await fetch(`${this.config.apiUrl}/api/submit`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
