@@ -168,9 +168,14 @@ export async function POST(request) {
       console.log('⚠️ Contact creation issue:', contactData.message || 'Unknown error');
     }
 
-    const contactId = contactData.contact?._id || contactData.contact?.id;
+    // Handle both response formats from Global Control API
+    const contactId = contactData.contact?._id || 
+                      contactData.contact?.id ||
+                      contactData.data?._id ||
+                      contactData.data?.id;
     
     if (!contactId) {
+      console.error('❌ Could not extract contact ID from response:', JSON.stringify(contactData));
       return Response.json(
         { success: false, error: 'Failed to create or find contact' },
         { 
@@ -180,23 +185,34 @@ export async function POST(request) {
       );
     }
 
-    // Step 2: Apply tag
-    console.log('🏷️ Applying tag:', config.tagId, 'to contact:', contactId);
+    // Step 2: Fire tag using the working endpoint (fire-tag by email)
+    console.log('🏷️ Firing tag:', config.tagId);
     
-    const tagResponse = await fetch(`https://api.globalcontrol.io/api/ai/contacts/${contactId}/tags`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-KEY': GC_API_KEY
-      },
-      body: JSON.stringify({ tagId: config.tagId })
-    });
+    const tagPayload = { email: email };
+    if (cleanFirstName) {
+      tagPayload.firstName = cleanFirstName;
+    }
+    if (cleanPhone) {
+      tagPayload.phone = cleanPhone;
+    }
+    
+    const tagResponse = await fetch(
+      `https://api.globalcontrol.io/api/ai/tags/fire-tag/${config.tagId}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': GC_API_KEY
+        },
+        body: JSON.stringify(tagPayload)
+      }
+    );
 
     const tagData = await tagResponse.json();
-    console.log('🏷️ Tag applied:', tagData);
+    console.log('🏷️ Tag fired:', tagData);
 
     if (!tagResponse.ok) {
-      console.error('❌ Failed to apply tag:', tagData);
+      console.error('❌ Failed to fire tag:', tagData);
       // Don't fail the submission if tagging fails, but log it
     }
 

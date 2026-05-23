@@ -176,8 +176,15 @@
       try {
         console.log('Handling split test:', testId);
         
-        // Call split test API with cache-busting
-        const response = await fetch(`${this.config.apiUrl}/api/split-test?id=${encodeURIComponent(testId)}&_=${Date.now()}`);
+        // Call split test API with aggressive cache-busting
+        const cacheBuster = Date.now() + '_' + Math.random().toString(36).substring(7);
+        const url = `${this.config.apiUrl}/api/split-test?id=${encodeURIComponent(testId)}&_=${cacheBuster}`;
+        console.log('Split test URL:', url);
+        
+        const response = await fetch(url, {
+          cache: 'no-store',
+          headers: { 'Cache-Control': 'no-cache' }
+        });
         const data = await response.json();
         
         if (!data.success) {
