@@ -12,6 +12,24 @@ export async function GET(req) {
   
   // Static popup configurations (fallback)
   const staticPopups = {
+    'Nitriloside ForbiddenFood Course': {
+      name: 'ForbiddenFood Course NitrilosideImage',
+      tagId: '69a02963430175cb1007f09d',
+      design: {
+        variant: 'purple',
+        layout: 'centered',
+        headline: 'Get Instant Access',
+        subheadline: 'Enter your details below',
+        bodyCopy: '',
+        buttonText: 'Send My Login Info Now',
+        image: {
+          url: '',
+          position: 'none'
+        }
+      },
+      fields: ['firstName', 'email']
+    },
+    
     'nitrilosides-optin': {
       name: 'Nitrilosides Free Access',
       tagId: '69a02963430175cb1007f09d',

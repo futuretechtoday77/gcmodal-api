@@ -63,6 +63,34 @@ const staticPopups = {
       image: { url: '', position: 'none' }
     },
     fields: ['firstName', 'email']
+  },
+  'Nitriloside ForbiddenFood Course': {
+    name: 'ForbiddenFood Course NitrilosideImage',
+    tagId: '69a02963430175cb1007f09d',
+    design: {
+      variant: 'purple',
+      layout: 'centered',
+      headline: 'Get Instant Access',
+      subheadline: 'Enter your details below',
+      bodyCopy: '',
+      buttonText: 'Send My Login Info Now',
+      image: { url: '', position: 'none' }
+    },
+    fields: ['firstName', 'email']
+  },
+  'ApricotSeed ForbiddenFood Course': {
+    name: 'ApricotSeed ForbiddenFood Course',
+    tagId: '69a02963430175cb1007f09d',
+    design: {
+      variant: 'purple',
+      layout: 'centered',
+      headline: 'Get Instant Access',
+      subheadline: 'Enter your details below',
+      bodyCopy: '',
+      buttonText: 'Send My Login Info Now',
+      image: { url: '', position: 'none' }
+    },
+    fields: ['firstName', 'email']
   }
 };
 
