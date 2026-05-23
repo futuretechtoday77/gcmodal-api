@@ -1,6 +1,6 @@
 /**
  * GC Modal - Popup Manager
- * Version: 2.8.8-beta.3
+ * Version: 2.8.8-beta.4
  * Supports: All Templates, Split Testing, Phone Field
  */
 
@@ -205,8 +205,11 @@
       const design = popup.design || {};
       const fields = popup.fields || ['email'];
       
-      // Remove existing popup
-      this.closePopup();
+      // Remove existing popup (but don't clear currentPopup yet)
+      const existingOverlay = document.getElementById('gc-modal-overlay');
+      if (existingOverlay) {
+        existingOverlay.remove();
+      }
 
       // Create overlay
       const overlay = document.createElement('div');
