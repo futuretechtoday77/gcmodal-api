@@ -1,6 +1,6 @@
 /**
  * GC Modal - Popup Manager
- * Version: 2.8.8-beta.1
+ * Version: 2.8.8-beta.2
  * Supports: All Templates, Split Testing, Phone Field
  */
 
@@ -175,8 +175,8 @@
       try {
         console.log('Handling split test:', testId);
         
-        // Call split test API
-        const response = await fetch(`${this.config.apiUrl}/api/split-test?id=${encodeURIComponent(testId)}`);
+        // Call split test API with cache-busting
+        const response = await fetch(`${this.config.apiUrl}/api/split-test?id=${encodeURIComponent(testId)}&_=${Date.now()}`);
         const data = await response.json();
         
         if (!data.success) {
