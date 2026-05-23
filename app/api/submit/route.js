@@ -36,6 +36,8 @@ const ALLOWED_ORIGINS = [
   'https://healthydirections.com',
   'https://www.apricotseeds.com',
   'https://apricotseeds.com',
+  'https://www.healthharmonic.com',
+  'https://healthharmonic.com',
 ];
 
 function getCorsHeaders(request) {
