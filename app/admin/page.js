@@ -71,6 +71,18 @@ function CodeImplementationModal({ popup, onClose }) {
     });
   };
 
+  // Get mobile-adjusted size (automatic scaling)
+  const getMobileSize = (desktopSize) => {
+    const mobileMap = {
+      fullwidth: 'standard',
+      large: 'medium',
+      standard: 'small',
+      medium: 'small',
+      small: 'small'
+    };
+    return mobileMap[desktopSize] || 'small';
+  };
+
   // Apply color preset when changed
   const applyColorPreset = (color) => {
     setButtonStyle({
@@ -566,20 +578,39 @@ function CodeImplementationModal({ popup, onClose }) {
               </div>
             </div>
 
-            <div>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Font Family</label>
-              <select
-                value={buttonStyle.fontFamily}
-                onChange={(e) => setButtonStyle({...buttonStyle, fontFamily: e.target.value})}
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
-              >
-                <option value="system-ui, sans-serif">System (Default)</option>
-                <option value="Arial, sans-serif">Arial</option>
-                <option value="Helvetica, sans-serif">Helvetica</option>
-                <option value="Georgia, serif">Georgia</option>
-                <option value="'Times New Roman', serif">Times New Roman</option>
-                <option value="'Courier New', monospace">Courier New</option>
-              </select>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Font Family</label>
+                <select
+                  value={buttonStyle.fontFamily}
+                  onChange={(e) => setButtonStyle({...buttonStyle, fontFamily: e.target.value})}
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                >
+                  <option value="system-ui, sans-serif">System (Default)</option>
+                  <option value="Arial, sans-serif">Arial</option>
+                  <option value="Helvetica, sans-serif">Helvetica</option>
+                  <option value="Georgia, serif">Georgia</option>
+                  <option value="'Times New Roman', serif">Times New Roman</option>
+                  <option value="'Courier New', monospace">Courier New</option>
+                </select>
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Font Size</label>
+                <select
+                  value={buttonStyle.fontSize}
+                  onChange={(e) => setButtonStyle({...buttonStyle, fontSize: e.target.value})}
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                >
+                  <option value="12px">12px</option>
+                  <option value="14px">14px</option>
+                  <option value="16px">16px (Default)</option>
+                  <option value="18px">18px</option>
+                  <option value="20px">20px</option>
+                  <option value="24px">24px</option>
+                  <option value="28px">28px</option>
+                  <option value="32px">32px</option>
+                </select>
+              </div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
@@ -626,7 +657,10 @@ function CodeImplementationModal({ popup, onClose }) {
           {/* Button Preview */}
           <div style={{ marginTop: '25px' }}>
             <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '10px' }}>Preview:</label>
-            <div style={{ background: 'white', padding: '20px', borderRadius: '8px', border: '1px solid #e5e7eb', textAlign: buttonStyle.align }}>
+            
+            {/* Desktop Preview */}
+            <div style={{ background: 'white', padding: '15px', borderRadius: '8px 8px 0 0', border: '1px solid #e5e7eb', borderBottom: 'none', textAlign: buttonStyle.align }}>
+              <span style={{ fontSize: '11px', color: '#999', display: 'block', marginBottom: '8px' }}>Desktop ({buttonStyle.size})</span>
               <button
                 style={{
                   background: buttonStyle.bgColor,
@@ -647,7 +681,32 @@ function CodeImplementationModal({ popup, onClose }) {
                 {buttonIconMap[buttonStyle.icon]}{buttonStyle.text}
               </button>
             </div>
-            <p style={{ fontSize: '12px', color: '#999', marginTop: '8px', textAlign: 'center' }}>Size: {buttonStyle.size} | Alignment: {buttonStyle.align}</p>
+            
+            {/* Mobile Preview */}
+            <div style={{ background: '#f9fafb', padding: '15px', borderRadius: '0 0 8px 8px', border: '1px solid #e5e7eb', textAlign: 'center' }}>
+              <span style={{ fontSize: '11px', color: '#999', display: 'block', marginBottom: '8px' }}>Mobile (standard size)</span>
+              <button
+                style={{
+                  background: buttonStyle.bgColor,
+                  color: buttonStyle.textColor,
+                  fontSize: '16px',
+                  fontFamily: buttonStyle.fontFamily,
+                  fontWeight: buttonStyle.fontWeight,
+                  padding: '14px 24px',
+                  border: 'none',
+                  borderRadius: buttonStyle.borderRadius,
+                  boxShadow: buttonStyle.boxShadow,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+              >
+                {buttonIconMap[buttonStyle.icon]}{buttonStyle.text}
+              </button>
+            </div>
+            
+            <p style={{ fontSize: '12px', color: '#999', marginTop: '8px', textAlign: 'center' }}>Size, font, padding = desktop only | Mobile uses standard</p>
           </div>
         </div>
       </div>
