@@ -1,7 +1,7 @@
 # GC Modal API - Beta Version
 
 **Version:** 2.8.8-beta.20
-**Status:** READY FOR BETA
+**Status:** PRODUCTION READY BETA - All features tested and working
 **Date:** 2026-05-23
 
 ## What's Working
@@ -40,7 +40,7 @@
 ### ⚠️ Split Test Config
 - Split test API uses separate static config
 - Must manually sync new popups to `/app/api/split-test/route.js`
-- Only these popups work in split tests:
+- 10 popups currently working in split tests:
   - forbiddenfood-nitriloside
   - nitriloside-course
   - frequency-generator-report
@@ -48,6 +48,9 @@
   - ApricotSeed ForbiddenFood Course
   - nitrilosides-optin
   - rifelead-scientist-bw
+  - rifelead-scientist-sepia
+  - rifelead-microscope
+  - rifelead-waveforms
   - rifelead-scientist-sepia
   - rifelead-microscope
   - rifelead-waveforms

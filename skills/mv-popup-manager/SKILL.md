@@ -2,9 +2,9 @@
 
 **Purpose:** Create, modify, and manage lead capture popups for HealthHarmonic.com using the MV Popup Manager system, including A/B split testing.
 
-**Version:** 2.8.8-beta.1  
-**Status:** Beta Testing  
-**Last Updated:** 2026-05-22
+**Version:** 2.8.8-beta.20  
+**Status:** Beta - Production Ready  
+**Last Updated:** 2026-05-23
 
 ---
 
@@ -45,13 +45,33 @@ Use this skill when the user asks to:
 - Handles submissions, uploads, authentication, split tests
 - Repository: Main workspace (`~/.openclaw/workspace`)
 
-### Current Popup Configuration
+### Current Popup Configuration (v2.8.8-beta.20)
 
-**Popups are hardcoded in TWO files:**
-1. `/app/api/popups/route.js` - Public API (no Tag IDs)
-2. `/app/api/admin/popups/route.js` - Admin API (with Tag IDs)
+**10 Working Popups Deployed:**
 
-**Important:** Changes must be made to BOTH files to keep them in sync.
+**Nitriloside/ForbiddenFood (tag: 69a02963430175cb1007f09d):**
+- `forbiddenfood-nitriloside`
+- `nitriloside-course`
+- `Nitriloside ForbiddenFood Course`
+- `ApricotSeed ForbiddenFood Course`
+- `nitrilosides-optin`
+
+**RifeLead/Frequency (tag: 68cb4cbb97f1fa5d35ebf6f3):**
+- `frequency-generator-report`
+- `rifelead-scientist-bw`
+- `rifelead-scientist-sepia`
+- `rifelead-microscope`
+- `rifelead-waveforms`
+
+**Backup Available:**
+- 10 RedLight popups (tag: 6942461446aba476ddd3ae8c) - see `POPUP_BACKUP_2026-05-23.md`
+- 6 ForbiddenFood variants - in git history
+
+**Files:**
+- `/app/api/popups/route.js` - Public API (10 popups)
+- `/app/api/split-test/route.js` - Split test API (10 popups)
+- `/lib/popups.js` - Server-side config (10 popups)
+- `POPUP_BACKUP_2026-05-23.md` - Full backup of all popups
 
 ---
 
