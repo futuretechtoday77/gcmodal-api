@@ -582,9 +582,9 @@ export async function GET(req) {
     // Regular popup lookup
     const popup = allPopups[popupId];
     if (popup) {
-      const { tagId, ...publicPopup } = popup;
+      // Include tagId for form submission (it's needed by the submit API)
       return Response.json(
-        { success: true, popup: publicPopup },
+        { success: true, popup: popup },
         { headers: mergeHeaders({
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET, OPTIONS',
