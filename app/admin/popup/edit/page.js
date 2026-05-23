@@ -46,6 +46,8 @@ export default function PopupEditPage() {
     overlayColor: '#000000',
     overlayOpacity: 50,
     buttonColor: '#3b82f6',
+    buttonSize: 'standard',
+    buttonIcon: 'none',
     popupHeight: 'standard',
     useCustomTextColors: false,
     headlineColor: '#000000',
@@ -175,6 +177,8 @@ export default function PopupEditPage() {
           template: templateId,
           // New v2.8.x fields
           buttonColor: existing.buttonColor || '#3b82f6',
+          buttonSize: existing.buttonSize || 'standard',
+          buttonIcon: existing.buttonIcon || 'none',
           popupHeight: existing.popupHeight || 'standard',
           trustText: existing.trustText || 'We respect your email inbox and will never spam!',
           showTrustText: existing.showTrustText !== undefined ? existing.showTrustText : true,
@@ -257,6 +261,8 @@ export default function PopupEditPage() {
             template: selectedTemplate.id,
             // Include all new v2.8.x fields
             buttonColor: popup.buttonColor,
+            buttonSize: popup.buttonSize,
+            buttonIcon: popup.buttonIcon,
             popupHeight: popup.popupHeight,
             trustText: popup.trustText,
             showTrustText: popup.showTrustText,
@@ -630,35 +636,81 @@ export default function PopupEditPage() {
                 )}
               </div>
               
-              {/* Button Color */}
+              {/* Button Settings */}
               <div style={{ background: '#f8f9fa', padding: 20, borderRadius: 8 }}>
-                <h3 style={{ marginTop: 0 }}>Button Color</h3>
-                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                  {[
-                    { name: 'Blue', value: '#3b82f6' },
-                    { name: 'Green', value: '#22c55e' },
-                    { name: 'Red', value: '#ef4444' },
-                    { name: 'Purple', value: '#8b5cf6' },
-                    { name: 'Orange', value: '#f97316' },
-                    { name: 'Pink', value: '#ec4899' },
-                    { name: 'Teal', value: '#14b8a6' },
-                    { name: 'Black', value: '#1f2937' }
-                  ].map(color => (
-                    <button
-                      key={color.value}
-                      onClick={() => setPopup({...popup, buttonColor: color.value})}
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: '50%',
-                        background: color.value,
-                        border: popup.buttonColor === color.value ? '3px solid #000' : '2px solid transparent',
-                        cursor: 'pointer',
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                      }}
-                      title={color.name}
-                    />
-                  ))}
+                <h3 style={{ marginTop: 0 }}>Button Settings</h3>
+                
+                {/* Button Color */}
+                <div style={{ marginBottom: 20 }}>
+                  <label style={{ display: 'block', marginBottom: 10, fontWeight: 'bold' }}>Button Color</label>
+                  <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                    {[
+                      { name: 'Blue', value: '#3b82f6' },
+                      { name: 'Lime Green', value: '#32CD32' },
+                      { name: 'Forest Green', value: '#228B22' },
+                      { name: 'Hunter Green', value: '#355E3B' },
+                      { name: 'Moss Green', value: '#6B8E23' },
+                      { name: 'Red', value: '#ef4444' },
+                      { name: 'Purple', value: '#8b5cf6' },
+                      { name: 'Amazon Orange', value: '#FF9900' },
+                      { name: 'Amazon Yellow', value: '#FFD814' },
+                      { name: 'Pink', value: '#ec4899' },
+                      { name: 'Black', value: '#1f2937' }
+                    ].map(color => (
+                      <button
+                        key={color.value}
+                        onClick={() => setPopup({...popup, buttonColor: color.value})}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: '50%',
+                          background: color.value,
+                          border: popup.buttonColor === color.value ? '3px solid #000' : '2px solid transparent',
+                          cursor: 'pointer',
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                        }}
+                        title={color.name}
+                      />
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Button Size */}
+                <div style={{ marginBottom: 20 }}>
+                  <label style={{ display: 'block', marginBottom: 10, fontWeight: 'bold' }}>Button Size (Desktop)</label>
+                  <select
+                    value={popup.buttonSize || 'standard'}
+                    onChange={(e) => setPopup({...popup, buttonSize: e.target.value})}
+                    style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+                  >
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="standard">Standard</option>
+                    <option value="large">Large</option>
+                    <option value="fullwidth">Full Width</option>
+                  </select>
+                  <small style={{ color: '#6c757d' }}>Mobile buttons always use standard size</small>
+                </div>
+                
+                {/* Button Icon */}
+                <div>
+                  <label style={{ display: 'block', marginBottom: 10, fontWeight: 'bold' }}>Button Icon</label>
+                  <select
+                    value={popup.buttonIcon || 'none'}
+                    onChange={(e) => setPopup({...popup, buttonIcon: e.target.value})}
+                    style={{ width: '100%', padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+                  >
+                    <option value="none">No Icon</option>
+                    <option value="arrow">→ Arrow</option>
+                    <option value="download">⬇ Download</option>
+                    <option value="email">✉ Email</option>
+                    <option value="video">🎞️ Film</option>
+                    <option value="play">▶ Play</option>
+                    <option value="gift">🎁 Gift</option>
+                    <option value="fire">🔥 Fire</option>
+                    <option value="star">⭐ Star</option>
+                    <option value="check">✓ Check</option>
+                  </select>
                 </div>
               </div>
               

@@ -532,6 +532,7 @@ export async function GET(req) {
 
   // Try to load dynamic popups from Control Board (same as public API)
   let dynamicPopups = {};
+  let deletedPopups = [];
   
   try {
     const CONTROLBOARD_TOKEN = process.env.CONTROLBOARD_API_TOKEN;
@@ -553,7 +554,11 @@ export async function GET(req) {
           if (key.startsWith('popup_')) {
             try {
               const popupData = typeof value === 'string' ? JSON.parse(value) : value;
-              if (popupData?.popupId && popupData?.config && popupData?.isActive !== false) {
+              // Check if popup is marked as deleted/inactive
+              if (popupData?._inactive === true || popupData?.isActive === false) {
+                const popupId = key.replace('popup_', '');
+                deletedPopups.push(popupId);
+              } else if (popupData?.popupId && popupData?.config) {
                 dynamicPopups[popupData.popupId] = popupData.config;
               }
             } catch (e) {
@@ -567,8 +572,16 @@ export async function GET(req) {
     console.warn('Could not load dynamic popups:', error.message);
   }
 
+  // Filter out deleted popups from static list
+  const filteredStaticPopups = {};
+  Object.entries(staticPopups).forEach(([key, value]) => {
+    if (!deletedPopups.includes(key)) {
+      filteredStaticPopups[key] = value;
+    }
+  });
+
   // Merge dynamic popups with static (dynamic takes precedence)
-  const allPopups = { ...staticPopups, ...dynamicPopups };
+  const allPopups = { ...filteredStaticPopups, ...dynamicPopups };
 
   // Return FULL config including tagId for admin use
   return NextResponse.json({

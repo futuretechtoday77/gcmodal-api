@@ -293,9 +293,70 @@
       }
     },
 
+    getButtonStyles: function(popup, isMobile) {
+      const buttonSize = popup.buttonSize || 'standard';
+      const buttonIcon = popup.buttonIcon || 'none';
+      const buttonColor = popup.buttonColor || '#3b82f6';
+      
+      // Size configurations (desktop only - mobile always standard)
+      const sizeConfigs = {
+        small: { padding: '10px 16px', fontSize: '14px', width: 'auto', minWidth: '120px' },
+        medium: { padding: '12px 20px', fontSize: '15px', width: 'auto', minWidth: '160px' },
+        standard: { padding: '14px 24px', fontSize: '16px', width: '100%', minWidth: 'auto' },
+        large: { padding: '18px 32px', fontSize: '18px', width: '100%', minWidth: 'auto' },
+        fullwidth: { padding: '16px 24px', fontSize: '16px', width: '100%', minWidth: 'auto' }
+      };
+      
+      const config = isMobile ? sizeConfigs.standard : (sizeConfigs[buttonSize] || sizeConfigs.standard);
+      
+      // Icon mapping
+      const iconMap = {
+        none: '',
+        arrow: '→ ',
+        download: '⬇ ',
+        email: '✉ ',
+        video: '🎥 ',
+        play: '▶ ',
+        gift: '🎁 ',
+        fire: '🔥 ',
+        star: '⭐ ',
+        check: '✓ '
+      };
+      
+      const icon = iconMap[buttonIcon] || '';
+      
+      return {
+        style: `padding: ${config.padding}; background: ${buttonColor}; color: white; border: none; border-radius: 8px; font-size: ${config.fontSize}; font-weight: bold; cursor: pointer; width: ${config.width}; ${config.minWidth !== 'auto' ? `min-width: ${config.minWidth};` : ''} display: inline-flex; align-items: center; justify-content: center; gap: 8px;`,
+        icon: icon
+      };
+    },
+
+    getPopupHeightStyles: function(popup) {
+      const popupHeight = popup.popupHeight || 'standard';
+      const heightMap = {
+        compact: { minHeight: '250px', padding: '20px' },
+        standard: { minHeight: '350px', padding: '40px' },
+        tall: { minHeight: '500px', padding: '50px' }
+      };
+      return heightMap[popupHeight] || heightMap.standard;
+    },
+
+    getTextColorStyles: function(popup) {
+      const useCustom = popup.useCustomTextColors || false;
+      if (!useCustom) return { headline: '', subheadline: '' };
+      return {
+        headline: popup.headlineColor || '#000000',
+        subheadline: popup.subheadlineColor || '#666666'
+      };
+    },
+
     renderSplitLeadMagnet: function(popup, design, fields) {
       const isMobile = window.innerWidth <= 768;
-      const buttonColor = popup.buttonColor || '#3b82f6';
+      const button = this.getButtonStyles(popup, isMobile);
+      const textColors = this.getTextColorStyles(popup);
+      
+      const headlineStyle = textColors.headline ? `color: ${textColors.headline};` : 'color: #1f2937;';
+      const subheadlineStyle = textColors.subheadline ? `color: ${textColors.subheadline};` : 'color: #6b7280;';
       
       if (isMobile) {
         return `
@@ -303,13 +364,13 @@
             <button id="gc-modal-close" style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 18px; cursor: pointer; color: #6b7280; z-index: 10;">×</button>
             <div style="padding: 20px; text-align: center;">
               ${design.image?.url ? `<img src="${design.image.url}" alt="" style="max-width: 100%; max-height: 150px; object-fit: contain; margin-bottom: 15px;">` : ''}
-              <h2 style="color: #1f2937; margin: 0 0 10px 0; font-size: 18px; font-weight: bold;">${design.headline || 'Discover How It Works'}</h2>
-              ${design.subheadline ? `<p style="color: #6b7280; margin: 0 0 15px 0; font-size: 14px;">${design.subheadline}</p>` : ''}
+              <h2 style="${headlineStyle} margin: 0 0 10px 0; font-size: 18px; font-weight: bold;">${design.headline || 'Discover How It Works'}</h2>
+              ${design.subheadline ? `<p style="${subheadlineStyle} margin: 0 0 15px 0; font-size: 14px;">${design.subheadline}</p>` : ''}
               <form id="gc-modal-form">
                 ${fields.includes('firstName') ? `<input type="text" name="firstName" placeholder="Name" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">` : ''}
                 <input type="email" name="email" placeholder="your@email.com" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
                 ${fields.includes('phone') ? `<input type="tel" name="phone" placeholder="Phone Number" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">` : ''}
-                <button type="submit" style="width: 100%; padding: 14px; background: ${buttonColor}; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer;">${design.buttonText || 'Send Report To My Email!'}</button>
+                <button type="submit" style="${button.style}">${button.icon}${design.buttonText || 'Send Report To My Email!'}</button>
               </form>
             </div>
           </div>
@@ -323,13 +384,13 @@
             ${design.image?.url ? `<img src="${design.image.url}" alt="" style="max-width: 100%; max-height: 300px; object-fit: contain;">` : '<div style="color: #64748b;">Image</div>'}
           </div>
           <div style="flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center;">
-            <h2 style="color: #1f2937; margin: 0 0 12px 0; font-size: 26px; font-weight: bold;">${design.headline || 'Discover How It Works In Simple Terms'}</h2>
-            ${design.subheadline ? `<p style="color: #4b5563; margin: 0 0 20px 0; font-size: 15px;">${design.subheadline}</p>` : ''}
+            <h2 style="${headlineStyle} margin: 0 0 12px 0; font-size: 26px; font-weight: bold;">${design.headline || 'Discover How It Works In Simple Terms'}</h2>
+            ${design.subheadline ? `<p style="${subheadlineStyle} margin: 0 0 20px 0; font-size: 15px;">${design.subheadline}</p>` : ''}
             <form id="gc-modal-form">
               ${fields.includes('firstName') ? `<input type="text" name="firstName" placeholder="Name" required style="width: 100%; padding: 14px; margin-bottom: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 15px; box-sizing: border-box;">` : ''}
               <input type="email" name="email" placeholder="your@email.com" required style="width: 100%; padding: 14px; margin-bottom: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 15px; box-sizing: border-box;">
               ${fields.includes('phone') ? `<input type="tel" name="phone" placeholder="Phone Number" style="width: 100%; padding: 14px; margin-bottom: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 15px; box-sizing: border-box;">` : ''}
-              <button type="submit" style="width: 100%; padding: 16px; background: ${buttonColor}; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">${design.buttonText || 'Send Report To My Email!'}</button>
+              <button type="submit" style="${button.style}">${button.icon}${design.buttonText || 'Send Report To My Email!'}</button>
             </form>
           </div>
         </div>
@@ -338,6 +399,7 @@
 
     renderCleanGradient: function(popup, design, fields) {
       const variant = design.variant || 'purple';
+      const isMobile = window.innerWidth <= 768;
       const colorMap = {
         purple: { bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', text: 'white' },
         blue: { bg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', text: 'white' },
@@ -346,21 +408,26 @@
         dark: { bg: '#1f2937', text: 'white' }
       };
       const colors = colorMap[variant] || colorMap.purple;
-      const buttonColor = popup.buttonColor || '#3b82f6';
+      const button = this.getButtonStyles(popup, isMobile);
+      const textColors = this.getTextColorStyles(popup);
+      
+      // For gradient templates, custom colors override the default white
+      const headlineColor = textColors.headline || colors.text;
+      const subheadlineColor = textColors.subheadline || colors.text;
 
       return `
         <div style="background: ${colors.bg}; color: ${colors.text}; border-radius: 12px; max-width: 500px; width: 100%; position: relative; overflow: hidden;">
           <button id="gc-modal-close" style="position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 20px; cursor: pointer; color: ${colors.text}; z-index: 10;">×</button>
           <div style="padding: 40px;">
             ${design.image?.url ? `<img src="${design.image.url}" alt="" style="width: 100%; max-height: 180px; object-fit: contain; margin-bottom: 20px;">` : ''}
-            <h2 style="margin: 0 0 10px 0; font-size: 26px; font-weight: bold;">${design.headline || 'Your Headline'}</h2>
-            ${design.subheadline ? `<p style="margin: 0 0 15px 0; font-size: 16px; opacity: 0.9;">${design.subheadline}</p>` : ''}
+            <h2 style="margin: 0 0 10px 0; font-size: 26px; font-weight: bold; color: ${headlineColor};">${design.headline || 'Your Headline'}</h2>
+            ${design.subheadline ? `<p style="margin: 0 0 15px 0; font-size: 16px; opacity: 0.9; color: ${subheadlineColor};">${design.subheadline}</p>` : ''}
             ${design.bodyCopy ? `<p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.6; opacity: 0.8;">${design.bodyCopy}</p>` : ''}
             <form id="gc-modal-form">
               ${fields.includes('firstName') ? `<input type="text" name="firstName" placeholder="Name" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: none; border-radius: 6px; font-size: 14px; box-sizing: border-box;">` : ''}
               <input type="email" name="email" placeholder="Email Address" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: none; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
               ${fields.includes('phone') ? `<input type="tel" name="phone" placeholder="Phone Number" style="width: 100%; padding: 12px; margin-bottom: 15px; border: none; border-radius: 6px; font-size: 14px; box-sizing: border-box;">` : ''}
-              <button type="submit" style="width: 100%; padding: 14px; background: ${buttonColor}; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer;">${design.buttonText || 'Submit'}</button>
+              <button type="submit" style="${button.style}">${button.icon}${design.buttonText || 'Submit'}</button>
             </form>
           </div>
         </div>
@@ -368,25 +435,35 @@
     },
 
     renderUltraMinimal: function(popup, design, fields) {
-      const buttonColor = popup.buttonColor || '#3b82f6';
+      const isMobile = window.innerWidth <= 768;
+      const button = this.getButtonStyles(popup, isMobile);
+      const textColors = this.getTextColorStyles(popup);
+      
+      const headlineStyle = textColors.headline ? `color: ${textColors.headline};` : 'color: #1f2937;';
+      const subheadlineStyle = textColors.subheadline ? `color: ${textColors.subheadline};` : 'color: #6b7280;';
 
       return `
         <div style="background: white; border-radius: 8px; max-width: 400px; width: 100%; position: relative; padding: 30px; text-align: center;">
           <button id="gc-modal-close" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.05); border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 18px; cursor: pointer; color: #9ca3af;">×</button>
-          <h2 style="color: #1f2937; margin: 0 0 8px 0; font-size: 22px; font-weight: bold;">${design.headline || 'Your Headline'}</h2>
-          ${design.subheadline ? `<p style="color: #6b7280; margin: 0 0 15px 0; font-size: 13px;">${design.subheadline}</p>` : ''}
+          <h2 style="${headlineStyle} margin: 0 0 8px 0; font-size: 22px; font-weight: bold;">${design.headline || 'Your Headline'}</h2>
+          ${design.subheadline ? `<p style="${subheadlineStyle} margin: 0 0 15px 0; font-size: 13px;">${design.subheadline}</p>` : ''}
           <form id="gc-modal-form">
             ${fields.includes('firstName') ? `<input type="text" name="firstName" placeholder="Name" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box;">` : ''}
             <input type="email" name="email" placeholder="your@email.com" required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
             ${fields.includes('phone') ? `<input type="tel" name="phone" placeholder="Phone Number" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box;">` : ''}
-            <button type="submit" style="width: 100%; padding: 14px; background: ${buttonColor}; color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer;">${design.buttonText || 'Download'}</button>
+            <button type="submit" style="${button.style}">${button.icon}${design.buttonText || 'Download'}</button>
           </form>
         </div>
       `;
     },
 
     renderSplitScreen: function(popup, design, fields) {
-      const buttonColor = popup.buttonColor || '#3b82f6';
+      const isMobile = window.innerWidth <= 768;
+      const button = this.getButtonStyles(popup, isMobile);
+      const textColors = this.getTextColorStyles(popup);
+      
+      const headlineStyle = textColors.headline ? `color: ${textColors.headline};` : 'color: #1f2937;';
+      const subheadlineStyle = textColors.subheadline ? `color: ${textColors.subheadline};` : 'color: #4b5563;';
 
       return `
         <div style="background: white; border-radius: 12px; max-width: 700px; width: 100%; display: flex; position: relative; overflow: hidden;">
@@ -395,13 +472,13 @@
             ${design.image?.url ? `<img src="${design.image.url}" alt="" style="width: 100%; height: 100%; object-fit: contain;">` : '<span style="color: #999;">Image</span>'}
           </div>
           <div style="flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center;">
-            <h2 style="color: #1f2937; margin: 0 0 10px 0; font-size: 24px; font-weight: bold;">${design.headline || 'Your Headline'}</h2>
-            ${design.subheadline ? `<p style="color: #4b5563; margin: 0 0 15px 0; font-size: 15px;">${design.subheadline}</p>` : ''}
+            <h2 style="${headlineStyle} margin: 0 0 10px 0; font-size: 24px; font-weight: bold;">${design.headline || 'Your Headline'}</h2>
+            ${design.subheadline ? `<p style="${subheadlineStyle} margin: 0 0 15px 0; font-size: 15px;">${design.subheadline}</p>` : ''}
             <form id="gc-modal-form" style="margin-top: 20px;">
               ${fields.includes('firstName') ? `<input type="text" name="firstName" placeholder="Name" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box;">` : ''}
               <input type="email" name="email" placeholder="Email" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
               ${fields.includes('phone') ? `<input type="tel" name="phone" placeholder="Phone" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box;">` : ''}
-              <button type="submit" style="width: 100%; padding: 14px; background: ${buttonColor}; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer;">${design.buttonText || 'Submit'}</button>
+              <button type="submit" style="${button.style}">${button.icon}${design.buttonText || 'Submit'}</button>
             </form>
           </div>
         </div>
@@ -409,40 +486,50 @@
     },
 
     renderLeadMagnet: function(popup, design, fields) {
-      const buttonColor = popup.buttonColor || '#3b82f6';
+      const isMobile = window.innerWidth <= 768;
+      const button = this.getButtonStyles(popup, isMobile);
+      const textColors = this.getTextColorStyles(popup);
+      
+      const headlineStyle = textColors.headline ? `color: ${textColors.headline};` : 'color: #1f2937;';
+      const subheadlineStyle = textColors.subheadline ? `color: ${textColors.subheadline};` : 'color: #6b7280;';
 
       return `
         <div style="background: white; border-radius: 8px; max-width: 400px; width: 100%; position: relative; padding: 20px; text-align: center;">
           <button id="gc-modal-close" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.05); border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 18px; cursor: pointer; color: #666;">×</button>
           ${design.image?.url ? `<img src="${design.image.url}" alt="" style="max-width: 150px; max-height: 200px; object-fit: contain; margin-bottom: 15px;">` : ''}
-          <h2 style="color: #1f2937; margin: 0 0 8px 0; font-size: 22px; font-weight: bold;">${design.headline || 'Free Guide'}</h2>
-          ${design.subheadline ? `<p style="color: #6b7280; margin: 0 0 15px 0; font-size: 14px;">${design.subheadline}</p>` : ''}
+          <h2 style="${headlineStyle} margin: 0 0 8px 0; font-size: 22px; font-weight: bold;">${design.headline || 'Free Guide'}</h2>
+          ${design.subheadline ? `<p style="${subheadlineStyle} margin: 0 0 15px 0; font-size: 14px;">${design.subheadline}</p>` : ''}
           <form id="gc-modal-form">
             ${fields.includes('firstName') ? `<input type="text" name="firstName" placeholder="Name" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box;">` : ''}
             <input type="email" name="email" placeholder="your@email.com" required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
             ${fields.includes('phone') ? `<input type="tel" name="phone" placeholder="Phone Number" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box;">` : ''}
-            <button type="submit" style="width: 100%; padding: 14px; background: ${buttonColor}; color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer;">${design.buttonText || 'Download Now'}</button>
+            <button type="submit" style="${button.style}">${button.icon}${design.buttonText || 'Download Now'}</button>
           </form>
         </div>
       `;
     },
 
     renderPersonalConsultation: function(popup, design, fields) {
-      const buttonColor = popup.buttonColor || '#3b82f6';
+      const isMobile = window.innerWidth <= 768;
+      const button = this.getButtonStyles(popup, isMobile);
+      const textColors = this.getTextColorStyles(popup);
       const avatarUrl = popup.avatarUrl || '';
+      
+      const headlineStyle = textColors.headline ? `color: ${textColors.headline};` : 'color: #1f2937;';
+      const subheadlineStyle = textColors.subheadline ? `color: ${textColors.subheadline};` : 'color: #4b5563;';
 
       return `
         <div style="background: white; border-radius: 12px; max-width: 500px; width: 100%; position: relative; overflow: hidden;">
           <button id="gc-modal-close" style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 20px; cursor: pointer; color: #6b7280; z-index: 10;">×</button>
           ${design.image?.url ? `<div style="height: 200px; background: url(${design.image.url}) center center / cover no-repeat;"></div>` : ''}
           <div style="padding: 30px; text-align: center;">
-            <h2 style="color: #1f2937; margin: 0 0 10px 0; font-size: 22px; font-weight: bold;">${design.headline || 'Book a Consultation'}</h2>
-            ${design.subheadline ? `<p style="color: #4b5563; margin: 0 0 20px 0; font-size: 14px;">${design.subheadline}</p>` : ''}
+            <h2 style="${headlineStyle} margin: 0 0 10px 0; font-size: 22px; font-weight: bold;">${design.headline || 'Book a Consultation'}</h2>
+            ${design.subheadline ? `<p style="${subheadlineStyle} margin: 0 0 20px 0; font-size: 14px;">${design.subheadline}</p>` : ''}
             <form id="gc-modal-form">
               ${fields.includes('firstName') ? `<input type="text" name="firstName" placeholder="Name" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box;">` : ''}
               <input type="email" name="email" placeholder="your@email.com" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
               ${fields.includes('phone') ? `<input type="tel" name="phone" placeholder="Phone Number" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box;">` : ''}
-              <button type="submit" style="width: 100%; padding: 14px; background: ${buttonColor}; color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer;">${design.buttonText || 'Schedule Now'}</button>
+              <button type="submit" style="${button.style}">${button.icon}${design.buttonText || 'Schedule Now'}</button>
             </form>
           </div>
           ${avatarUrl ? `<div style="position: absolute; bottom: -20px; left: 20px; width: 60px; height: 60px; border-radius: 50%; background: url(${avatarUrl}) center center / cover no-repeat; border: 3px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"></div>` : ''}
@@ -451,23 +538,29 @@
     },
 
     renderFullBackground: function(popup, design, fields) {
-      const buttonColor = popup.buttonColor || '#3b82f6';
+      const isMobile = window.innerWidth <= 768;
+      const button = this.getButtonStyles(popup, isMobile);
+      const textColors = this.getTextColorStyles(popup);
       const showOverlay = popup.showOverlay || false;
       const overlayColor = popup.overlayColor || '#000000';
       const overlayOpacity = (popup.overlayOpacity || 50) / 100;
+      
+      // For full background, default to white text unless custom colors are set
+      const headlineColor = textColors.headline || 'white';
+      const subheadlineColor = textColors.subheadline || 'rgba(255,255,255,0.9)';
 
       return `
         <div style="background: ${design.image?.url ? `url(${design.image.url}) center center / cover no-repeat` : '#1f2937'}; border-radius: 12px; max-width: 500px; width: 100%; position: relative; overflow: hidden; min-height: 350px;">
           <button id="gc-modal-close" style="position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 20px; cursor: pointer; color: #6b7280; z-index: 10;">×</button>
           ${showOverlay ? `<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: ${overlayColor}; opacity: ${overlayOpacity};"></div>` : ''}
           <div style="position: relative; z-index: 1; padding: 40px; text-align: center; color: white;">
-            <h2 style="margin: 0 0 10px 0; font-size: 24px; font-weight: bold;">${design.headline || 'Your Headline'}</h2>
-            ${design.subheadline ? `<p style="margin: 0 0 20px 0; font-size: 15px; opacity: 0.9;">${design.subheadline}</p>` : ''}
+            <h2 style="margin: 0 0 10px 0; font-size: 24px; font-weight: bold; color: ${headlineColor};">${design.headline || 'Your Headline'}</h2>
+            ${design.subheadline ? `<p style="margin: 0 0 20px 0; font-size: 15px; opacity: 0.9; color: ${subheadlineColor};">${design.subheadline}</p>` : ''}
             <form id="gc-modal-form" style="max-width: 400px; margin: 0 auto;">
               ${fields.includes('firstName') ? `<input type="text" name="firstName" placeholder="Name" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: none; border-radius: 6px; font-size: 14px; box-sizing: border-box;">` : ''}
               <input type="email" name="email" placeholder="your@email.com" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: none; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
               ${fields.includes('phone') ? `<input type="tel" name="phone" placeholder="Phone Number" style="width: 100%; padding: 12px; margin-bottom: 15px; border: none; border-radius: 6px; font-size: 14px; box-sizing: border-box;">` : ''}
-              <button type="submit" style="width: 100%; padding: 14px; background: ${buttonColor}; color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer;">${design.buttonText || 'Get Started'}</button>
+              <button type="submit" style="${button.style}">${button.icon}${design.buttonText || 'Get Started'}</button>
             </form>
           </div>
         </div>
@@ -501,7 +594,7 @@
 
         if (result.success) {
           this.closePopup();
-          alert('Thank you! Your submission has been received.');
+          alert('Welcome! Check your email — your guide is on its way! 🎉');
         } else {
           alert('Error: ' + (result.error || 'Something went wrong'));
         }

@@ -41,6 +41,8 @@ export async function POST(request) {
       ],
       // New v2.8.x fields
       buttonColor: popup.buttonColor,
+      buttonSize: popup.buttonSize,
+      buttonIcon: popup.buttonIcon,
       popupHeight: popup.popupHeight,
       trustText: popup.trustText,
       showTrustText: popup.showTrustText,

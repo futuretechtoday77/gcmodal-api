@@ -10,14 +10,72 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
   const showImage = !isMobile || templateConfig.showImageOnMobile
   const hasImage = popup.imageUrl && popup.imagePosition !== 'none' && showImage
   
-  // Button color - use custom or fall back to variant
+  // Button settings
   const buttonColor = popup.buttonColor || variant.primary
+  const buttonSize = popup.buttonSize || 'standard'
+  const buttonIcon = popup.buttonIcon || 'none'
+  
+  // Button size configurations (desktop only)
+  const getButtonStyles = () => {
+    if (isMobile) {
+      return {
+        padding: '12px 14px',
+        fontSize: '14px',
+        width: '100%'
+      }
+    }
+    
+    switch (buttonSize) {
+      case 'small':
+        return { padding: '10px 16px', fontSize: '14px', width: 'auto', minWidth: '120px' }
+      case 'medium':
+        return { padding: '12px 20px', fontSize: '15px', width: 'auto', minWidth: '160px' }
+      case 'large':
+        return { padding: '18px 32px', fontSize: '18px', width: '100%' }
+      case 'fullwidth':
+        return { padding: '16px 24px', fontSize: '16px', width: '100%' }
+      case 'standard':
+      default:
+        return { padding: '14px 24px', fontSize: '16px', width: '100%' }
+    }
+  }
+  
+  const buttonStyles = getButtonStyles()
+  
+  // Button icon mapping
+  const iconMap = {
+    none: '',
+    arrow: '→ ',
+    download: '⬇ ',
+    email: '✉ ',
+    video: '🎞️ ',
+    play: '▶ ',
+    gift: '🎁 ',
+    fire: '🔥 ',
+    star: '⭐ ',
+    check: '✓ '
+  }
+  const buttonIconText = iconMap[buttonIcon] || ''
   
   // Text colors from theme or custom
   const textColor = popup.useCustomTextColors ? popup.headlineColor : (variant.text || '#1f2937')
   const textLightColor = popup.useCustomTextColors ? popup.subheadlineColor : (variant.textLight || '#6b7280')
   
   // Base container styles
+  // Popup height configuration
+  const getPopupHeight = () => {
+    if (isMobile) {
+      // Mobile heights
+      if (popup.popupHeight === 'compact') return '280px'
+      if (popup.popupHeight === 'tall') return '500px'
+      return 'auto' // standard
+    }
+    // Desktop heights
+    if (popup.popupHeight === 'compact') return '320px'
+    if (popup.popupHeight === 'tall') return '550px'
+    return 'auto' // standard
+  }
+  
   const containerStyles = {
     background: variant.bg,
     borderRadius: templateConfig.styling?.borderRadius || '12px',
@@ -25,6 +83,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
     fontFamily: 'system-ui, -apple-system, sans-serif',
     maxWidth: isMobile ? '320px' : (templateConfig.styling?.maxWidth || '500px'),
     width: isMobile ? '320px' : 'auto',
+    minHeight: getPopupHeight(),
     margin: '0 auto',
     boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
   }
@@ -178,6 +237,10 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               width: '100%',
               padding: isMobile ? '12px' : '14px',
               background: buttonColor,
+                padding: buttonStyles.padding,
+                fontSize: buttonStyles.fontSize,
+                width: buttonStyles.width,
+                minWidth: buttonStyles.minWidth || "auto",
               color: 'white',
               border: 'none',
               borderRadius: '6px',
@@ -187,7 +250,7 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               boxSizing: 'border-box'
             }}
           >
-            {popup.buttonText || 'Submit'}
+            {buttonIconText}{popup.buttonText || 'Submit'}
           </button>
           
           {/* Trust Text */}
@@ -292,8 +355,12 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             {popup.includePhone && (
               <input type="tel" placeholder="Phone" disabled style={{ width: '100%', padding: '12px', marginBottom: '10px', border: '2px solid #e5e7eb', borderRadius: '6px', boxSizing: 'border-box' }} />
             )}
-            <button disabled style={{ width: '100%', padding: '14px', background: buttonColor, color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold', boxSizing: 'border-box' }}>
-              {popup.buttonText || 'Submit'}
+            <button disabled style={{ width: '100%', padding: '14px', background: buttonColor,
+                padding: buttonStyles.padding,
+                fontSize: buttonStyles.fontSize,
+                width: buttonStyles.width,
+                minWidth: buttonStyles.minWidth || "auto", color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold', boxSizing: 'border-box' }}>
+              {buttonIconText}{popup.buttonText || 'Submit'}
             </button>
           </div>
         </div>
@@ -398,6 +465,10 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             width: '100%',
             padding: isMobile ? '12px' : '14px',
             background: buttonColor,
+                padding: buttonStyles.padding,
+                fontSize: buttonStyles.fontSize,
+                width: buttonStyles.width,
+                minWidth: buttonStyles.minWidth || "auto",
             color: 'white',
             border: 'none',
             borderRadius: '6px',
@@ -548,6 +619,10 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
             width: '100%',
             padding: isMobile ? '12px' : '14px',
             background: buttonColor,
+                padding: buttonStyles.padding,
+                fontSize: buttonStyles.fontSize,
+                width: buttonStyles.width,
+                minWidth: buttonStyles.minWidth || "auto",
             color: 'white',
             border: 'none',
             borderRadius: '6px',
@@ -718,6 +793,10 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
                 width: '100%',
                 padding: '14px',
                 background: buttonColor,
+                padding: buttonStyles.padding,
+                fontSize: buttonStyles.fontSize,
+                width: buttonStyles.width,
+                minWidth: buttonStyles.minWidth || "auto",
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',
@@ -900,6 +979,10 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               width: '100%',
               padding: '16px',
               background: buttonColor,
+                padding: buttonStyles.padding,
+                fontSize: buttonStyles.fontSize,
+                width: buttonStyles.width,
+                minWidth: buttonStyles.minWidth || "auto",
               color: 'white',
               border: 'none',
               borderRadius: '8px',
@@ -1059,6 +1142,10 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
                 width: '100%',
                 padding: '12px',
                 background: buttonColor,
+                padding: buttonStyles.padding,
+                fontSize: buttonStyles.fontSize,
+                width: buttonStyles.width,
+                minWidth: buttonStyles.minWidth || "auto",
                 color: 'white',
                 border: 'none',
                 borderRadius: '6px',
@@ -1190,6 +1277,10 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
                 width: '100%',
                 padding: '14px',
                 background: buttonColor,
+                padding: buttonStyles.padding,
+                fontSize: buttonStyles.fontSize,
+                width: buttonStyles.width,
+                minWidth: buttonStyles.minWidth || "auto",
                 color: 'white',
                 border: 'none',
                 borderRadius: '6px',
@@ -1393,6 +1484,10 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
                 width: '100%',
                 padding: '12px',
                 background: buttonColor,
+                padding: buttonStyles.padding,
+                fontSize: buttonStyles.fontSize,
+                width: buttonStyles.width,
+                minWidth: buttonStyles.minWidth || "auto",
                 color: 'white',
                 border: 'none',
                 borderRadius: '6px',
@@ -1545,6 +1640,10 @@ export default function PopupPreview({ popup, template, isMobile = false }) {
               width: '100%',
               padding: '14px',
               background: buttonColor,
+                padding: buttonStyles.padding,
+                fontSize: buttonStyles.fontSize,
+                width: buttonStyles.width,
+                minWidth: buttonStyles.minWidth || "auto",
               color: 'white',
               border: 'none',
               borderRadius: '6px',
