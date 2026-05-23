@@ -1,6 +1,6 @@
 /**
  * GC Modal - Popup Manager
- * Version: 2.8.8-beta.4
+ * Version: 2.8.8-beta.6
  * Supports: All Templates, Split Testing, Phone Field
  */
 
@@ -10,7 +10,7 @@
   const GCModal = {
     version: '2.8.5-beta',
     config: {
-      apiUrl: 'https://gcmodal-api.vercel.app',
+      apiUrl: 'https://gcmodal-api77.vercel.app',
       cookieExpiry: 7  // 1 week - allows seeing different popups across the network
     },
     currentPopup: null,
