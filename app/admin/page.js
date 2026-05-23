@@ -7,6 +7,44 @@ import FolderManager from './components/FolderManager'
 
 // Code Implementation Modal Component
 function CodeImplementationModal({ popup, onClose }) {
+  // Button size presets (same as popup buttons)
+  const buttonSizePresets = {
+    small: { padding: '10px 16px', fontSize: '14px' },
+    medium: { padding: '12px 20px', fontSize: '15px' },
+    standard: { padding: '14px 24px', fontSize: '16px' },
+    large: { padding: '18px 32px', fontSize: '18px' },
+    fullwidth: { padding: '16px 24px', fontSize: '16px' }
+  };
+
+  // Button color presets (same as popup buttons)
+  const buttonColorPresets = [
+    { name: 'Blue', value: '#3b82f6' },
+    { name: 'Lime Green', value: '#32CD32' },
+    { name: 'Forest Green', value: '#228B22' },
+    { name: 'Hunter Green', value: '#355E3B' },
+    { name: 'Moss Green', value: '#6B8E23' },
+    { name: 'Red', value: '#ef4444' },
+    { name: 'Purple', value: '#8b5cf6' },
+    { name: 'Amazon Orange', value: '#FF9900' },
+    { name: 'Amazon Yellow', value: '#FFD814' },
+    { name: 'Pink', value: '#ec4899' },
+    { name: 'Black', value: '#1f2937' }
+  ];
+
+  // Button icon mapping (same as popup buttons)
+  const buttonIconMap = {
+    none: '',
+    arrow: '→ ',
+    download: '⬇ ',
+    email: '✉ ',
+    video: '🎥 ',
+    play: '▶ ',
+    gift: '🎁 ',
+    fire: '🔥 ',
+    star: '⭐ ',
+    check: '✓ '
+  };
+
   const [buttonStyle, setButtonStyle] = useState({
     text: 'Get Free Access',
     bgColor: '#6B46C1',
@@ -17,8 +55,29 @@ function CodeImplementationModal({ popup, onClose }) {
     padding: '12px 24px',
     boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
     fontWeight: 'bold',
-    align: popup.buttonAlign || 'center'
+    align: popup.buttonAlign || 'center',
+    size: 'standard',
+    icon: 'none'
   });
+
+  // Apply size preset when changed
+  const applySizePreset = (size) => {
+    const preset = buttonSizePresets[size];
+    setButtonStyle({
+      ...buttonStyle,
+      size,
+      padding: preset.padding,
+      fontSize: preset.fontSize
+    });
+  };
+
+  // Apply color preset when changed
+  const applyColorPreset = (color) => {
+    setButtonStyle({
+      ...buttonStyle,
+      bgColor: color
+    });
+  };
 
   const delaySeconds = popup.triggerDelay || 180;
   const delayMinutes = Math.floor(delaySeconds / 60);
@@ -408,24 +467,102 @@ function CodeImplementationModal({ popup, onClose }) {
               />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-              <div>
-                <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Background</label>
-                <input
-                  type="color"
-                  value={buttonStyle.bgColor}
-                  onChange={(e) => setButtonStyle({...buttonStyle, bgColor: e.target.value})}
-                  style={{ width: '100%', height: '36px', border: '1px solid #d1d5db', borderRadius: '4px' }}
-                />
+            {/* Button Size Preset */}
+            <div>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Button Size</label>
+              <select
+                value={buttonStyle.size}
+                onChange={(e) => applySizePreset(e.target.value)}
+                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+              >
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="standard">Standard</option>
+                <option value="large">Large</option>
+                <option value="fullwidth">Full Width</option>
+              </select>
+            </div>
+
+            {/* Button Icon */}
+            <div>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Button Icon</label>
+              <select
+                value={buttonStyle.icon}
+                onChange={(e) => setButtonStyle({...buttonStyle, icon: e.target.value})}
+                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+              >
+                <option value="none">No Icon</option>
+                <option value="arrow">→ Arrow</option>
+                <option value="download">⬇ Download</option>
+                <option value="email">✉ Email</option>
+                <option value="video">🎥 Video</option>
+                <option value="play">▶ Play</option>
+                <option value="gift">🎁 Gift</option>
+                <option value="fire">🔥 Fire</option>
+                <option value="star">⭐ Star</option>
+                <option value="check">✓ Check</option>
+              </select>
+            </div>
+
+            {/* Background Color Presets */}
+            <div>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '10px' }}>Background Color</label>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {buttonColorPresets.map(color => (
+                  <button
+                    key={color.value}
+                    onClick={() => applyColorPreset(color.value)}
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      background: color.value,
+                      border: buttonStyle.bgColor === color.value ? '3px solid #000' : '2px solid transparent',
+                      cursor: 'pointer',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                    }}
+                    title={color.name}
+                  />
+                ))}
               </div>
-              <div>
-                <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Text Color</label>
-                <input
-                  type="color"
-                  value={buttonStyle.textColor}
-                  onChange={(e) => setButtonStyle({...buttonStyle, textColor: e.target.value})}
-                  style={{ width: '100%', height: '36px', border: '1px solid #d1d5db', borderRadius: '4px' }}
-                />
+            </div>
+
+            {/* Text Color (Black/White only) */}
+            <div>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Text Color</label>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  onClick={() => setButtonStyle({...buttonStyle, textColor: '#ffffff'})}
+                  style={{
+                    flex: 1,
+                    padding: '8px',
+                    background: buttonStyle.textColor === '#ffffff' ? '#3b82f6' : '#e5e7eb',
+                    color: buttonStyle.textColor === '#ffffff' ? 'white' : '#374151',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    fontWeight: buttonStyle.textColor === '#ffffff' ? 'bold' : 'normal'
+                  }}
+                >
+                  White
+                </button>
+                <button
+                  onClick={() => setButtonStyle({...buttonStyle, textColor: '#000000'})}
+                  style={{
+                    flex: 1,
+                    padding: '8px',
+                    background: buttonStyle.textColor === '#000000' ? '#3b82f6' : '#e5e7eb',
+                    color: buttonStyle.textColor === '#000000' ? 'white' : '#374151',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    fontWeight: buttonStyle.textColor === '#000000' ? 'bold' : 'normal'
+                  }}
+                >
+                  Black
+                </button>
               </div>
             </div>
 
@@ -447,16 +584,6 @@ function CodeImplementationModal({ popup, onClose }) {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Font Size</label>
-                <input
-                  type="text"
-                  value={buttonStyle.fontSize}
-                  onChange={(e) => setButtonStyle({...buttonStyle, fontSize: e.target.value})}
-                  placeholder="16px"
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
-                />
-              </div>
-              <div>
                 <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Border Radius</label>
                 <input
                   type="text"
@@ -466,32 +593,20 @@ function CodeImplementationModal({ popup, onClose }) {
                   style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
                 />
               </div>
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Padding</label>
-              <input
-                type="text"
-                value={buttonStyle.padding}
-                onChange={(e) => setButtonStyle({...buttonStyle, padding: e.target.value})}
-                placeholder="12px 24px"
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Box Shadow</label>
-              <select
-                value={buttonStyle.boxShadow}
-                onChange={(e) => setButtonStyle({...buttonStyle, boxShadow: e.target.value})}
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
-              >
-                <option value="none">None</option>
-                <option value="0 2px 4px rgba(0,0,0,0.1)">Small</option>
-                <option value="0 4px 6px rgba(0,0,0,0.1)">Medium</option>
-                <option value="0 10px 15px rgba(0,0,0,0.1)">Large</option>
-                <option value="0 20px 25px rgba(0,0,0,0.15)">X-Large</option>
-              </select>
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', marginBottom: '5px' }}>Box Shadow</label>
+                <select
+                  value={buttonStyle.boxShadow}
+                  onChange={(e) => setButtonStyle({...buttonStyle, boxShadow: e.target.value})}
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '13px' }}
+                >
+                  <option value="none">None</option>
+                  <option value="0 2px 4px rgba(0,0,0,0.1)">Small</option>
+                  <option value="0 4px 6px rgba(0,0,0,0.1)">Medium</option>
+                  <option value="0 10px 15px rgba(0,0,0,0.1)">Large</option>
+                  <option value="0 20px 25px rgba(0,0,0,0.15)">X-Large</option>
+                </select>
+              </div>
             </div>
 
             <div>
@@ -523,13 +638,16 @@ function CodeImplementationModal({ popup, onClose }) {
                   border: 'none',
                   borderRadius: buttonStyle.borderRadius,
                   boxShadow: buttonStyle.boxShadow,
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px'
                 }}
               >
-                {buttonStyle.text}
+                {buttonIconMap[buttonStyle.icon]}{buttonStyle.text}
               </button>
             </div>
-            <p style={{ fontSize: '12px', color: '#999', marginTop: '8px', textAlign: 'center' }}>Alignment: {buttonStyle.align}</p>
+            <p style={{ fontSize: '12px', color: '#999', marginTop: '8px', textAlign: 'center' }}>Size: {buttonStyle.size} | Alignment: {buttonStyle.align}</p>
           </div>
         </div>
       </div>
