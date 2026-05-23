@@ -1,6 +1,6 @@
 /**
  * GC Modal - Popup Manager
- * Version: 2.8.8-beta.7
+ * Version: 2.8.8-beta.10
  * Supports: All Templates, Split Testing, Phone Field
  */
 
@@ -163,7 +163,8 @@
         }
         
         console.log('Showing popup:', popup.name || popupId);
-        this.currentPopup = popup;
+        // Add the popup ID to the popup object for form submission
+        this.currentPopup = { ...popup, id: popupId };
         this.renderPopup(popup);
         this.setPopupSeen(popupId);
       } catch (err) {
@@ -188,7 +189,8 @@
         
         // Use the popup data returned from API
         if (data.popup) {
-          this.currentPopup = data.popup;
+          // Add the popup ID to the popup object for form submission
+          this.currentPopup = { ...data.popup, id: data.popupId };
           this.renderPopup(data.popup);
         } else {
           // Fallback: fetch popup separately
