@@ -103,10 +103,26 @@ export async function GET(req) {
     const variant = Math.random() < 0.5 ? 'A' : 'B';
     const variantData = variant === 'A' ? test.variantA : test.variantB;
     
+    // Fetch the full popup configuration
+    const popupResponse = await fetch(`https://gcmodal-api77.vercel.app/api/popups?id=${encodeURIComponent(variantData.popupId)}`);
+    const popupData = await popupResponse.json();
+    
+    if (!popupData.success || !popupData.popup) {
+      return Response.json(
+        { success: false, error: 'Failed to fetch popup configuration' },
+        { status: 500, headers: mergeHeaders({
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type'
+        }, getSecurityHeaders()) }
+      );
+    }
+    
     return Response.json({
       success: true,
       variant,
       popupId: variantData.popupId,
+      popup: popupData.popup,
       isCompleted: false,
       testId: test.testId
     }, { headers: mergeHeaders({

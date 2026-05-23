@@ -1,6 +1,6 @@
 /**
  * GC Modal - Popup Manager
- * Version: 2.8.8-beta.2
+ * Version: 2.8.8-beta.3
  * Supports: All Templates, Split Testing, Phone Field
  */
 
@@ -186,8 +186,14 @@
         
         console.log('Split test assigned:', data.variant, 'Popup:', data.popupId);
         
-        // Show the assigned popup
-        this.showPopup(data.popupId, true);
+        // Use the popup data returned from API
+        if (data.popup) {
+          this.currentPopup = data.popup;
+          this.renderPopup(data.popup);
+        } else {
+          // Fallback: fetch popup separately
+          this.showPopup(data.popupId, true);
+        }
         
       } catch (err) {
         console.error('Error handling split test:', err);
